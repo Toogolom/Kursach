@@ -1,0 +1,38 @@
+﻿@model IEnumerable<PIS.Tour>
+
+@{
+    ViewData["Title"] = "Результаты поиска";
+}
+
+<h1>Результаты поиска</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название
+            </th>
+            <th>
+                Описание
+            </th>
+            <th>
+                Цена
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TourPrice)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

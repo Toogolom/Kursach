@@ -16,6 +16,6 @@
 			TourName = name;
 			TourDescription = description;
 			TourPrice = price;
-		}
+        }
 	}
 }

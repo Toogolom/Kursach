@@ -2,17 +2,20 @@
 {
     public class City
     {
-        public string CityId {  get; }
+        public int CityId {  get; }
 
         public string CityName { get; }
 
         public string CityDescription { get; }
 
-        public City(string cityId, string cityName, string cityDescription)
+        public string PhotoUrl { get; }
+
+        public City(int cityId, string cityName, string cityDescription, string photoUrl)
         {
             CityId = cityId;
             CityName = cityName;
             CityDescription = cityDescription;
+            PhotoUrl = photoUrl;
         }
     }
 }

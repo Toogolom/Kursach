@@ -2,8 +2,8 @@
 {
     public interface ITourRepository
     {
-        List<Tour> GetAllTours();
+        public List<Tour> GetAllTours();
 
-        List<Tour> GetAllByNameTours(string namePart);
+        public List<Tour> GetAllByNameTours(string namePart);
     }
 }

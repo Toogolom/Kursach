@@ -1,7 +1,7 @@
-﻿using PIS.Repository;
-
-namespace PIS.Memory
+﻿namespace PIS.Memory
 {
+    using PIS.Repository;
+
     public class AttractionRepository : IAttractionRepository
     {
         private readonly List<Attraction> attractions = new List<Attraction>

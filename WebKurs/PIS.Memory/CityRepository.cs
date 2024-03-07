@@ -20,8 +20,8 @@
 
         public List<City> GetAllCityByName(string namePart)
         {
-            return cities.Where(city => city.CityName.Contains(namePart))
-                         .ToList();
+            return cities.Where(city => city.CityName.IndexOf(namePart, StringComparison.OrdinalIgnoreCase) >= 0)
+            .ToList();
         }
 
         public City GetCityById(int id)

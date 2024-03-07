@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PIS.Repository
+﻿namespace PIS.Repository
 {
-    internal class IAttractionRepository
+    public interface IAttractionRepository
     {
+        public List<Attraction> GetAllAttractions();
+
+        public List<Attraction> GetAllAttractionsByName(string namePart);
+
+        public List<Attraction> GetAllAttractionsByCityId(int cityId);
     }
 }

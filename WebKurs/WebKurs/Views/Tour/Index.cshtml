@@ -1,0 +1,24 @@
+﻿@model IEnumerable<PIS.Tour>
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>Туры</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tour in Model)
+        {
+            <tr>
+                <td>@tour.TourName</td>
+                <td>@tour.TourDescription</td>
+                <td>@tour.TourPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>

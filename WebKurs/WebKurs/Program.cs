@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<ITourRepository, TourRepository>();
 builder.Services.AddSingleton<ICityRepository, CityRepository>();
+builder.Services.AddSingleton<IAttractionRepository, AttractionRepository>();
 
 var app = builder.Build();
 

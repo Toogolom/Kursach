@@ -38,7 +38,8 @@
                 <img src="@item.PhotoUrl" class="city-photo" alt="Фото города">
                 <div class="city-details">
                     <strong>@item.CityName</strong><br>
-                    <span>@item.CityDescription</span>
+                        <span>@item.CityDescription</span><br>
+                    <a href="@Url.Action("Index", "Attraction", new { cityId = item.CityId })" class="attractions-link">Достопримечательности</a>
                 </div>
             </td>
         </tr>

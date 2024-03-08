@@ -12,7 +12,14 @@
 				new Tour(3, "Тур 3", "Описание тура 3", 200.0)
 		};
 
-		public List<Tour> GetAllByNameTours(string s)
+        private readonly Dictionary<int, List<int>> tourDetails = new Dictionary<int, List<int>>
+		{
+			{ 1, new List<int> { 1, 2, 3 } },
+			{ 2, new List<int> { 2 } },
+			{ 3, new List<int> { 3 } },
+		};
+
+        public List<Tour> GetAllByNameTours(string s)
 		{
             return tours.Where(tour => tour.TourName.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
             .ToList();
@@ -22,5 +29,10 @@
 		{
 			return tours;
 		}
+
+		public List<int> GetAllAttractionByTourId(int id)
+		{
+            return tourDetails.TryGetValue(id, out List<int> attractionIds) ? attractionIds : new List<int>();
+        }
 	}
 }

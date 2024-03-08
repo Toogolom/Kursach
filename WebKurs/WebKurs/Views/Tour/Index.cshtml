@@ -9,6 +9,7 @@
             <th>Название</th>
             <th>Описание</th>
             <th>Цена</th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
                 <td>@tour.TourName</td>
                 <td>@tour.TourDescription</td>
                 <td>@tour.TourPrice</td>
+                <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
             </tr>
         }
     </tbody>

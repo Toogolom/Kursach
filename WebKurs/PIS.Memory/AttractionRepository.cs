@@ -28,5 +28,10 @@
             return attractions.Where(attr => attr.AttractionName.IndexOf(namePart, StringComparison.OrdinalIgnoreCase) >= 0)
             .ToList();
         }
+
+        public Attraction GetAttractionById(int id)
+        {
+            return attractions.FirstOrDefault(attr => attr.AttractionId == id);
+        }
     }
 }

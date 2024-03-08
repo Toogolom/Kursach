@@ -25,7 +25,7 @@
 			return View();
 		}
 
-		public IActionResult Search(string query)
+		public IActionResult Result(string query)
 		{
             var tours = _tourRepository.GetAllByNameTours(query);
             var attractions = _attractionRepository.GetAllAttractionsByName(query);

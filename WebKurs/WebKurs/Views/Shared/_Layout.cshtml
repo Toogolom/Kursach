@@ -29,6 +29,22 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="City" asp-action="Index">Города</a>
                         </li>
                     </ul>
+                    <form class="form-inline" asp-controller="Search" asp-action="Result" method="get">
+                        <div class="input-group">
+                            <input class="form-control" type="search" placeholder="Поиск" aria-label="Search" name="query">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-success" type="submit">Найти</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#">Зарегистрироваться</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

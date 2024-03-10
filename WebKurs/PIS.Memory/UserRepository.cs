@@ -30,7 +30,7 @@
 
         public User GetUserByUserName(string userName)
         {
-            return (User)users.Where(user => user.UserName == userName);
+            return users.FirstOrDefault(user => user.UserName == userName);
         }
     }
 }

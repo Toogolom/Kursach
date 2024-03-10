@@ -1,5 +1,6 @@
 using PIS.Memory;
 using PIS.Interface;
+using PIS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddSingleton<ICityRepository, CityRepository>();
 builder.Services.AddSingleton<IAttractionRepository, AttractionRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddSingleton<IAuthenticationService,AuthenticationService>();
+builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
 
 var app = builder.Build();
 

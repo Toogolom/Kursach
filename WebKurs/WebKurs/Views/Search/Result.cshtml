@@ -3,22 +3,6 @@
 @{
     ViewData["Title"] = "Результаты поиска";
 }
-<style>
-    .city-info {
-        display: flex;
-    }
-
-    .city-photo {
-        margin-right: 10px;
-        width: 200px;
-        height: auto;
-    }
-
-    .city-details {
-        flex-grow: 1;
-    }
-</style>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,93 +12,33 @@
 <body>
     <h1>Результаты поиска</h1>
 
+    <h2>Туры</h2>
+
     @if (Model.Tours != null && Model.Tours.Any())
     {
-        <h2>Туры</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Название</th>
-                    <th>Описание</th>
-                    <th>Цена</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var tour in Model.Tours)
-                {
-                    <tr>
-                        <td>@tour.TourName</td>
-                        <td>@tour.TourDescription</td>
-                        <td>@tour.TourPrice</td>
-                        <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("TourPartial",Model.Tours)
     }
     else
     {
         <p>Ничего не найдено для туров.</p>
     }
 
+	<h2>Достопримечательности</h2>
+
     @if (Model.Attractions != null && Model.Attractions.Any())
     {
-        <h2>Достопримечательности</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var attraction in Model.Attractions)
-                {
-                    <tr>
-                        <td class="city-info">
-                            <img src="@attraction.AttractionPhotoUrl" class="city-photo" alt="Фото достопримечательности">
-                            <div class="city-details">
-                                <strong>@attraction.AttractionName</strong><br>
-                                <span>@attraction.AttractionDescription</span>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("AttractionPartial", Model.Attractions)
     }
     else
     {
         <p>Ничего не найдено для достопримечательностей.</p>
     }
 
+	<h2>Города</h2>
+
     @if (Model.Cities != null && Model.Cities.Any())
     {
-        <h2>Города</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var city in Model.Cities)
-                {
-                    <tr>
-                        <td class="city-info">
-                            <img src="@city.PhotoUrl" class="city-photo" alt="Фото города">
-                            <div class="city-details">
-                                <strong>@city.CityName</strong><br>
-                                <span>@city.CityDescription</span><br>
-                                <a href="@Url.Action("Index", "Attraction", new { cityId = city.CityId })" class="attractions-link">Достопримечательности</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("CityPartial", Model.Cities)
     }
     else
     {

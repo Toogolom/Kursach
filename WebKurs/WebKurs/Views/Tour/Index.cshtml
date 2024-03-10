@@ -2,25 +2,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h2>Туры</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Цена</th>
-            <th> </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tour in Model)
-        {
-            <tr>
-                <td>@tour.TourName</td>
-                <td>@tour.TourDescription</td>
-                <td>@tour.TourPrice</td>
-                <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div>
+	<h2>Туры</h2>
+	@Html.Partial("TourPartial",Model)
+</div>

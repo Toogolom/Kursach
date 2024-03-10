@@ -19,24 +19,8 @@
     }
 </style>
 
-<h1>Просмотр достопримечательностей</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td class="city-info">
-                    <img src="@item.AttractionPhotoUrl" class="city-photo" alt="Фото города">
-                    <div class="city-details">
-                        <strong>@item.AttractionName</strong><br>
-                        <span>@item.AttractionDescription</span>
-                    </div>
-                </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+	<h1>Просмотр достопримечательностей</h1>
+    @Html.Partial("AttractionPartial",Model)
+</div>

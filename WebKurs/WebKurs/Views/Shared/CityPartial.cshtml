@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PIS.City>
+
+<style>
+    .city-info {
+        display: flex;
+    }
+
+    .city-photo {
+        margin-right: 10px;
+        width: 200px;
+        height: auto;
+    }
+
+    .city-details {
+        flex-grow: 1;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="city-info">
+                    <img src="@item.PhotoUrl" class="city-photo" alt="Фото города">
+                    <div class="city-details">
+                        <strong>@item.CityName</strong><br>
+                        <span>@item.CityDescription</span><br>
+                        <a href="@Url.Action("Index", "Attraction", new { cityId = item.CityId })" class="attractions-link">Достопримечательности</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

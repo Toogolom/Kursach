@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Memory;
-    using PIS.Repository;
+    using PIS.Interface;
     using System.Data;
     using WebKurs.Models;
 

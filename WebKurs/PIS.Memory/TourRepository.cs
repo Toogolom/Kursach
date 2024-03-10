@@ -1,7 +1,7 @@
 ﻿namespace PIS.Memory
 {
     using PIS;
-    using PIS.Repository;
+    using PIS.Interface;
 
     public class TourRepository: ITourRepository
 	{

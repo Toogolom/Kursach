@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PIS.Memory;
 using PIS;
-using PIS.Repository;
+using PIS.Interface;
 
 namespace WebKurs.Controllers
 {

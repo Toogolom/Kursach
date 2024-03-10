@@ -1,6 +1,6 @@
 ﻿namespace PIS.Memory
 {
-    using PIS.Repository;
+    using PIS.Interface;
 
     public class AttractionRepository : IAttractionRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace PIS.Repository
+﻿namespace PIS.Interface
 {
     public interface IAttractionRepository
     {

@@ -1,7 +1,7 @@
 ﻿namespace PIS.Memory
 {
     using PIS;
-    using PIS.Repository;
+    using PIS.Interface;
     using System.Collections.Generic;
 
     public class CityRepository : ICityRepository

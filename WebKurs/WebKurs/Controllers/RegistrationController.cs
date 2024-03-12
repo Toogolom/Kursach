@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
+    using WebKurs.Models;
 
     public class RegistrationController : Controller
     {
@@ -14,12 +15,17 @@
     
         public IActionResult Index()
         {
-            return View();
+            return View(new RegModel());
         }
 
-        public IActionResult Register(string email, string username,string password)
+        public IActionResult Register(RegModel model)
         {
-            var newuUser = _registrationService.Registration(email, username, password); 
+            var registrationResult = _registrationService.Registration(model.Username, model.Password, model.Email,model.Error);
+
+            if (!registrationResult)
+            {
+                return View("Index", model);
+            }
             return View();
         }
     }

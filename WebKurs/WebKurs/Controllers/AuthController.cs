@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
+    using WebKurs.Models;
 
     public class AuthController : Controller
     {
@@ -14,12 +15,15 @@
 
         public IActionResult Index()
         {
-            return View();
+            return View(new AuthModel());
         }
 
-        public IActionResult Entrance(string username, string password)
+        public IActionResult Entrance(AuthModel model)
         {
-            _authenticationService.Authenticate(username, password);
+            if(!_authenticationService.Authenticate(model.Email, model.Password,model.Error))
+            {
+                return View("Index", model);
+            }
             return View();
         }
     }

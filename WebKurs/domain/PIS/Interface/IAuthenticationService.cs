@@ -8,7 +8,7 @@
 
     public interface IAuthenticationService
     {
-        public User Authenticate(string username, string password);
+        public bool Authenticate(string username, string password,Dictionary<string, string> error);
 
     }
 }

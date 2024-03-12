@@ -28,9 +28,26 @@
             return (User)users.Where(user => user.UserId == id);
         }
 
-        public User GetUserByUserName(string userName)
+        public User GetUserByUsername(string userName)
         {
             return users.FirstOrDefault(user => user.UserName == userName);
+        }
+
+        public bool UsernameNotExist(string userName)
+        {
+            var newUser = users.FirstOrDefault(user => user.UserName == userName);
+            return newUser == null;
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return users.FirstOrDefault(user => user.Email == email);
+        }
+
+        public bool UserEmailNotExist(string email)
+        {
+            var newUser = users.FirstOrDefault(user => user.Email == email);
+            return newUser == null;
         }
     }
 }

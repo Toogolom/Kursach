@@ -8,6 +8,6 @@
 
     public interface IRegistrationService
     {
-        public bool Registration(string email, string password, string username);
+        public bool Registration(string email, string password, string username, Dictionary<string, string> error);
     }
 }

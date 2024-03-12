@@ -16,14 +16,23 @@
             _userRepository = userRepository;
         }
 
-        public User Authenticate(string username, string password)
+        public bool Authenticate(string email, string password, Dictionary<string,string> error)
         {
-            var user = _userRepository.GetUserByUserName(username);
-            if (user != null && VerifyPassword(password, user.Password))
+            var user = _userRepository.GetUserByEmail(email);
+            bool isCorrect = true;
+
+            if (user == null)
             {
-                return user;
+                error["InvalidEmail"] = "Неправильный адрес эл.почты";
+                isCorrect = false;
             }
-            return null;
+            else if (!VerifyPassword(password, user.Password))
+            {
+                error["InvalidPassword"] = "Неправильный пароль";
+                isCorrect = false;
+            }
+
+            return isCorrect;
         }
 
         private bool VerifyPassword(string password, string storedPassword)

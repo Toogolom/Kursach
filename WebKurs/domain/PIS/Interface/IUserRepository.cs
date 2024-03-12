@@ -6,6 +6,12 @@
 
         public void AddUser(string email, string username,string password);
 
-        public User GetUserByUserName(string userName);
+        public User GetUserByUsername(string userName);
+
+        public bool UserEmailNotExist(string email);
+
+        public User GetUserByEmail(string email);
+
+        public bool UsernameNotExist(string userName);
     }
 }

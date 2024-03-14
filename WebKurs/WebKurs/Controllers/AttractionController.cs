@@ -7,13 +7,17 @@ namespace WebKurs.Controllers
     {
         public IAttractionRepository _attractionRepository;
 
-        public AttractionController(IAttractionRepository attractionRepository)
+        private readonly SessionManager _sessionManager;
+
+        public AttractionController(IAttractionRepository attractionRepository, SessionManager sessionManager)
         {
             _attractionRepository = attractionRepository;
+            _sessionManager = sessionManager;
         }
 
         public IActionResult Index(int cityId)
         {
+            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
             var attraction = _attractionRepository.GetAllAttractionsByCityId(cityId);
             return View(attraction);
         }

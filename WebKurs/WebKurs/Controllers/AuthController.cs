@@ -8,23 +8,31 @@
     {
         private readonly IAuthenticationService _authenticationService;
 
-        public AuthController(IAuthenticationService authenticationService)
+        private readonly SessionManager _sessionManager;
+
+        public AuthController(IAuthenticationService authenticationService, SessionManager sessionManager)
         {
             _authenticationService = authenticationService;
+            _sessionManager = sessionManager;
         }
 
         public IActionResult Index()
         {
+            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
             return View(new AuthModel());
         }
 
         public IActionResult Entrance(AuthModel model)
         {
-            if(!_authenticationService.Authenticate(model.Email, model.Password,model.Error))
+            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+            if (!_authenticationService.Authenticate(model.Email, model.Password,model.Error))
             {
                 return View("Index", model);
             }
-            return View();
+
+            _sessionManager.Set("Email", model.Email);
+
+            return RedirectToAction("Index", "Account");
         }
     }
 }

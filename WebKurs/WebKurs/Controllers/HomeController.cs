@@ -8,14 +8,22 @@ namespace WebKurs.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+        private readonly SessionManager _sessionManager;
+
+        public HomeController(ILogger<HomeController> logger, SessionManager sessionManager)
 		{
 			_logger = logger;
+			_sessionManager = sessionManager;
 		}
 
 		public IActionResult Index()
 		{
-			return View();
+			if(_sessionManager.Get<string>("Email") == null)
+			{
+				_sessionManager.Set("IsLoggedIn", false);
+			}
+			ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+            return View();
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

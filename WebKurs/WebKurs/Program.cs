@@ -1,6 +1,7 @@
 using PIS.Memory;
 using PIS.Interface;
 using PIS;
+using WebKurs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,17 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IAuthenticationService,AuthenticationService>();
 builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SessionManager>();
+
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true; // Ensure session cookie is accessible only via HTTP
+    options.Cookie.IsEssential = true; // Indicate if the session cookie is essential for the application
+});
 
 var app = builder.Build();
 
@@ -30,6 +42,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
 	name: "default",

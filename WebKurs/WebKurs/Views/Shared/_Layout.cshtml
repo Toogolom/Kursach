@@ -35,12 +35,21 @@
                         </div>
                     </form>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Index">Войти</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Зарегистрироваться</a>
-                        </li>
+                        @if ((bool)ViewData["IsLoggedIn"])
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Личный кабинет</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Index">Войти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Зарегистрироваться</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

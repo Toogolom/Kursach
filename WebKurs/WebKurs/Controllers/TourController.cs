@@ -9,15 +9,18 @@ namespace WebKurs.Controllers
     {
         public ITourRepository _tourRepository;
         public IAttractionRepository _attractionRepository;
+        private readonly SessionManager _sessionManager;
 
-        public TourController(ITourRepository tourRepository, IAttractionRepository attractionRepository)
+        public TourController(ITourRepository tourRepository, IAttractionRepository attractionRepository, SessionManager sessionManager)
         {
             _tourRepository = tourRepository;
             _attractionRepository = attractionRepository;
+            _sessionManager = sessionManager;
         }
 
         public IActionResult Index()
         {
+            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
             var tour = _tourRepository.GetAllTours();
             return View(tour);
         }

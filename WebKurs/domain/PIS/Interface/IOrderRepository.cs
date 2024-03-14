@@ -11,6 +11,8 @@
     {
        public List<Order> GetAllByUserId(int id);
        
-       public List<int> GetAllTourByUserId(int id); 
+       public List<int> GetAllTourByUserId(int id);
+
+        public void AddOrder(int userId, List<int> tourId, DateTime data);
     }
 }

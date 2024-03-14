@@ -27,6 +27,7 @@ namespace WebKurs.Controllers
 
         public IActionResult DetailsTour(int tourId)
         {
+            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
             var attractionIds = _tourRepository.GetAllAttractionByTourId(tourId);
             var attractions = new List<Attraction>();
             foreach (var attractionId in attractionIds)

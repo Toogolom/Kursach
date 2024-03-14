@@ -7,6 +7,7 @@
             <th>Описание</th>
             <th>Цена</th>
             <th> </th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -17,8 +18,28 @@
                 <td>@tour.TourDescription</td>
                 <td>@tour.TourPrice</td>
                 <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
+                <td>
+                    <button type="button" class="btn btn-success buy-btn" data-tour-id="@tour.TourId">Купить</button>
+                </td>
             </tr>
         }
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.buy-btn').click(function () {
+                    var tourId = $(this).data('tour-id');
+                    $.ajax({
+                        url: '/Order/AddToOrder',
+                        type: 'POST',
+                        data: { tourId: tourId },
+                        success: function (response) {
+                        },
+                        error: function (xhr, status, error) {
+                        }
+                    });
+                });
+            });
+        </script>
     </tbody>
 </table>
 

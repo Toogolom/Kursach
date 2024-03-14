@@ -29,5 +29,11 @@
                          .SelectMany(order => order.TourId)
                          .ToList();
         }
+
+        public void AddOrder(int userId, List<int> tourId, DateTime data)
+        {
+            int orderId = orders.Count + 1;
+            Order order = new Order(orderId,userId,tourId,data);
+        }
     }
 }

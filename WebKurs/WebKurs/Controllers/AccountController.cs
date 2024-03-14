@@ -21,8 +21,12 @@ namespace WebKurs.Controllers
         {
             _sessionManager.Set("IsLoggedIn", true);
             ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+
             string email = _sessionManager.Get<String>("Email");
             User user = _userRepository.GetUserByEmail(email);
+
+            _sessionManager.Set("Username", user.UserName);
+
             return View(new UserModel
             {
                 Email = user.Email,

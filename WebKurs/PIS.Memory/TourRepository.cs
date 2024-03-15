@@ -34,5 +34,30 @@
 		{
             return tourDetails.TryGetValue(id, out List<int> attractionIds) ? attractionIds : new List<int>();
         }
+
+		public Tour GetTourById(int id)
+		{
+			return tours.FirstOrDefault(tour => tour.TourId == id);
+		}
+
+		public List<Tour> GetAllToursByAllId(List<int> tourIdList)
+		{
+
+            List<Tour> tourList = new List<Tour>();
+
+            if (tourIdList != null)
+            {
+                foreach (int tourId in tourIdList)
+                {
+                    Tour tour = GetTourById(tourId);
+                    if (tour != null)
+                    {
+                        tourList.Add(tour);
+                    }
+                }
+            }
+
+            return tourList;
+        }
 	}
 }

@@ -1,12 +1,13 @@
 ﻿namespace WebKurs
 {
+    using PIS.Interface;
     using System.Text.Json;
 
-    public class SessionManager
+    public class SessionService : ISessionService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SessionManager(IHttpContextAccessor httpContextAccessor)
+        public SessionService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
@@ -25,6 +26,11 @@
         public void Remove(string key)
         {
             _httpContextAccessor.HttpContext.Session.Remove(key);
+        }
+
+        public void Clear()
+        {
+            _httpContextAccessor.HttpContext.Session.Clear();
         }
     }
 }

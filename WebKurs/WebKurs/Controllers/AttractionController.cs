@@ -5,20 +5,20 @@ namespace WebKurs.Controllers
 {
     public class AttractionController : Controller
     {
-        public IAttractionRepository _attractionRepository;
+        public IAttractionService _attractionService;
 
-        private readonly SessionManager _sessionManager;
+        private readonly ISessionService _sessionService;
 
-        public AttractionController(IAttractionRepository attractionRepository, SessionManager sessionManager)
+        public AttractionController(IAttractionService attractionService, SessionService sessionService)
         {
-            _attractionRepository = attractionRepository;
-            _sessionManager = sessionManager;
+            _attractionService = attractionService;
+            _sessionService = sessionService;
         }
 
         public IActionResult Index(int cityId)
         {
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
-            var attraction = _attractionRepository.GetAllAttractionsByCityId(cityId);
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            var attraction = _attractionService.GetAllAttractionsByCityId(cityId);
             return View(attraction);
         }
     }

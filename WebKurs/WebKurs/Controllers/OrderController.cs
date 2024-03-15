@@ -1,33 +1,63 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using Newtonsoft.Json;
+using PIS;
 using PIS.Interface;
+using PIS.Memory;
 using WebKurs.Models;
 
 namespace WebKurs.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly ISessionService _sessionService;
+        private readonly IOrderService _orderService;
+        private readonly ITourService _tourService;
 
-        private readonly SessionManager _sessionManager;
-
-        private List<int> TourId = new List<int>();
-
-        public OrderController(IOrderRepository orderRepository, SessionManager sessionManager)
+        public OrderController(IOrderService orderService, ISessionService sessionService, ITourService tourService)
         {
-            _orderRepository = orderRepository;
-            _sessionManager = sessionManager;
+            _sessionService = sessionService;
+            _orderService = orderService;
+            _tourService = tourService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsOrderPage"] = true;
+            List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
+            List<Tour> tours = _tourService.GetAllToursByAllId(tourIdList);
+            var totalPrice = _orderService.CalculateTotalPrice(tours);
+            return View(Tuple.Create(tours, totalPrice));
         }
 
         [HttpPost]
-        public IActionResult AddToOrder(int tourId,SearchViewModel model)
+        public IActionResult AddToOrder(int tourId)
         {
-            TourId.Add(tourId);
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            _orderService.AddTourToOrder(tourId);
             return Json(new { success = true });
+        }
+
+        public IActionResult AddOrder(double totalPrice)
+        {
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsOrderPage"] = true;
+            Order newOrder = _orderService.CreateOrder();
+            List<Tour> tourList = _tourService.GetAllToursByAllId(newOrder.TourId);
+            return View(new OrderModel
+            {
+                UserId = newOrder.UserId,
+                TourList = tourList,
+                TotalPrice = totalPrice,
+                Date = newOrder.DateOrder,
+            });
+        }
+
+        public IActionResult RemoveItem(int tourId)
+        {
+            _orderService.RemoveTourFromOrder(tourId);
+            return RedirectToAction("Index");
         }
     }
 }

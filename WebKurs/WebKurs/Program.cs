@@ -1,7 +1,7 @@
 using PIS.Memory;
 using PIS.Interface;
-using PIS;
 using WebKurs;
+using PIS.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +14,16 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IAuthenticationService,AuthenticationService>();
 builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<ISessionService, SessionService>();
+builder.Services.AddSingleton<ITourService, TourService>();
+builder.Services.AddSingleton<IAttractionService, AttractionService>();
+builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddSingleton<ICityService, CityService>();
+builder.Services.AddSingleton<ISearchService, SearchService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<SessionManager>();
+builder.Services.AddScoped<SessionService>();
 
 
 builder.Services.AddSession(options =>

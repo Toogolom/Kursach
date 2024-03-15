@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<PIS.Tour>
+@{
+    bool isOrderPage = ViewData["IsOrderPage"] != null ? (bool)ViewData["IsOrderPage"] : false;
+    bool isLoggedIn = ViewData["IsLoggedIn"] != null ? (bool)ViewData["IsLoggedIn"] : false;
+}
 
 <table class="table">
     <thead>
@@ -11,35 +15,65 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var tour in Model)
+        @if (isOrderPage)
         {
-            <tr>
-                <td>@tour.TourName</td>
-                <td>@tour.TourDescription</td>
-                <td>@tour.TourPrice</td>
-                <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
-                <td>
-                    <button type="button" class="btn btn-success buy-btn" data-tour-id="@tour.TourId">Купить</button>
-                </td>
-            </tr>
+            @foreach (var tourGroup in Model.GroupBy(t => t.TourId))
+            {
+                <tr>
+                    <td>@tourGroup.First().TourName</td>
+                    <td>@tourGroup.First().TourDescription</td>
+                    <td>@tourGroup.First().TourPrice</td>
+                    <td>@tourGroup.Count()</td>
+                    <td>
+                    <td> <a class="btn btn-danger" asp-area="" asp-controller="Order" asp-action="RemoveItem" asp-route-tourId="@tourGroup.Key">Удалить</a> </td>
+                </tr>
+            }
         }
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('.buy-btn').click(function () {
-                    var tourId = $(this).data('tour-id');
-                    $.ajax({
-                        url: '/Order/AddToOrder',
-                        type: 'POST',
-                        data: { tourId: tourId },
-                        success: function (response) {
-                        },
-                        error: function (xhr, status, error) {
-                        }
-                    });
-                });
-            });
-        </script>
+        else
+        {
+            @foreach (var tour in Model)
+            {
+                <tr>
+                    <td>@tour.TourName</td>
+                    <td>@tour.TourDescription</td>
+                    <td>@tour.TourPrice</td>
+                    <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
+                    @if (isLoggedIn)
+                    {
+                        <td> <button type="button" class="btn btn-success buy-btn" data-tour-id="@tour.TourId">Купить</button> </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+            }
+        }
     </tbody>
 </table>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.buy-btn').click(function () {
+            console.log('Buy button clicked');
+            var tourId = $(this).data('tour-id');
+            var currentButton = $(this);
+            $.ajax({
+                url: '/Order/AddToOrder',
+                type: 'POST',
+                data: { tourId: tourId },
+                success: function (response) {
+                    console.log('Add to order success');
+                    var quantity = currentButton.closest('tr').find('.tour-quantity');
+                    quantity.text(parseInt(quantity.text()) + 1);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Add to order error: ' + error);
+                }
+            });
+        });
+    });
+
+
+</script>

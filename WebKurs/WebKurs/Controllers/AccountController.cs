@@ -7,31 +7,37 @@ namespace WebKurs.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SessionManager _sessionManager;
+        private readonly ISessionService _sessionService;
 
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public AccountController(SessionManager sessionManager, IUserRepository userRepository)
+        public AccountController(SessionService sessionService, IUserService userService)
         {
-            _sessionManager = sessionManager;
-            _userRepository = userRepository;
+            _sessionService = sessionService;
+            _userService = userService;
         }
 
         public IActionResult Index()
         {
-            _sessionManager.Set("IsLoggedIn", true);
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+            _sessionService.Set("IsLoggedIn", true);
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
 
-            string email = _sessionManager.Get<String>("Email");
-            User user = _userRepository.GetUserByEmail(email);
+            string email = _sessionService.Get<String>("Email");
+            User user = _userService.GetUserByEmail(email);
 
-            _sessionManager.Set("Username", user.UserName);
+            _sessionService.Set("Username", user.UserName);
 
             return View(new UserModel
             {
                 Email = user.Email,
                 Username = user.UserName,
             });
+        }
+
+        public IActionResult Exit()
+        {
+            _sessionService.Clear();
+            return RedirectToAction("Index","Home");
         }
     }
 }

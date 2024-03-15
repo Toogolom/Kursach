@@ -5,19 +5,19 @@ namespace WebKurs.Controllers
 {
     public class CityController : Controller
     {
-        private readonly ICityRepository _cityRepository;
+        private readonly ICityService _cityService;
 
-        private readonly SessionManager _sessionManager;
+        private readonly ISessionService _sessionService;
 
-        public CityController(ICityRepository cityRepository, SessionManager sessionManager)
+        public CityController(ICityService cityService, SessionService sessionService)
         {
-            _cityRepository = cityRepository;
-            _sessionManager = sessionManager;
+            _cityService = cityService;
+            _sessionService = sessionService;
         }
         public IActionResult Index()
         {
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
-            var city = _cityRepository.GetAllCity();
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            var city = _cityService.GetAllCity();
             return View(city);
         }
     }

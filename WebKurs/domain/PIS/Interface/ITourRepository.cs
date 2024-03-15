@@ -6,6 +6,10 @@
 
         public List<Tour> GetAllByNameTours(string namePart);
 
+        public Tour GetTourById(int id);
+
         public List<int> GetAllAttractionByTourId(int tourId);
+
+        public List<Tour> GetAllToursByAllId(List<int> tourIdList);
     }
 }

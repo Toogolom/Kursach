@@ -1,4 +1,4 @@
-﻿namespace PIS
+﻿namespace PIS.Service
 {
     using PIS.Interface;
     using System;
@@ -21,36 +21,36 @@
             _userRepository = userRepository;
         }
 
-        public bool Registration(string username, string password, string email,Dictionary<string,string> error)
+        public bool Registration(string username, string password, string email, Dictionary<string, string> error)
         {
-           bool isCorrect = true;
-           if (!IsUsernameAvailable(username))
-           {
+            bool isCorrect = true;
+            if (!IsUsernameAvailable(username))
+            {
                 error["UsernameTaken"] = "Данное имя пользователя уже занято";
-                isCorrect =  false;
-           }
+                isCorrect = false;
+            }
 
-           if (!IsEmailCorrect(email))
-           {
+            if (!IsEmailCorrect(email))
+            {
                 error["InvalidEmail"] = "В адресе эл.почты не были указаны @gmail.com или @mail.ru или @yandex.ru";
                 isCorrect = false;
-           }
+            }
 
-           if (!IsEmailAvailable(email))
-           {
+            if (!IsEmailAvailable(email))
+            {
                 error["EmailTaken"] = "Уже существует аккунт с такой почтой";
-           }
+            }
 
-           if (!IsPasswordCorrect(password))
-           {
+            if (!IsPasswordCorrect(password))
+            {
                 error["InvalidPassword"] = "Пароль должен содержать как минимум одну заглавную латинскую букву, цифру и спец.знак";
                 isCorrect = false;
-           }
-           if (isCorrect)
-           {
-               _userRepository.AddUser(email, username, password);
-           }
-            
+            }
+            if (isCorrect)
+            {
+                _userRepository.AddUser(username, email, password);
+            }
+
             return isCorrect;
         }
 
@@ -71,7 +71,7 @@
 
         private bool IsPasswordCorrect(string password)
         {
-           return _passwordRegex.IsMatch(password);
+            return _passwordRegex.IsMatch(password);
         }
 
         private string HashPassword(string password)

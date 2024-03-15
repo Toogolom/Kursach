@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PIS.Interface;
 using System.Diagnostics;
 using WebKurs.Models;
 
@@ -8,21 +9,21 @@ namespace WebKurs.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 
-        private readonly SessionManager _sessionManager;
+        private readonly ISessionService _sessionService;
 
-        public HomeController(ILogger<HomeController> logger, SessionManager sessionManager)
+        public HomeController(ILogger<HomeController> logger, SessionService sessionService)
 		{
 			_logger = logger;
-			_sessionManager = sessionManager;
+			_sessionService = sessionService;
 		}
 
 		public IActionResult Index()
 		{
-			if(_sessionManager.Get<string>("Email") == null)
+			if(_sessionService.Get<string>("Email") == null)
 			{
-				_sessionManager.Set("IsLoggedIn", false);
+				_sessionService.Set("IsLoggedIn", false);
 			}
-			ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+			ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             return View();
 		}
 

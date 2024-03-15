@@ -2,10 +2,6 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
-
 
 	public class Order
 	{
@@ -17,12 +13,18 @@
 
 		public DateTime DateOrder { get; }
 
-		public Order (int orderId, int userId, List<int> tourId, DateTime dateOrder)
+		public Order (int userId, List<int> tourId, DateTime dateOrder)
 		{
-			OrderId = orderId;
 			UserId = userId;
 			TourId = tourId;
 			DateOrder = dateOrder;
 		}
-	}
+
+        public Order(int OrderId, int userId, List<int> tourId, DateTime dateOrder)
+        {
+            UserId = userId;
+            TourId = tourId;
+            DateOrder = dateOrder;
+        }
+    }
 }

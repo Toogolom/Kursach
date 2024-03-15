@@ -1,0 +1,17 @@
+﻿@model OrderModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заказ</title>
+</head>
+<body>
+    <h1>Детали заказа</h1>
+    <h2>Пользователь: @Model.UserId</h2>
+    <h2>Дата заказа: @Model.Date</h2>
+    <h2>Общая стоимость заказа: @Model.TotalPrice</h2>
+
+    <h2>Выбранные туры:</h2>
+    @Html.Partial("TourPartial",Model.TourList)
+</body>
+</html>

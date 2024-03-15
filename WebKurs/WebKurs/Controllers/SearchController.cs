@@ -1,44 +1,30 @@
 ﻿namespace WebKurs.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PIS.Memory;
     using PIS.Interface;
-    using System.Data;
-    using WebKurs.Models;
 
     public class SearchController : Controller
 	{
-		private readonly ITourRepository _tourRepository;
-        private readonly ICityRepository _cityRepository;
-        private readonly IAttractionRepository _attractionRepository;
-        private readonly SessionManager _sessionManager;
+		private readonly ISearchService _searchService;
+        private readonly ISessionService _sessionService;
 
-        public SearchController(ITourRepository tourRepository, ICityRepository cityRepository, IAttractionRepository attractionRepository, SessionManager sessionManager)
+        public SearchController(ISearchService searchService, ISessionService sessionService)
         {
-            _tourRepository = tourRepository;
-            _cityRepository = cityRepository;
-            _attractionRepository = attractionRepository;
-            _sessionManager = sessionManager;
+            _searchService = searchService;
+            _sessionService = sessionService;
         }
 
         public IActionResult Index()
 		{
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             return View();
 		}
 
 		public IActionResult Result(string query)
 		{
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
-            var tours = _tourRepository.GetAllByNameTours(query);
-            var attractions = _attractionRepository.GetAllAttractionsByName(query);
-            var cities = _cityRepository.GetAllCityByName(query);
-            return View(new SearchViewModel
-            {
-                Tours = tours,
-                Attractions = attractions,
-                Cities = cities
-            }) ;
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            var model = _searchService.SearchResult(query);
+            return View(model);
         }
 	}
 }

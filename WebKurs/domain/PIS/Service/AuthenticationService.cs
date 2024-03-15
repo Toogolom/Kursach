@@ -1,4 +1,4 @@
-﻿namespace PIS
+﻿namespace PIS.Service
 {
     using PIS.Interface;
     using System;
@@ -16,7 +16,7 @@
             _userRepository = userRepository;
         }
 
-        public bool Authenticate(string email, string password, Dictionary<string,string> error)
+        public bool Authenticate(string email, string password, Dictionary<string, string> error)
         {
             var user = _userRepository.GetUserByEmail(email);
             bool isCorrect = true;

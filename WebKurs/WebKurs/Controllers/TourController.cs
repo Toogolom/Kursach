@@ -7,34 +7,26 @@ namespace WebKurs.Controllers
 {
     public class TourController : Controller
     {
-        public ITourRepository _tourRepository;
-        public IAttractionRepository _attractionRepository;
-        private readonly SessionManager _sessionManager;
+        public ITourService _tourService;
+        private readonly ISessionService _sessionService;
 
-        public TourController(ITourRepository tourRepository, IAttractionRepository attractionRepository, SessionManager sessionManager)
+        public TourController(ITourService tourService, SessionService sessionService)
         {
-            _tourRepository = tourRepository;
-            _attractionRepository = attractionRepository;
-            _sessionManager = sessionManager;
+            _tourService = tourService;
+            _sessionService = sessionService;
         }
 
         public IActionResult Index()
         {
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
-            var tour = _tourRepository.GetAllTours();
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            var tour = _tourService.GetAllTours();
             return View(tour);
         }
 
         public IActionResult DetailsTour(int tourId)
         {
-            ViewData["IsLoggedIn"] = _sessionManager.Get<bool>("IsLoggedIn");
-            var attractionIds = _tourRepository.GetAllAttractionByTourId(tourId);
-            var attractions = new List<Attraction>();
-            foreach (var attractionId in attractionIds)
-            {
-                var attraction = _attractionRepository.GetAttractionById(attractionId);
-                attractions.Add(attraction);
-            }
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            var attractions = _tourService.GetAllAttractionForTour(tourId);
             return View(attractions);
         }
     }

@@ -4,7 +4,7 @@ namespace WebKurs.Models
 {
     public class OrderModel
     {
-        public int UserId { get; set; }
+        public string Username { get; set; }
 
         public List<Tour> TourList { get; set; }
 

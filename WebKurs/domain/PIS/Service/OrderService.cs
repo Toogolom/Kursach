@@ -3,6 +3,7 @@
     using PIS.Interface;
     using System;
     using System.Collections.Generic;
+    using WebKurs.Models;
 
     public class OrderService : IOrderService
     {
@@ -46,14 +47,18 @@
             return totalPrice;
         }
 
-        public Order CreateOrder()
+        public OrderModel CreateOrder()
         {
             var username = _sessionService.Get<string>("Username");
-            var user = _userRepository.GetUserByUsername(username);
             var date = DateTime.Now;
             var tourIdList = _sessionService.Get<List<int>>("TourIdList");
-
-            return new Order(user.UserId, tourIdList, date);
+            List<Tour> tourList = _tourRepository.GetAllToursByAllId(tourIdList);
+            var totalPrice = CalculateTotalPrice(tourList);
+            return new OrderModel { 
+                Username = username,
+                TourList = tourList,
+                TotalPrice = totalPrice,
+                Date = date };
         }
 
         public void RemoveTourFromOrder(int tourId)

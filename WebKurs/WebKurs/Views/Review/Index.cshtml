@@ -1,0 +1,52 @@
+﻿@model List<PIS.Models.ReviewModel>
+@{
+    bool isLoggedIn = ViewData["IsLoggedIn"] != null ? (bool)ViewData["IsLoggedIn"] : false;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список обзоров</title>
+    <style>
+        .review-section {
+            margin-bottom: 30px;
+        }
+
+        .review {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+            .review h3 {
+                margin-top: 0;
+            }
+
+            .review p {
+                margin-bottom: 10px;
+            }
+    </style>
+</head>
+<body>
+    <h1>Список отзывов</h1>
+    @if (isLoggedIn)
+    {
+        <a href="/Review/AddReview" class="btn">Добавить отзыв</a>
+    }
+
+
+    <div class="review-section">
+        <h2>Отзывы на туры</h2>
+        @foreach (var reviewModel in Model)
+        {
+            @if (reviewModel.Tour != null)
+            {
+                <div class="review">
+                    <h3>@reviewModel.Username</h3>
+                    <p>@reviewModel.ReviewText</p>
+                    <p>Тур: @reviewModel.Tour.TourName</p>
+                </div>
+            }
+        }
+    </div>
+</body>
+</html>

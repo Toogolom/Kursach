@@ -1,0 +1,26 @@
+﻿@model List<PIS.Tour>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Отзыв</title>
+    </head>
+    <body>
+        <form asp-controller="Review" asp-action="AddReviewResult" method="post">
+            <label for="tourSelect">Выберите тур:</label><br>
+            <select id="tourSelect" name="id">
+                @foreach (var tour in Model)
+                {
+                    <option value="@tour.TourId">@tour.TourName</option>
+                }
+            </select><br>
+
+        <label for="reviewText">Текст отзыва:</label><br>
+        <textarea id="reviewText" name="reviewText" rows="4" cols="50"></textarea><br>
+
+            <input type="submit" value="Отправить отзыв">
+        </form>
+    </body>
+</html>

@@ -39,19 +39,12 @@ namespace WebKurs.Controllers
             return Json(new { success = true });
         }
 
-        public IActionResult AddOrder(double totalPrice)
+        public IActionResult AddOrder()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
-            Order newOrder = _orderService.CreateOrder();
-            List<Tour> tourList = _tourService.GetAllToursByAllId(newOrder.TourId);
-            return View(new OrderModel
-            {
-                UserId = newOrder.UserId,
-                TourList = tourList,
-                TotalPrice = totalPrice,
-                Date = newOrder.DateOrder,
-            });
+            var order = _orderService.CreateOrder();
+            return View(order);
         }
 
         public IActionResult RemoveItem(int tourId)

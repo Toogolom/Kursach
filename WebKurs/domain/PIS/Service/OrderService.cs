@@ -61,6 +61,14 @@
                 Date = date };
         }
 
+        public void AddOrder(OrderModel model)
+        {
+            var user = _userRepository.GetUserByUsername(model.Username);
+            var tourIdList = _sessionService.Get<List<int>>("TourIdList");
+            _orderRepository.AddOrder(user.UserId, tourIdList, model.Date);
+            _sessionService.Remove("TourIdList");
+        }
+
         public void RemoveTourFromOrder(int tourId)
         {
             List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");

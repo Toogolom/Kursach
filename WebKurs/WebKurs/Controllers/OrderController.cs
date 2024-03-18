@@ -25,17 +25,19 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
+
             List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
             List<Tour> tours = _tourService.GetAllToursByAllId(tourIdList);
             var totalPrice = _orderService.CalculateTotalPrice(tours);
+
             return View(Tuple.Create(tours, totalPrice));
         }
 
         [HttpPost]
         public IActionResult AddToOrder(int tourId)
         {
-            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             _orderService.AddTourToOrder(tourId);
+
             return Json(new { success = true });
         }
 
@@ -43,8 +45,20 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
+
             var order = _orderService.CreateOrder();
             return View(order);
+        }
+
+        [HttpPost]
+        public IActionResult AddOrderResult(OrderModel model)
+        {
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+
+            _orderService.AddOrder(model);
+            ViewBag.Message = "Заказ успешно добавлен";
+
+            return View();
         }
 
         public IActionResult RemoveItem(int tourId)

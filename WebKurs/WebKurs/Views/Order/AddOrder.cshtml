@@ -13,5 +13,11 @@
 
     <h2>Выбранные туры:</h2>
     @Html.Partial("TourPartial",Model.TourList)
+    <form asp-controller="Order" asp-action="AddOrderResult" method="post">
+        <input type="hidden" asp-for="Username" value="@Model.Username" />
+        <input type="hidden" asp-for="Date" value="@Model.Date" />
+        <input type="hidden" asp-for="TotalPrice" value="@Model.TotalPrice"/>
+        <button type="submit" class="btn btn-success">Оформить заказ</button>
+    </form>
 </body>
 </html>

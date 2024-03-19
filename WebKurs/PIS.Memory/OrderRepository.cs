@@ -34,6 +34,7 @@
         {
             int orderId = orders.Count + 1;
             Order order = new Order(orderId,userId,tourId,data);
+            orders.Add(order);
         }
     }
 }

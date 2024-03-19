@@ -24,6 +24,12 @@
         public bool Registration(string username, string password, string email, Dictionary<string, string> error)
         {
             bool isCorrect = true;
+            
+            if(username == null || password == null || email == null)
+            {
+                error["Empty"] = "Поля не должны быть пустыми";
+                return false;
+            }
             if (!IsUsernameAvailable(username))
             {
                 error["UsernameTaken"] = "Данное имя пользователя уже занято";
@@ -39,6 +45,7 @@
             if (!IsEmailAvailable(email))
             {
                 error["EmailTaken"] = "Уже существует аккунт с такой почтой";
+                isCorrect = false;
             }
 
             if (!IsPasswordCorrect(password))
@@ -46,6 +53,7 @@
                 error["InvalidPassword"] = "Пароль должен содержать как минимум одну заглавную латинскую букву, цифру и спец.знак";
                 isCorrect = false;
             }
+
             if (isCorrect)
             {
                 _userRepository.AddUser(username, email, password);
@@ -54,7 +62,7 @@
             return isCorrect;
         }
 
-        private bool IsUsernameAvailable(string username)
+        public bool IsUsernameAvailable(string username)
         {
             return _userRepository.UsernameNotExist(username);
         }
@@ -64,12 +72,12 @@
             return _emailRegex.IsMatch(email);
         }
 
-        private bool IsEmailAvailable(string email)
+        public bool IsEmailAvailable(string email)
         {
             return _userRepository.UserEmailNotExist(email);
         }
 
-        private bool IsPasswordCorrect(string password)
+        public bool IsPasswordCorrect(string password)
         {
             return _passwordRegex.IsMatch(password);
         }

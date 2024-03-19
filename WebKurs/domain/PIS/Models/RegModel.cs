@@ -18,6 +18,7 @@
                 { "InvalidUsername", string.Empty },
                 { "InvalidPassword", string.Empty },
                 { "EmailTaken", string.Empty },
+                { "Empty", string.Empty },
             };
         }
     }

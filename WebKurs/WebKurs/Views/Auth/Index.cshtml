@@ -19,6 +19,10 @@
                     <div class="card-body">
                         <form asp-controller="Auth" asp-action="Entrance" method="get">
                             <div class="form-group">
+                                @if (Model.Error.ContainsKey("Empty"))
+                                {
+                                    <div class="text-danger">@Model.Error["Empty"]</div>
+                                }
                                 <label for="email">Адрес эл. почты:</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Введите адрес эл. почты" value="@Model.Email">
                                 @if (Model.Error.ContainsKey("InvalidEmail"))

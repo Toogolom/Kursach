@@ -2,6 +2,7 @@
 @{
     bool isOrderPage = ViewData["IsOrderPage"] != null ? (bool)ViewData["IsOrderPage"] : false;
     bool isLoggedIn = ViewData["IsLoggedIn"] != null ? (bool)ViewData["IsLoggedIn"] : false;
+    bool isLogPage = ViewData["IsLogPage"] != null ? (bool)ViewData["IsLogPage"] : false;
 }
 
 <table class="table">
@@ -10,8 +11,8 @@
             <th>Название</th>
             <th>Описание</th>
             <th>Цена</th>
-            <th> </th>
-            <th> </th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -24,12 +25,11 @@
                     <td>@tourGroup.First().TourDescription</td>
                     <td>@tourGroup.First().TourPrice</td>
                     <td>@tourGroup.Count()</td>
-                    <td>
                     <td> <a class="btn btn-danger" asp-area="" asp-controller="Order" asp-action="RemoveItem" asp-route-tourId="@tourGroup.Key">Удалить</a> </td>
                 </tr>
             }
         }
-        else
+        else if (!isLogPage)
         {
             @foreach (var tour in Model)
             {
@@ -49,9 +49,20 @@
                 </tr>
             }
         }
+        else
+        {
+            @foreach (var tourGroup in Model.GroupBy(t => t.TourId))
+            {
+                <tr>
+                    <td>@tourGroup.First().TourName</td>
+                    <td>@tourGroup.First().TourDescription</td>
+                    <td>@tourGroup.First().TourPrice</td>
+                    <td>@tourGroup.Count()</td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -74,6 +85,4 @@
             });
         });
     });
-
-
 </script>

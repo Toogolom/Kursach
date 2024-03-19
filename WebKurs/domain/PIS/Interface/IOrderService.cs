@@ -14,7 +14,7 @@
 
         public void AddOrder(OrderModel model);
 
-        public List<Order> GetAllOrdersByUsername();
+        public List<OrderModel> GetAllOrdersByUsername();
 
         public void RemoveTourFromOrder(int tourId);
     }

@@ -20,7 +20,11 @@
         {
             var user = _userRepository.GetUserByEmail(email);
             bool isCorrect = true;
-
+            if (password == null || email == null)
+            {
+                error["Empty"] = "Поля не должны быть пустыми";
+                return false;
+            }
             if (user == null)
             {
                 error["InvalidEmail"] = "Неправильный адрес эл.почты";

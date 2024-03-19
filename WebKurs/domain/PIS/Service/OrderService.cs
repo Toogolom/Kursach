@@ -3,7 +3,9 @@
     using PIS.Interface;
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using WebKurs.Models;
+    using static System.Runtime.InteropServices.JavaScript.JSType;
 
     public class OrderService : IOrderService
     {
@@ -78,6 +80,30 @@
                 tourIdList.Remove(tourId);
                 _sessionService.Set("TourIdList", tourIdList);
             }
+        }
+
+        public List<OrderModel> GetAllOrdersByUsername()
+        {
+            var username = _sessionService.Get<string>("Username");
+            var user = _userRepository.GetUserByUsername(username);
+            List<OrderModel> orderModelList = new List<OrderModel>();
+            var orders = _orderRepository.GetAllByUserId(user.UserId);
+
+            foreach (var order in orders)
+            {
+                List<Tour> tourList = _tourRepository.GetAllToursByAllId(order.TourId);
+                var totalPrice = CalculateTotalPrice(tourList);
+                OrderModel orderModel = new OrderModel
+                {
+                    Username = username,
+                    TourList = tourList,
+                    TotalPrice = totalPrice,
+                    Date = order.DateOrder
+                };
+                orderModelList.Add(orderModel);
+            }
+
+            return orderModelList;
         }
     }
 }

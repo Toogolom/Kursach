@@ -5,19 +5,11 @@
 <head>
     <title>Заказ</title>
 </head>
-<body>
-    <h1>Детали заказа</h1>
-    <h2>Пользователь: @Model.Username</h2>
-    <h2>Дата заказа: @Model.Date</h2>
-    <h2>Общая стоимость заказа: @Model.TotalPrice</h2>
-
-    <h2>Выбранные туры:</h2>
-    @Html.Partial("TourPartial",Model.TourList)
-    <form asp-controller="Order" asp-action="AddOrderResult" method="post">
-        <input type="hidden" asp-for="Username" value="@Model.Username" />
-        <input type="hidden" asp-for="Date" value="@Model.Date" />
-        <input type="hidden" asp-for="TotalPrice" value="@Model.TotalPrice"/>
-        <button type="submit" class="btn btn-success">Оформить заказ</button>
-    </form>
-</body>
+@Html.Partial("OrderPartial", Model)
+<form asp-controller="Order" asp-action="AddOrderResult" method="post">
+    <input type="hidden" asp-for="Username" value="@Model.Username" />
+    <input type="hidden" asp-for="Date" value="@Model.Date" />
+    <input type="hidden" asp-for="TotalPrice" value="@Model.TotalPrice" />
+    <button type="submit" class="btn btn-success">Оформить заказ</button>
+</form>
 </html>

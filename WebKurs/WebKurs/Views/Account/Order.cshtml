@@ -1,0 +1,26 @@
+﻿@model List<OrderModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заказы пользователя</title>
+    <style>
+        .order-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+            .order-container:not(:last-child) {
+                border-bottom: 2px solid #ccc;
+            }
+    </style>
+</head>
+<h1>Заказы пользователя</h1>
+@foreach (var order in Model)
+{
+    <div class="order-container">
+        @Html.Partial("OrderPartial", order)
+    </div>
+}
+</html>

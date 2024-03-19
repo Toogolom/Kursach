@@ -11,10 +11,14 @@ namespace WebKurs.Controllers
 
         private readonly IUserService _userService;
 
-        public AccountController(SessionService sessionService, IUserService userService)
+        private readonly IOrderService _orderService;
+
+
+        public AccountController(SessionService sessionService, IUserService userService, IOrderService orderService)
         {
             _sessionService = sessionService;
             _userService = userService;
+            _orderService = orderService;
         }
 
         public IActionResult Index()
@@ -32,6 +36,16 @@ namespace WebKurs.Controllers
                 Email = user.Email,
                 Username = user.UserName,
             });
+        }
+
+        public IActionResult Order()
+        {
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsLogPage"] = true;
+
+            var model = _orderService.GetAllOrdersByUsername();
+
+            return View(model);
         }
 
         public IActionResult Exit()

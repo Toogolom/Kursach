@@ -25,6 +25,7 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
+            ViewData["Username"] = _sessionService.Get<string>("Username");
 
             List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
             List<Tour> tours = _tourService.GetAllToursByAllId(tourIdList);
@@ -45,6 +46,7 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
+            ViewData["Username"] = _sessionService.Get<string>("Username");
 
             var order = _orderService.CreateOrder();
             return View(order);
@@ -54,6 +56,7 @@ namespace WebKurs.Controllers
         public IActionResult AddOrderResult(OrderModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
 
             _orderService.AddOrder(model);
             ViewBag.Message = "Заказ успешно добавлен";

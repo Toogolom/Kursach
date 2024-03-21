@@ -6,12 +6,12 @@
 
     public class RegistrationController : Controller
     {
-        private readonly IRegistrationService _registrationService;
+        private readonly IAuthenticationService _AuthenticationService;
         private readonly ISessionService _sessionService;
 
-        public RegistrationController(IRegistrationService registrationService, SessionService sessionService)
+        public RegistrationController(IAuthenticationService AuthenticationService, SessionService sessionService)
         {
-            _registrationService = registrationService;
+            _AuthenticationService = AuthenticationService;
             _sessionService = sessionService;
         }
 
@@ -24,15 +24,16 @@
         public IActionResult Register(RegModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
-            var registrationResult = _registrationService.Registration(model.Username, model.Password, model.Email,model.Error);
+            var registrationResult = _AuthenticationService.Registration(model.Username, model.Password, model.Email,model.Error);
 
             if (!registrationResult)
             {
                 return View("Index", model);
             }
             _sessionService.Set("Email", model.Email);
+            _sessionService.Set("Username", model.Username);
 
-            return RedirectToAction("Index","Account");
+            return RedirectToAction("Index","Home");
         }
     }
 }

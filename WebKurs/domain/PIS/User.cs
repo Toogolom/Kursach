@@ -8,13 +8,13 @@
 
     public class User
     {
-        public int UserId { get; }
+        public int UserId { get;}
 
-        public string UserName { get; }
+        public string UserName { get; set; }
 
-        public string Email { get; }
+        public string Email { get; set; }
 
-        public string Password { get; }
+        public string Password { get; set; }
 
         public User(int userId, string userName, string email, string password)
         {

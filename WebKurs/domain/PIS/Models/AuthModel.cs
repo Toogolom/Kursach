@@ -10,13 +10,7 @@
 
         public AuthModel()
         {
-            Error = new Dictionary<string, string>
-            {
-                { "InvalidEmail", string.Empty },
-                { "InvalidPassword", string.Empty },
-                { "Empty", string.Empty },
-
-            };
+            Error = new Dictionary<string, string>();
         }
     }
 }

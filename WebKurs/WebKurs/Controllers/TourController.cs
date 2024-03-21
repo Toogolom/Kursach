@@ -19,14 +19,20 @@ namespace WebKurs.Controllers
         public IActionResult Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
+
             var tour = _tourService.GetAllTours();
+
             return View(tour);
         }
 
         public IActionResult DetailsTour(int tourId)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
+
             var attractions = _tourService.GetAllAttractionForTour(tourId);
+            
             return View(attractions);
         }
     }

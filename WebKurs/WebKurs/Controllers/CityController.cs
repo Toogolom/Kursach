@@ -17,7 +17,10 @@ namespace WebKurs.Controllers
         public IActionResult Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
+
             var city = _cityService.GetAllCity();
+
             return View(city);
         }
     }

@@ -13,7 +13,6 @@ builder.Services.AddSingleton<IAttractionRepository, AttractionRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IAuthenticationService,AuthenticationService>();
-builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<ISessionService, SessionService>();
 builder.Services.AddSingleton<ITourService, TourService>();

@@ -24,6 +24,7 @@ namespace WebKurs.Controllers
 				_sessionService.Set("IsLoggedIn", false);
 			}
 			ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
             return View();
 		}
 

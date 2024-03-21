@@ -12,14 +12,7 @@
 
         public RegModel()
         {
-            Error = new Dictionary<string, string>
-            {
-                { "InvalidEmail", string.Empty }, 
-                { "InvalidUsername", string.Empty },
-                { "InvalidPassword", string.Empty },
-                { "EmailTaken", string.Empty },
-                { "Empty", string.Empty },
-            };
+            Error = new Dictionary<string, string>();
         }
     }
 }

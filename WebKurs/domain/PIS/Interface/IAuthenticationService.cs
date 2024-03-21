@@ -10,5 +10,17 @@
     {
         public bool Authenticate(string username, string password,Dictionary<string, string> error);
 
+        public bool Registration(string username, string password, string email, Dictionary<string, string> error);
+
+        public bool IsUsernameAvailable(string username);
+
+        public bool IsEmailCorrect(string email);
+
+        public bool IsEmailAvailable(string email);
+
+        public bool IsPasswordCorrect(string password);
+
+        public bool VerifyPassword(string password, string storedPassword);
+
     }
 }

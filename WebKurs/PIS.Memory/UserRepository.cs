@@ -49,5 +49,11 @@
             var newUser = users.FirstOrDefault(user => user.Email == email);
             return newUser == null;
         }
+
+        public string GetUsernameByEmail(string email)
+        {
+            var user = users.FirstOrDefault(user => user.Email == email);
+            return user?.UserName;
+        }
     }
 }

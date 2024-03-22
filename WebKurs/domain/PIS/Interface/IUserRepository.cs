@@ -12,6 +12,8 @@
 
         public User GetUserByEmail(string email);
 
+        public void DeleteUser(int id);
+
         public string GetUsernameByEmail(string email);
 
         public bool UsernameNotExist(string userName);

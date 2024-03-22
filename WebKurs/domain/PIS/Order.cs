@@ -7,11 +7,11 @@
 	{
 		public int OrderId { get; }
 
-		public int UserId { get; }
+		public int UserId { get; set; }
 
-		public List<int> TourId { get; }
+		public List<int> TourId { get; set; }
 
-		public DateTime DateOrder { get; }
+		public DateTime DateOrder { get; set; }
 
 		public Order (int userId, List<int> tourId, DateTime dateOrder)
 		{

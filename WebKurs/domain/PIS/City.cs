@@ -4,11 +4,11 @@
     {
         public int CityId {  get; }
 
-        public string CityName { get; }
+        public string CityName { get; set; }
 
-        public string CityDescription { get; }
+        public string CityDescription { get; set; }
 
-        public string PhotoUrl { get; }
+        public string PhotoUrl { get; set; }
 
         public City(int cityId, string cityName, string cityDescription, string photoUrl)
         {

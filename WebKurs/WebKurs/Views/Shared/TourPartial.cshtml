@@ -11,6 +11,7 @@
             <th>Название</th>
             <th>Описание</th>
             <th>Цена</th>
+            <th>Продолжительность</th>
             <th></th>
             <th></th>
         </tr>
@@ -24,6 +25,7 @@
                     <td>@tourGroup.First().TourName</td>
                     <td>@tourGroup.First().TourDescription</td>
                     <td>@tourGroup.First().TourPrice</td>
+                    <td>@tourGroup.First().StartDate.ToString("dd.MM.yyyy") - @tourGroup.First().EndDate.ToString("dd.MM.yyyy")</td>
                     <td>@tourGroup.Count()</td>
                     <td> <a class="btn btn-danger" asp-area="" asp-controller="Order" asp-action="RemoveItem" asp-route-tourId="@tourGroup.Key">Удалить</a> </td>
                 </tr>
@@ -37,6 +39,7 @@
                     <td>@tour.TourName</td>
                     <td>@tour.TourDescription</td>
                     <td>@tour.TourPrice</td>
+                    <td>@tour.StartDate.ToString("dd.MM.yyyy") - @tour.EndDate.ToString("dd.MM.yyyy")</td>
                     <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
                     @if (isLoggedIn)
                     {
@@ -57,6 +60,7 @@
                     <td>@tourGroup.First().TourName</td>
                     <td>@tourGroup.First().TourDescription</td>
                     <td>@tourGroup.First().TourPrice</td>
+                    <td>@tourGroup.First().StartDate.ToString("dd.MM.yyyy") - @tourGroup.First().EndDate.ToString("dd.MM.yyyy")</td>
                     <td>@tourGroup.Count()</td>
                 </tr>
             }

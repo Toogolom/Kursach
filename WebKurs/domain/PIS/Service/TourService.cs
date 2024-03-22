@@ -37,5 +37,24 @@
             }
             return attractions;
         }
+
+        public Dictionary<Attraction, DateTime> GetAttractionDateForTour(int id)
+        {
+            var AttractionDate = new Dictionary<Attraction, DateTime>();
+
+            var attractionDateById = _tourRepository.GetAttractionDateByTourId(id);
+
+            foreach (var kvp in attractionDateById)
+            {
+                var attraction = _attractionRepository.GetAttractionById(kvp.Key);
+                if (attraction != null)
+                {
+                    AttractionDate.Add(attraction, kvp.Value);
+                }
+            }
+
+            return AttractionDate;
+
+        }
     }
 }

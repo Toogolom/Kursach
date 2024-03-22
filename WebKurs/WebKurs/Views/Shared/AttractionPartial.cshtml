@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PIS.Attraction>
+﻿@model PIS.Attraction
 
 <style>
     .city-info {
@@ -22,18 +22,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="city-info">
-                    <img src="@item.AttractionPhotoUrl" class="city-photo" alt="Фото города">
-                    <div class="city-details">
-                        <strong>@item.AttractionName</strong><br>
-                        <span>@item.AttractionDescription</span>
-                    </div>
-                </td>
-            </tr>
-        }
+        <tr>
+            <td class="city-info">
+                <img src="@Model.AttractionPhotoUrl" class="city-photo" alt="Фото города">
+                <div class="city-details">
+                    <strong>@Model.AttractionName</strong><br>
+                    <span>@Model.AttractionDescription</span>
+                </div>
+            </td>
+        </tr>
     </tbody>
 </table>
 

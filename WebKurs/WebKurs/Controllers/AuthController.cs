@@ -37,8 +37,11 @@
 
             var username = _userService.GetUsernameByEmail(model.Email);
 
+            var user = _userService.GetUserByEmail(model.Email);
+
             _sessionService.Set("Username", username);
             _sessionService.Set("IsLoggedIn", true);
+            _sessionService.Set("IsAdmin", user.IsAdmin);
 
             return RedirectToAction("Index", "Home");
         }

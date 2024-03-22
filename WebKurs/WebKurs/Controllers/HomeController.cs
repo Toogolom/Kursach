@@ -22,9 +22,12 @@ namespace WebKurs.Controllers
 			if(_sessionService.Get<string>("Email") == null)
 			{
 				_sessionService.Set("IsLoggedIn", false);
-			}
+                _sessionService.Set("IsAdmin", false);
+            }
 			ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             return View();
 		}
 

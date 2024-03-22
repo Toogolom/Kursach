@@ -1,9 +1,45 @@
-﻿@model IEnumerable<PIS.Attraction>
+﻿@model Dictionary<PIS.Attraction, DateTime>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+<style>
+    .city-info {
+        display: flex;
+    }
+
+    .city-photo {
+        margin-right: 10px;
+        width: 200px;
+        height: auto;
+    }
+
+    .city-details {
+        flex-grow: 1;
+    }
+</style>
 
 <h1>Просмотр достопримечательностей</h1>
-@Html.Partial("AttractionPartial", Model)
+
+<table class="table">
+    <thead>
+        <tr>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="city-info">
+                    <img src="@item.Key.AttractionPhotoUrl" class="city-photo" alt="Фото города">
+                    <div class="city-details">
+                        <strong>@item.Key.AttractionName</strong><br>
+                        <span>Описание: @item.Key.AttractionDescription</span><br>
+                        <span> Дата посещения: @item.Value.ToString("dd.MM.yyyy")</span>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

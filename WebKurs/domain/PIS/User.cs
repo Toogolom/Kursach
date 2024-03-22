@@ -1,11 +1,5 @@
 ﻿namespace PIS
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     public class User
     {
         public int UserId { get;}
@@ -16,12 +10,15 @@
 
         public string Password { get; set; }
 
-        public User(int userId, string userName, string email, string password)
+        public bool IsAdmin { get; set; }
+
+        public User(int userId, string userName, string email, string password, bool isAdmin)
         {
             UserId = userId;
             UserName = userName;
             Email = email;
             Password = password;
+            IsAdmin = isAdmin;
         }
     }
 }

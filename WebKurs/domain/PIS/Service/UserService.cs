@@ -73,19 +73,24 @@
             string email = _sessionService.Get<string>("Email");
             var user = _userRepository.GetUserByUsername(username);
 
-            if (!(username == model.Username && email == model.Email))
+            if (username == null || model.Email == null)
             {
-                if (username == null || model.Email == null)
-                {
                     model.Error["Empty"] = "Поля не должны быть пустыми";
                     return false;
-                }
+            }
+
+            if (username != model.Username)
+            {
+
                 if (!_authenticationService.IsUsernameAvailable(model.Username))
                 {
                     model.Error["UsernameTaken"] = "Данное имя пользователя уже занято";
                     return false;
                 }
+            }
 
+            if (email != model.Email)
+            {
                 if (!_authenticationService.IsEmailCorrect(model.Email))
                 {
                     model.Error["InvalidEmail"] = "В адресе эл.почты не были указаны @gmail.com или @mail.ru или @yandex.ru";
@@ -98,12 +103,19 @@
                     return false;
                 }
             }
+                
+            
 
            user.UserName = model.Username;
            user.Email = model.Email;
 
             _sessionService.Set("Username", model.Username);
             return true;
+        }
+
+        public void DeleteUser(int id)
+        {
+            _userRepository.DeleteUser(id);
         }
 
         public string GetUsernameByEmail(string email)

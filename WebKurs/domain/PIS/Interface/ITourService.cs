@@ -13,5 +13,7 @@
         public List<Tour> GetAllTours();
 
         public List<Attraction> GetAllAttractionForTour(int tourId);
+
+        public Dictionary<Attraction, DateTime> GetAttractionDateForTour(int id);
     }
 }

@@ -30,9 +30,9 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
-
-            var attractions = _tourService.GetAllAttractionForTour(tourId);
             
+            var attractions = _tourService.GetAttractionDateForTour(tourId);
+
             return View(attractions);
         }
     }

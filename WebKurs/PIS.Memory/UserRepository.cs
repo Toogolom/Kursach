@@ -12,20 +12,25 @@
     {
         private List<User> users = new List<User>
         {
-            new User(1,"Toog1","toog1@gmail.com","toog1"),
-            new User(2,"Toog2","toog2@gmail.com","toog2"),
-            new User(3,"Toog3","toog3@gmail.com","toog3"),
+            new User(1,"Toog1","toog1@gmail.com","toog1", false),
+            new User(2,"Toog2","toog2@gmail.com","toog2", true),
+            new User(3,"Toog3","toog3@gmail.com","toog3", false),
         };
         public void AddUser(string email, string  username, string password)
         {
             int userId = users.Count + 1 ;
-            User user = new User(userId, email, username, password);
+            User user = new User(userId, email, username, password, false);
             users.Add(user);
         }
 
         public User GetUserById(int id)
         {
             return (User)users.Where(user => user.UserId == id);
+        }
+
+        public void DeleteUser(int id)
+        {
+            users.RemoveAll(user => user.UserId == id);
         }
 
         public User GetUserByUsername(string userName)

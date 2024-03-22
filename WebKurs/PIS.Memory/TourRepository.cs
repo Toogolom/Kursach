@@ -5,19 +5,12 @@
 
     public class TourRepository: ITourRepository
 	{
-		private readonly List<Tour> tours = new List<Tour>
-		{
-				new Tour(1, "Московский тур", "Описание тура 1", 100.0),
-				new Tour(2, "Тур 2", "Описание тура 2", 150.0),
-				new Tour(3, "Тур 3", "Описание тура 3", 200.0)
-		};
-
-        private readonly Dictionary<int, List<int>> tourDetails = new Dictionary<int, List<int>>
-		{
-			{ 1, new List<int> { 1, 2, 3 } },
-			{ 2, new List<int> { 2 } },
-			{ 3, new List<int> { 3 } },
-		};
+        private readonly List<Tour> tours = new List<Tour>
+        {
+            new Tour(1, "Московский тур", "Описание тура 1", 100.0, DateTime.Now, DateTime.Now.AddDays(7), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(2) }, { 2, DateTime.Now.AddDays(4) } }),
+            new Tour(2, "Тур 2", "Описание тура 2", 150.0, DateTime.Now, DateTime.Now.AddDays(10), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(3) }, { 2, DateTime.Now.AddDays(6) } }),
+            new Tour(3, "Тур 3", "Описание тура 3", 200.0, DateTime.Now, DateTime.Now.AddDays(14), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(5) }, { 2, DateTime.Now.AddDays(8) } })
+        };
 
         public List<Tour> GetAllByNameTours(string s)
 		{
@@ -30,9 +23,16 @@
 			return tours;
 		}
 
+        public Dictionary<int, DateTime> GetAttractionDateByTourId(int id)
+        {
+            Tour tour = tours.FirstOrDefault(t => t.TourId == id);
+            return tour?.AttractionDate ?? new Dictionary<int, DateTime>();
+        }
+
 		public List<int> GetAllAttractionByTourId(int id)
 		{
-            return tourDetails.TryGetValue(id, out List<int> attractionIds) ? attractionIds : new List<int>();
+            var tour = tours.FirstOrDefault(t => t.TourId == id);
+            return tour?.AttractionDate.Keys.ToList() ?? new List<int>();
         }
 
 		public Tour GetTourById(int id)
@@ -59,5 +59,5 @@
 
             return tourList;
         }
-	}
+    }
 }

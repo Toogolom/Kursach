@@ -79,7 +79,11 @@ namespace WebKurs.Controllers
             }
            
             if (_userService.UpdatePassword(newPassword, password, Error))
+            {
                 ViewBag.Message = "Пароль успешно обновлен";
+            }
+                
+
             return View(Error);
         }
 

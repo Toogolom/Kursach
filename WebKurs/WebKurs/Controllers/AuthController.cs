@@ -22,12 +22,16 @@
         public IActionResult Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             return View(new AuthModel());
         }
 
         public IActionResult Entrance(AuthModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             if (!_authenticationService.Authenticate(model.Email, model.Password, model.Error))
             {
                 return View("Index", model);

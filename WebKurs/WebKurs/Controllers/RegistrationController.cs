@@ -18,12 +18,16 @@
         public IActionResult Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             return View(new RegModel());
         }
 
         public IActionResult Register(RegModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             var registrationResult = _AuthenticationService.Registration(model.Username, model.Password, model.Email,model.Error);
 
             if (!registrationResult)

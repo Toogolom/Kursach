@@ -19,6 +19,7 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             var attraction = _attractionService.GetAllAttractionsByCityId(cityId);
 

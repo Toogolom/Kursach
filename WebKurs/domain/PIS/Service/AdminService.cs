@@ -4,7 +4,7 @@
     using System;
     using WebKurs.Models;
 
-    public class AdminService
+    public class AdminService : IAdminService
     {
         private readonly ITourService _tourService;
 
@@ -24,11 +24,6 @@
             _attractionService = attractionService;
             _userService = userService;
             _authenticationService = authenticationService;
-        }
-
-        public bool AddUser(RegModel model)
-        {
-            return _authenticationService.Registration(model.Username, model.Password, model.Email, model.Error);
         }
 
         public bool UpdateUser(RegModel model)

@@ -26,6 +26,7 @@ namespace WebKurs.Controllers
             _sessionService.Set("IsLoggedIn", true);
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
 
             string email = _sessionService.Get<String>("Email");
@@ -45,6 +46,7 @@ namespace WebKurs.Controllers
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsLogPage"] = true;
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             var model = _orderService.GetAllOrdersByUsername();
 
@@ -56,7 +58,8 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
-           
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             if (model.Username != null && _userService.UpdateUser(model))
             {
                 model = _userService.GetRegModel(model);
@@ -71,6 +74,7 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
             Dictionary<string, string> Error = new Dictionary<string, string>();
 
             if (password == null && newPassword == null)

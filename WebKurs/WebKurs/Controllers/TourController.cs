@@ -20,6 +20,7 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             var tour = _tourService.GetAllTours();
 
@@ -30,7 +31,8 @@ namespace WebKurs.Controllers
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
-            
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
             var attractions = _tourService.GetAttractionDateForTour(tourId);
 
             return View(attractions);

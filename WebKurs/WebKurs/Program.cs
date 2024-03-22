@@ -22,6 +22,7 @@ builder.Services.AddSingleton<ICityService, CityService>();
 builder.Services.AddSingleton<ISearchService, SearchService>();
 builder.Services.AddSingleton<IReviewRepository, ReviewRepository>();
 builder.Services.AddSingleton<IReviewService, ReviewService>();
+builder.Services.AddSingleton<IAdminService, AdminService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<SessionService>();

@@ -21,6 +21,7 @@
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             var model = _reviewService.GetAllReviews();
 
@@ -31,6 +32,7 @@
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             List<Tour> tours = _tourService.GetAllTours();
             
@@ -41,6 +43,7 @@
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");s
 
             _reviewService.AddReview(Reviewtext, id);
             ViewBag.Message = "Отзыв успешно добавлен";

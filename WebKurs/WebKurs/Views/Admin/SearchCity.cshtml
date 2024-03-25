@@ -1,0 +1,71 @@
+﻿@model List<PIS.City>
+
+<style>
+    .city-info {
+        display: flex;
+    }
+
+    .city-photo {
+        margin-right: 10px;
+        width: 200px;
+        height: auto;
+    }
+
+    .city-details {
+        flex-grow: 1;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список городов</title>
+</head>
+<body>
+
+    <form class="form-inline" asp-controller="Admin" asp-action="SearchCity" method="get">
+        <div class="input-group">
+            <input class="form-control" type="search" placeholder="Поиск по названию города" aria-label="Search" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit">Найти</button>
+            </div>
+        </div>
+    </form>
+
+    <h2>Список городов</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="city-info">
+                        <img src="@item.PhotoUrl" class="city-photo" alt="Фото города">
+                        <div class="city-details">
+                            <strong>@item.CityName</strong><br>
+                            <span>@item.CityDescription</span><br>
+                            <form action="/Admin/UpdateCity" method="post">
+                                <input type="hidden" name="cityId" value="@item.CityId">
+                                <button class="btn btn-success" type="submit">Редактировать</button>
+                            </form>
+                            <form action="/Admin/DeleteCity" method="post">
+                                <input type="hidden" name="cityId" value="@item.CityId">
+                                <button class="btn btn-danger" type="submit">Удалить</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

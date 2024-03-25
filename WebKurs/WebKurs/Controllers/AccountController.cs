@@ -54,7 +54,7 @@ namespace WebKurs.Controllers
         }
 
         
-        public IActionResult UpdateProfile(RegModel model, string newPassword)
+        public IActionResult UpdateProfile(UserModel model, string newPassword)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -62,11 +62,11 @@ namespace WebKurs.Controllers
 
             if (model.Username != null && _userService.UpdateUser(model))
             {
-                model = _userService.GetRegModel(model);
+                model = _userService.GetUserModel(model);
                 ViewBag.Message = "Данные пользователя обновлены";
                 return View(model);
             }
-            model = _userService.GetRegModel(model);
+            model = _userService.GetUserModel(model);
             return View(model);
         }
 

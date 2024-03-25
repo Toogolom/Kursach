@@ -20,10 +20,10 @@
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            return View(new RegModel());
+            return View(new UserModel());
         }
 
-        public IActionResult Register(RegModel model)
+        public IActionResult Register(UserModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");

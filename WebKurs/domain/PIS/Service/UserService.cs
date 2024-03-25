@@ -21,12 +21,22 @@
             _authenticationService = authenticationService;
         }
 
+        public List<User> GetAllUsers() 
+        {
+            return _userRepository.GetAllUsers();
+        }
+
         public User GetUserByEmail(string email)
         {
             return _userRepository.GetUserByEmail(email);
         }
 
-        public RegModel GetRegModel(RegModel model)
+        public List<User> GetAllUsersByUsername(string username)
+        {
+            return _userRepository.GetUAllsersByPartUsername(username);
+        }
+
+        public UserModel GetUserModel(UserModel model)
         {
             string username = _sessionService.Get<string>("Username");
             var user = _userRepository.GetUserByUsername(username);
@@ -67,7 +77,12 @@
 
         }
 
-        public bool UpdateUser(RegModel model)
+        public User GetUserById(int id)
+        {
+            return _userRepository.GetUserById(id);
+        }
+
+        public bool UpdateUser(UserModel model)
         {
             string username = _sessionService.Get<string>("Username");
             string email = _sessionService.Get<string>("Email");

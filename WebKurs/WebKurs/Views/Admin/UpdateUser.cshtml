@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model UserModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смена почты, ника</title>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <h1>Смена почты, ника или пароля</h1>
+    @if (ViewBag.Message != null)
+    {
+        <div class="message-container">
+            <p>@ViewBag.Message</p>
+        </div>
+    }
+    <form action="UpdateUser" method="POST">
+        <label for="email">Новая почта:</label>
+        <input type="email" id="email" name="email" value="@Model.Email" required>
+        @if (Model.Error.ContainsKey("EmailTaken"))
+        {
+            <div class="text-danger">@Model.Error["EmailTaken"]</div>
+        }
+        @if (Model.Error.ContainsKey("InvalidEmail"))
+        {
+            <div class="text-danger">@Model.Error["InvalidEmail"]</div>
+        }
+        <label for="username">Новый ник:</label>
+        <input type="text" id="username" name="username" value="@Model.Username" required>
+        <input type="hidden" id="userId" name="userId" value="@Model.UserId" required>
+        @if (Model.Error.ContainsKey("UsernameTaken"))
+        {
+            <div class="text-danger">@Model.Error["UsernameTaken"]</div>
+        }
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>
+

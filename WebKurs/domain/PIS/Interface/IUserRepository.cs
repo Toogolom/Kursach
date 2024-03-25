@@ -8,9 +8,13 @@
 
         public User GetUserByUsername(string userName);
 
+        public List<User> GetUAllsersByPartUsername(string partName);
+
         public bool UserEmailNotExist(string email);
 
         public User GetUserByEmail(string email);
+
+        public List<User> GetAllUsers();
 
         public void DeleteUser(int id);
 

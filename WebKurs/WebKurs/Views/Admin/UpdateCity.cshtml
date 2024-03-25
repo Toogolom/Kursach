@@ -1,0 +1,55 @@
+﻿@model PIS.Models.CityModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смена данных города</title>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <h1>Смена данных города</h1>
+    @if (ViewBag.Message != null)
+    {
+        <div class="message-container">
+            <p>@ViewBag.Message</p>
+        </div>
+    }
+    <form action="UpdateCity" method="POST">
+        <label for="cityName">Новое название:</label>
+        <input type="text" id="cityName" name="cityName" value="@Model.CityName" required>
+        <label for="cityDescription">Новое описание:</label>
+        <input type="text" id="cityDescription" name="cityDescription" value="@Model.CityDescription" required>
+        <label for="url">Новый URL:</label>
+        <input type="text" id="url" name="url" value="@Model.URL" required>
+        <input type="hidden" id="cityId" name="cityId" value="@Model.CityId" required>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>

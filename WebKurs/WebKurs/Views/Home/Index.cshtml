@@ -2,5 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="text-center">
-    <h1 class="display-4">Добро пожаловать, путешественники!</h1>
+    @if ((bool)ViewData["IsLoggedIn"])
+    {
+        <h1 class="display-4">Добро пожаловать, @ViewData["Username"]!</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Добро пожаловать, путешественник!</h1>
+    }
 </div>

@@ -9,5 +9,9 @@
         public List<Attraction> GetAllAttractionsByCityId(int cityId);
 
         public Attraction GetAttractionById(int id);
+
+        public void AddAttraction(string name, string description, string URL, int cityId);
+
+        public void DeleteAttractionById(int id);
     }
 }

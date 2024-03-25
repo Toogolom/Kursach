@@ -11,9 +11,15 @@
     {
         public User GetUserByEmail(string email);
 
-        public RegModel GetRegModel(RegModel model);
+        public User GetUserById(int id);
 
-        public bool UpdateUser(RegModel model);
+        public List<User> GetAllUsersByUsername(string username);
+
+        public UserModel GetUserModel(UserModel model);
+
+        public bool UpdateUser(UserModel model);
+
+        public List<User> GetAllUsers();
 
         public void DeleteUser(int id);
 

@@ -12,6 +12,13 @@
         new Attraction(4, "Жопа осла", "Серая", 3,"https://i.ytimg.com/vi/MFPzF9VII4E/maxresdefault.jpg")
         };
 
+        public void AddAttraction(string name, string description, string URL, int cityId)
+        {
+            int attId = attractions.Count + 1;
+            Attraction attraction = new Attraction(attId, name, description, cityId, URL);
+            attractions.Add(attraction);
+        }
+
         public List<Attraction> GetAllAttractions()
         {
             return attractions;
@@ -32,6 +39,11 @@
         public Attraction GetAttractionById(int id)
         {
             return attractions.FirstOrDefault(attr => attr.AttractionId == id);
+        }
+
+        public void DeleteAttractionById(int id)
+        {
+            attractions.RemoveAll(att => att.AttractionId.Equals(id));
         }
     }
 }

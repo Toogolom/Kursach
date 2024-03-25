@@ -25,7 +25,7 @@
 
         public User GetUserById(int id)
         {
-            return (User)users.Where(user => user.UserId == id);
+            return users.FirstOrDefault(user => user.UserId == id);
         }
 
         public void DeleteUser(int id)
@@ -59,6 +59,17 @@
         {
             var user = users.FirstOrDefault(user => user.Email == email);
             return user?.UserName;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return users;
+        }
+
+        public List<User> GetUAllsersByPartUsername(string partName)
+        {
+            return users.Where(user => user.UserName.IndexOf(partName, StringComparison.OrdinalIgnoreCase) >= 0)
+                        .ToList();
         }
     }
 }

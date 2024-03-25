@@ -24,9 +24,21 @@
             .ToList();
         }
 
+        public void AddCity(string Url, string name, string descriprion)
+        {
+            int id = cities.Count + 1;
+            City city = new City(id, name, descriprion, Url);
+            cities.Add(city);
+        }
+
         public City GetCityById(int id)
         {
-            return (City)cities.Where(city => city.CityId.Equals(id));
+            return cities.FirstOrDefault(city => city.CityId == id);
+        }
+
+        public void DeleteCityById(int id)
+        {
+            cities.RemoveAll(city => city.CityId == id);
         }
     }
 }

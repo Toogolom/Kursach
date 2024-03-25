@@ -21,5 +21,25 @@
         {
             return _cityRepository.GetAllCity();
         }
+
+        public City GetCityById(int id)
+        {
+            return _cityRepository.GetCityById(id);
+        }
+
+        public void AddCity(string Url, string name, string descriprion)
+        {
+            _cityRepository.AddCity(Url,name,descriprion);
+        }
+
+        public List<City> GetAllCityByPartName(string partName)
+        {
+            return _cityRepository.GetAllCityByName(partName);
+        }
+
+        public void DeleteCityById(int id)
+        {
+            _cityRepository.DeleteCityById(id);
+        }
     }
 }

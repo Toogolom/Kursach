@@ -43,7 +43,7 @@
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
-            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");s
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             _reviewService.AddReview(Reviewtext, id);
             ViewBag.Message = "Отзыв успешно добавлен";

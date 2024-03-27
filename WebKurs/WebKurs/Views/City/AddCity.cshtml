@@ -15,8 +15,13 @@
                         Добавление нового города
                     </div>
                     <div class="card-body">
-                        <p>@ViewBag.Message</p>
-                        <form asp-controller="Admin" asp-action="AddCity" method="post">
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        <form asp-controller="City" asp-action="AddCity" method="post">
                             <div class="form-group">
                                 <label for="url">Адрес URL:</label>
                                 <input type="text" class="form-control" id="URL" name="URL" placeholder="Введите адрес URL">

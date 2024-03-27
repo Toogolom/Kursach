@@ -1,0 +1,71 @@
+﻿@model List<PIS.Attraction>
+
+<style>
+    .attraction-info {
+        display: flex;
+    }
+
+    .attraction-photo {
+        margin-right: 10px;
+        width: 200px;
+        height: auto;
+    }
+
+    .attraction-details {
+        flex-grow: 1;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список достопримечательностей</title>
+</head>
+<body>
+
+    <form class="form-inline" asp-controller="Attraction" asp-action="SearchAttraction" method="get">
+        <div class="input-group">
+            <input class="form-control" type="search" placeholder="Поиск по названию достопримечательности" aria-label="Search" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit">Найти</button>
+            </div>
+    </form>
+
+    <h2>Список достопримечательностей</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="attraction-info">
+                        <img src="@item.AttractionPhotoUrl" class="attraction-photo" alt="Фото достопримечательности">
+                        <div class="attraction-details">
+                            <strong>@item.AttractionName</strong><br>
+                            <span>@item.AttractionDescription</span><br>
+                            <form action="/Admin/UpdateAttraction" method="post">
+                                <input type="hidden" name="attractionId" value="@item.AttractionId">
+                                <button class="btn btn-success" type="submit">Редактировать</button>
+                            </form>
+                            <form action="/Admin/DeleteAttraction" method="post">
+                                <input type="hidden" name="attractionId" value="@item.AttractionId">
+                                <button class="btn btn-danger" type="submit">Удалить</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+

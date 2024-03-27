@@ -1,6 +1,9 @@
 ﻿<body>
-    <div class="message-container">
-        <p>@ViewBag.Message</p>
-    </div>
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">
+            @ViewBag.Message
+        </div>
+    }
 </body>
 </html>

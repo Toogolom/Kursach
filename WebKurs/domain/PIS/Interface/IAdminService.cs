@@ -11,16 +11,12 @@ namespace PIS.Interface
 {
     public interface IAdminService
     {
-        public bool UpdateUser(UserModel model);
-
         public void DeleteUser(int userId);
-
-        public bool AddCity(CityModel model);
-
-        public bool UpdateCity(CityModel model);
 
         public void DeleteCity(int cityId);
 
-        public bool AddAttraction(AttractionModel model);
+        public void DeleteAttraction(int  attractionId);
+
+        public void DeleteTour(int tourId);
     }
 }

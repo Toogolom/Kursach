@@ -1,0 +1,65 @@
+﻿@model PIS.Models.AttractionModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смена данных достопримечательности</title>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <h1>Смена данных достопримечательности</h1>
+    @if (ViewBag.Message != null)
+    {
+        <div class="message-container">
+            <p>@ViewBag.Message</p>
+        </div>
+    }
+    <form action="UpdateAttraction" method="POST">
+        <label for="attractionName">Новое название:</label>
+        <input type="text" id="attractionName" name="attractionName" value="@Model.AttractionName" required>
+        <label for="attractionDescription">Новое описание:</label>
+        <input type="text" id="attractionDescription" name="attractionDescription" value="@Model.AttractionDescription" required>
+        <label for="attractionPhotoUrl">Новое URL фото:</label>
+        <input type="text" id="attractionPhotoUrl" name="attractionPhotoUrl" value="@Model.AttractionPhotoUrl" required>
+        <input type="hidden" id="attractionId" name="attractionId" value="@Model.AttractionId" required>
+        <div class="form-group">
+            <label for="cityId">Выберите город:</label>
+            <select class="form-control" id="cityId" name="cityId">
+                @foreach (var city in @Model.Cities)
+                {
+                    <option value="@city.CityId">@city.CityName</option>
+                }
+            </select>
+        </div>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>
+

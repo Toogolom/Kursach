@@ -27,7 +27,10 @@
 
     @if (Model.Attractions != null && Model.Attractions.Any())
     {
-        @Html.Partial("AttractionPartial", Model.Attractions)
+        @foreach (var item in Model.Attractions)
+        {
+            @Html.Partial("AttractionPartial", item)
+        }
     }
     else
     {

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <form class="form-inline" asp-controller="Admin" asp-action="SearchUser" method="get">
+    <form class="form-inline" asp-controller="User" asp-action="SearchUser" method="get">
         <div class="input-group">
             <input class="form-control" type="search" placeholder="Поиск по имени пользователя" aria-label="Search" name="query">
             <div class="input-group-append">
@@ -34,7 +34,7 @@
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>
-                        <form action="/Admin/UpdateUser" method="post">
+                        <form action="/User/UpdateUser" method="post">
                             <input type="hidden" name="userId" value="@user.UserId">
                             <button class="btn btn-success" type="submit">Редактировать</button>
                         </form>

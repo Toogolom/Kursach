@@ -6,15 +6,15 @@
 
     public class AuthController : Controller
     {
-        private readonly IAuthenticationService _UserenticationService;
+        private readonly IAuthenticationService _authenticationService;
 
         private readonly ISessionService _sessionService;
 
         private readonly IUserService _userService;
 
-        public AuthController(IAuthenticationService UserenticationService, SessionService sessionService, IUserService userservice)
+        public AuthController(IAuthenticationService authenticationService, SessionService sessionService, IUserService userservice)
         {
-            _UserenticationService = UserenticationService;
+            _authenticationService = authenticationService;
             _sessionService = sessionService;
             _userService = userservice;
         }
@@ -32,7 +32,7 @@
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            if (!_UserenticationService.Authenticate(model.Email, model.Password, model.Error))
+            if (!_authenticationService.Authenticate(model.Email, model.Password, model.Error))
             {
                 return View("Index", model);
             }

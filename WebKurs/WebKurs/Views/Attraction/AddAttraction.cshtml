@@ -17,7 +17,12 @@
                         Добавление новой достопримечательности
                     </div>
                     <div class="card-body">
-                        <p>@ViewBag.Message</p>
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success">
+                                @ViewBag.Message
+                            </div>
+                        }
                         <form asp-controller="Admin" asp-action="AddAttraction" method="post">
                             <div class="form-group">
                                 <label for="attractionName">Название:</label>

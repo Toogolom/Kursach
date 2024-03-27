@@ -12,6 +12,13 @@
             new Tour(3, "Тур 3", "Описание тура 3", 200.0, DateTime.Now, DateTime.Now.AddDays(14), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(5) }, { 2, DateTime.Now.AddDays(8) } })
         };
 
+        public void AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<int, DateTime> AttractionDate)
+        {
+            int id = tours.Count + 1;
+            Tour tour = new Tour(id, name, description, price, startDate, endDate, AttractionDate);
+            tours.Add(tour);
+        }
+
         public List<Tour> GetAllByNameTours(string s)
 		{
             return tours.Where(tour => tour.TourName.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -58,6 +65,11 @@
             }
 
             return tourList;
+        }
+
+        public void DeleteTour(int tourId)
+        {
+            tours.RemoveAll(tour => tour.TourId ==  tourId);
         }
     }
 }

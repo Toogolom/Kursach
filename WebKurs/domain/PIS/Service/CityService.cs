@@ -1,6 +1,7 @@
 ﻿namespace PIS.Service
 {
     using PIS.Interface;
+    using PIS.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,9 +28,10 @@
             return _cityRepository.GetCityById(id);
         }
 
-        public void AddCity(string Url, string name, string descriprion)
+        public bool AddCity(CityModel model)
         {
-            _cityRepository.AddCity(Url,name,descriprion);
+            _cityRepository.AddCity(model.URL,model.CityName,model.CityDescription);
+            return true;
         }
 
         public List<City> GetAllCityByPartName(string partName)
@@ -40,6 +42,22 @@
         public void DeleteCityById(int id)
         {
             _cityRepository.DeleteCityById(id);
+        }
+
+        public bool UpdateCity(CityModel model)
+        {
+            if (model.URL == null || model.CityName == null || model.CityDescription == null)
+            {
+                return false;
+            }
+
+            City city = _cityRepository.GetCityById(model.CityId);
+
+            city.PhotoUrl = model.URL;
+            city.CityName = model.CityName;
+            city.CityDescription = model.CityDescription;
+
+            return true;
         }
     }
 }

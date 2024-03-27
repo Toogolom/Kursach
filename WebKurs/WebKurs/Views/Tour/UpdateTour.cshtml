@@ -1,0 +1,113 @@
+﻿@model PIS.Models.TourModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление тура</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Редоктирование тура</h1>
+        @ViewBag.Message
+        <form action="/Tour/UpdateTour" method="POST">
+            <div class="form-group">
+                <label for="tourName">Название тура:</label>
+                <input type="text" class="form-control" id="tourName" name="tourName" value="@Model.TourName" required>
+                <input type="hidden" class="form-control" id="tourId" name="tourId" value="@Model.TourId" required>
+            </div>
+            <div class="form-group">
+                <label for="tourDescription">Описание тура:</label>
+                <textarea class="form-control" id="tourDescription" name="tourDescription" rows="3" required>@Model.TourDescription</textarea>
+            </div>
+            <div class="form-group">
+                <label for="tourPrice">Цена тура:</label>
+                <input type="number" class="form-control" id="tourPrice" name="tourPrice" value="@Model.TourPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Дата начала тура:</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">Дата окончания тура:</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required>
+            </div>
+
+            <div id="attractionDates">
+                <div class="form-group">
+                    <label for="attraction">Выберите достопримечательность:</label>
+                    <select class="form-control" id="attraction" name="attractionId">
+                        @foreach (var attraction in Model.Attractions)
+                        {
+                            <option value="@attraction.AttractionId">@attraction.AttractionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="attractionDate">Дата посещения:</label>
+                    <input type="date" class="form-control" id="attractionDate" name="attractionDate" required>
+                </div>
+            </div>
+            @foreach (var attractionDate in Model.AttractionDate)
+            {
+                <div class="form-group">
+                    <label for="attractionDate_@attractionDate.Key">Дата посещения @Model.Attractions.FirstOrDefault(x => x.AttractionId == attractionDate.Key).AttractionName:</label>
+                    <input type="date" class="form-control" id="attractionDate_@attractionDate.Key" name="AttractionDate[@attractionDate.Key]" value="@attractionDate.Value.ToString("yyyy-MM-dd")" required>
+                    <button type="button" class="btn btn-danger" onclick="removeAttractionDate(this)">Удалить</button>
+                </div>
+            }
+
+            <button type="button" class="btn btn-secondary mb-3" onclick="addAttractionDate()">Добавить достопримечательность</button>
+
+           
+
+            <button type="submit" class="btn btn-success">Изменить тур</button>
+        </form>
+    </div>
+
+    <script>
+        function addAttractionDate() {
+            var attractionId = document.getElementById("attraction").value;
+            var attractionName = document.getElementById("attraction").options[document.getElementById("attraction").selectedIndex].text;
+            var attractionDate = document.getElementById("attractionDate").value;
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            if (startDate >= endDate) {
+                alert("Дата начала не может быть раньше даты конца");
+                return;
+            }
+
+
+            if (!isDateInRange(attractionDate, startDate, endDate)) {
+                alert("Дата посещения должна быть в промежутке между датами начала и окончания тура.");
+                return;
+            }
+
+
+
+            var div = document.createElement("div");
+            div.classList.add("form-group");
+            div.innerHTML = '<div>' +
+                '<label for="attractionDate' + attractionId + '">Дата посещения ' + attractionName + ':</label>' +
+                '<input type="date" class="form-control" id="attractionDate' + attractionId + '" name="attractionDate[' + attractionId + ']" value="' + attractionDate + '" required>' +
+                '<button type="button" class="btn btn-danger" onclick="removeAttractionDate(this)">Удалить</button>' +
+                '</div>';
+            document.getElementById("attractionDates").appendChild(div);
+        }
+
+        function removeAttractionDate(button) {
+            button.parentElement.remove();
+        }
+
+        function isDateInRange(date, startDate, endDate) {
+            return (new Date(date) >= new Date(startDate)) && (new Date(date) <= new Date(endDate));
+        }
+    </script>
+
+
+</body>
+</html>
+

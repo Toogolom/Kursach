@@ -15,4 +15,8 @@
     <ProjectReference Include="..\PIS.Memory\PIS.Memory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+  </ItemGroup>
+
 </Project>

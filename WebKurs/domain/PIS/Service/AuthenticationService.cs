@@ -12,13 +12,16 @@
     {
         private readonly IUserRepository _userRepository;
 
+        private readonly IEmailService _emailService;
+
         private readonly Regex _emailRegex = new Regex(@"^(\w)+@(gmail\.com|mail\.ru|yandex\.ru)$");
 
         private readonly Regex _passwordRegex = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{8,}$");
 
-        public AuthenticationService(IUserRepository userRepository)
+        public AuthenticationService(IUserRepository userRepository, IEmailService emailService)
         {
             _userRepository = userRepository;
+            _emailService = emailService;
         }
 
         public bool Authenticate(string email, string password, Dictionary<string, string> error)
@@ -108,19 +111,31 @@
             return _userRepository.UserEmailNotExist(email);
         }
 
+        public string SendVerifyCodeToEmail(string email)
+        {
+            string code = Guid.NewGuid().ToString();
+
+            if (_emailService.SendEmail(email,"Подтверждение почты",code))
+            {
+                return code;
+            }
+            return null;
+           
+        }
+
         public bool IsPasswordCorrect(string password)
         {
             return _passwordRegex.IsMatch(password);
         }
 
-        private string HashPassword(string password)
-        {
-            return password;
-        }
-
         public bool VerifyPassword(string password, string storedPassword)
         {
             return password == storedPassword;
+        }
+
+        private string HashPassword(string password)
+        {
+            return password;
         }
     }
 }

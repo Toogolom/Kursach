@@ -12,6 +12,11 @@
             _attractionRepository = attractionRepository;
         }
 
+        public List<Attraction> GetAllAttraction()
+        {
+            return _attractionRepository.GetAllAttractions();
+        }
+
         public List<Attraction> GetAllAttractionsByCityId(int cityId)
         {
             return _attractionRepository.GetAllAttractionsByCityId(cityId);
@@ -22,9 +27,32 @@
             return _attractionRepository.GetAllAttractionsByName(partName);
         }
 
-        public void AddAttraction(AttractionModel model)
+        public bool AddAttraction(AttractionModel model)
         {
             _attractionRepository.AddAttraction(model.AttractionName, model.AttractionDescription, model.AttractionPhotoUrl, model.CityId);
+            return true;
+        }
+
+        public bool UpdateAttraction(AttractionModel model)
+        {
+            if (model.AttractionPhotoUrl == null || model.AttractionDescription == null || model.AttractionName == null)
+            {
+                return false;
+            }
+
+            Attraction attraction = _attractionRepository.GetAttractionById(model.AttractionId);
+
+            attraction.AttractionName = model.AttractionName;
+            attraction.AttractionDescription = model.AttractionDescription;
+            attraction.AttractionPhotoUrl = model.AttractionPhotoUrl;
+            attraction.CityId = model.CityId;
+
+            return true;
+        }
+
+        public Attraction GetAttractionById(int id)
+        {
+            return _attractionRepository.GetAttractionById(id);
         }
 
         public void DeleteAttrationById(int id)

@@ -1,0 +1,62 @@
+﻿@model List<PIS.Tour>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список достопримечательностей</title>
+</head>
+<body>
+
+    <form class="form-inline" asp-controller="Tour" asp-action="SearchTour" method="get">
+        <div class="input-group">
+            <input class="form-control" type="search" placeholder="Поиск по названию тура" aria-label="Search" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit">Найти</button>
+            </div>
+        </div>
+    </form>
+
+    <h2>Список достопримечательностей</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Продолжительность</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tour in Model)
+            {
+                <tr>
+                    <td>@tour.TourName</td>
+                    <td>@tour.TourDescription</td>
+                    <td>@tour.TourPrice</td>
+                    <td>@tour.StartDate.ToString("dd.MM.yyyy") - @tour.EndDate.ToString("dd.MM.yyyy")</td>
+                    <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
+                    <td>
+                        <form action="/Admin/UpdateTour" method="post">
+                            <input type="hidden" name="tourId" value="@tour.TourId">
+                            <button class="btn btn-success" type="submit">Редактировать</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/Admin/DeleteTour" method="post">
+                            <input type="hidden" name="tourId" value="@tour.TourId">
+                            <button class="btn btn-danger" type="submit">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+

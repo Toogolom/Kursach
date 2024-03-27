@@ -2,6 +2,8 @@ using PIS.Memory;
 using PIS.Interface;
 using WebKurs;
 using PIS.Service;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,7 @@ builder.Services.AddSingleton<ISearchService, SearchService>();
 builder.Services.AddSingleton<IReviewRepository, ReviewRepository>();
 builder.Services.AddSingleton<IReviewService, ReviewService>();
 builder.Services.AddSingleton<IAdminService, AdminService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<SessionService>();

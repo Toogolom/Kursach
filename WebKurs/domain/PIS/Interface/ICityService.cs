@@ -1,5 +1,6 @@
 ﻿namespace PIS.Interface
 {
+    using PIS.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,7 +12,9 @@
     {
         public List<City> GetAllCity();
 
-        public void AddCity(string Url, string name, string descriprion);
+        public bool AddCity(CityModel model);
+
+        public bool UpdateCity(CityModel model);
 
         public List<City> GetAllCityByPartName(string partName);
 

@@ -16,6 +16,8 @@
 
         public bool IsEmailCorrect(string email);
 
+        public string SendVerifyCodeToEmail(string email);
+
         public bool IsEmailAvailable(string email);
 
         public bool IsPasswordCorrect(string password);

@@ -1,9 +1,8 @@
 ﻿<body>
-    @if (ViewBag.Message != null)
+    @if (TempData["Order"] != null)
     {
         <div class="alert alert-success">
-            @ViewBag.Message
+            @TempData["Order"]
         </div>
     }
 </body>
-</html>

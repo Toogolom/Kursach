@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using PIS;
 using PIS.Interface;
 using PIS.Memory;
+using System.Text;
 using WebKurs.Models;
 
 namespace WebKurs.Controllers
@@ -62,9 +63,10 @@ namespace WebKurs.Controllers
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
             _orderService.AddOrder(model);
-            ViewBag.Message = "Заказ успешно добавлен";
 
-            return View();
+            TempData["Order"] = "Заказ успешно добавлен";
+
+            return RedirectToAction("SendEmailOrderDetail", "Email", model);
         }
 
         public IActionResult RemoveItem(int tourId)

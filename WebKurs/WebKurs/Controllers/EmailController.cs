@@ -2,6 +2,8 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
+    using System.Text;
+    using WebKurs.Models;
 
     public class EmailController : Controller
     {
@@ -34,6 +36,31 @@
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult SendEmailOrderDetail(OrderModel model)
+        {
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
+            StringBuilder order = new StringBuilder();
+
+            order.AppendLine("Детали заказа");
+            order.AppendLine($"Пользователь: {model.Username}");
+            order.AppendLine($"Дата заказа: {model.Date}");
+            order.AppendLine($"Общая стоимость заказа: {model.TotalPrice}");
+
+            string body = order.ToString();
+
+            string email = _sessionService.Get<string>("Email");
+
+            if (_emailService.SendEmail(email, "Детали заказа", body))
+            {
+                return View("AddOrderResult");
+            }
+
+            return View();
         }
     }
 }

@@ -17,7 +17,7 @@
                         Регистрация
                     </div>
                     <div class="card-body">
-                        <form asp-controller="Registration" asp-action="Register" method="post">
+                        <form asp-controller="Auth" asp-action="Register" method="post">
                             <div class="form-group row align-items-center">
                                 <div class="col">
                                     <label for="email">Адрес электронной почты:</label>
@@ -43,7 +43,6 @@
                             </div>
                             <div id="verificationMessage"></div>
                             
-
                             <div class="form-group">
                                 <label for="username">Имя пользователя:</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Введите имя пользователя" value="@Model.Username">
@@ -72,7 +71,7 @@
 
         function sendCodeToEmail() {
             var email = document.getElementById("email").value; 
-            fetch('/Registration/SendCodeToEmail?email=' + email)
+            fetch('/Auth/SendCodeToEmail?email=' + email)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -87,7 +86,7 @@
         function verifyCode() {
             var code = document.getElementById("code").value;
 
-            fetch('/Registration/VerifyEmail?code=' + code)
+            fetch('/Auth/VerifyEmail?code=' + code)
                 .then(response => response.text())
                 .then(data => {
                     if (data === 'success') {

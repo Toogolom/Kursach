@@ -54,7 +54,7 @@ namespace WebKurs.Controllers
         }
 
         
-        public IActionResult UpdateProfile(UserModel model, string newPassword)
+        public IActionResult UpdateProfile(UserModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");

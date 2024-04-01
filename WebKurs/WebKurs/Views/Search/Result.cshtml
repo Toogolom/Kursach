@@ -12,40 +12,33 @@
 <body>
     <h1>Результаты поиска</h1>
 
-    <h2>Туры</h2>
+    @if ((Model.Tours == null || !Model.Tours.Any()) &&
+    (Model.Attractions == null || !Model.Attractions.Any()) &&
+    (Model.Cities == null || !Model.Cities.Any()))
+    {
+        <p>Ничего не найдено.</p>
+    }
 
     @if (Model.Tours != null && Model.Tours.Any())
     {
+        <h2>Туры</h2>
         @Html.Partial("TourPartial",Model.Tours)
     }
-    else
-    {
-        <p>Ничего не найдено для туров.</p>
-    }
-
-	<h2>Достопримечательности</h2>
 
     @if (Model.Attractions != null && Model.Attractions.Any())
     {
+        <h2>Достопримечательности</h2>
         @foreach (var item in Model.Attractions)
         {
             @Html.Partial("AttractionPartial", item)
         }
     }
-    else
-    {
-        <p>Ничего не найдено для достопримечательностей.</p>
-    }
-
-	<h2>Города</h2>
 
     @if (Model.Cities != null && Model.Cities.Any())
     {
+        <h2>Города</h2>
         @Html.Partial("CityPartial", Model.Cities)
     }
-    else
-    {
-        <p>Ничего не найдено для городов.</p>
-    }
+
 </body>
 </html>

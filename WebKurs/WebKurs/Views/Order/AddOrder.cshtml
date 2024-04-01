@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebKurs.styles.css" asp-append-version="true" />
     <title>Заказ</title>
 </head>
 @Html.Partial("OrderPartial", Model)
@@ -10,6 +13,7 @@
     <input type="hidden" asp-for="Username" value="@Model.Username" />
     <input type="hidden" asp-for="Date" value="@Model.Date" />
     <input type="hidden" asp-for="TotalPrice" value="@Model.TotalPrice" />
-    <button type="submit" class="btn btn-success">Оформить заказ</button>
+
+    <button type="submit" class="btn btn-outline-success">Оформить заказ</button>
 </form>
 </html>

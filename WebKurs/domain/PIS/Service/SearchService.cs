@@ -19,7 +19,7 @@
             _cityRepository = cityRepository;
         }
 
-        public async Task<SearchViewModel> SearchResultAsync(string query)
+        public async Task<SearchViewModel> SearchResultAsync(string query, string searchType)
         {
             if (string.IsNullOrEmpty(query))
             {

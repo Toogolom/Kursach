@@ -13,14 +13,14 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         Регистрация
                     </div>
                     <div class="card-body">
                         <form asp-controller="Auth" asp-action="Register" method="post">
                             <div class="form-group row align-items-center">
+                                <label for="email">Адрес электронной почты:</label>
                                 <div class="col">
-                                    <label for="email">Адрес электронной почты:</label>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Введите адрес эл. почты">
                                     @if (Model.Error.ContainsKey("EmailTaken"))
                                     {
@@ -32,7 +32,7 @@
                                     }
                                 </div>
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-primary" onclick="sendCodeToEmail()">Получить код</button>
+                                    <button type="button" class="btn btn-outline-warning" onclick="sendCodeToEmail()">Получить код</button>
                                 </div>
                             </div>
 
@@ -59,7 +59,7 @@
                                     <div class="text-danger">@Model.Error["InvalidPassword"]</div>
                                 }
                             </div>
-                            <button id="registerButton" type="submit" class="btn btn-success" disabled>Зарегистрироваться</button>
+                            <button id="registerButton" type="submit" class="btn btn-outline-success" disabled>Зарегистрироваться</button>
 
                         </form>
                     </div>
@@ -91,9 +91,13 @@
                 .then(data => {
                     if (data === 'success') {
                         document.getElementById("verificationMessage").innerText = "Код подтвержден.";
+                        document.getElementById("code").classList.remove("border-danger");
+                        document.getElementById("code").classList.add("border-success");
                         document.getElementById("registerButton").disabled = false;
                     } else {
                         document.getElementById("verificationMessage").innerText = "Неверный код подтверждения.";
+                        document.getElementById("code").classList.remove("border-success");
+                        document.getElementById("code").classList.add("border-danger");
                         document.getElementById("registerButton").disabled = true;
                     }
                 });

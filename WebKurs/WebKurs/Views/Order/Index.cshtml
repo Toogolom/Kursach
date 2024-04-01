@@ -11,7 +11,7 @@
     @Html.Partial("TourPartial", Model.Item1)
     <h2>Общая стоимость заказа: @Model.Item2</h2>
         <form asp-controller="Order" asp-action="AddOrder" method="post">
-            <button type="submit">Оформить заказ</button>
+            <button type="submit" class="btn btn-outline-success">Оформить заказ</button>
         </form>
     }
     else

@@ -51,15 +51,17 @@
                 </div>
                 <div class="form-group">
                     <label for="attractionDate">Дата посещения:</label>
-                    <input type="date" class="form-control" id="attractionDate" name="attractionDate" required>
+                    <input type="date" class="form-control" id="attractionDate" name="attractionDate">
                 </div>
                 <input type="hidden" name="attractionId" value="attractionId">
                 <input type="hidden" name="attractionDate" value="attractionDate">
             </div>
 
-            <button type="button" class="btn btn-secondary mb-3" onclick="addAttractionDate()">Добавить достопримечательность</button>
-
-            <button type="submit" class="btn btn-primary">Добавить тур</button>
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-secondary" onclick="addAttractionDate()">Добавить достопримечательность</button>
+                <button type="button" class="btn btn-outline-success">Добавить тур</button>
+            </div>
+           
         </form>
     </div>
 

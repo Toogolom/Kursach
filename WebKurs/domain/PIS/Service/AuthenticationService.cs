@@ -24,9 +24,9 @@
             _emailService = emailService;
         }
 
-        public bool Authenticate(string email, string password, Dictionary<string, string> error)
+        public async Task<bool> AuthenticateAsync(string email, string password, Dictionary<string, string> error)
         {
-            var user = _userRepository.GetUserByEmail(email);
+            var user = await _userRepository.GetUserByEmailAsync(email);
             bool isCorrect = true;
             if (password == null || email == null)
             {
@@ -55,7 +55,7 @@
             return isCorrect;
         }
 
-        public bool Registration(string username, string password, string email, Dictionary<string, string> error)
+        public async Task<bool> RegistrationAsync(string username, string password, string email, Dictionary<string, string> error)
         {
             bool isCorrect = true;
 
@@ -64,7 +64,7 @@
                 error["Empty"] = "Поля не должны быть пустыми";
                 return false;
             }
-            if (!IsUsernameAvailable(username))
+            if (!await IsUsernameAvailableAsync(username))
             {
                 error["UsernameTaken"] = "Данное имя пользователя уже занято";
                 isCorrect = false;
@@ -76,7 +76,7 @@
                 isCorrect = false;
             }
 
-            if (!IsEmailAvailable(email))
+            if (!await IsEmailAvailableAsync(email))
             {
                 error["EmailTaken"] = "Уже существует аккунт с такой почтой";
                 isCorrect = false;
@@ -90,15 +90,15 @@
 
             if (isCorrect)
             {
-                _userRepository.AddUser(username, email, password);
+                await _userRepository.AddUserAsync(username, email, password);
             }
 
             return isCorrect;
         }
 
-        public bool IsUsernameAvailable(string username)
+        public async Task<bool> IsUsernameAvailableAsync(string username)
         {
-            return _userRepository.UsernameNotExist(username);
+            return await _userRepository.UsernameNotExistAsync(username);
         }
 
         public bool IsEmailCorrect(string email)
@@ -106,9 +106,9 @@
             return _emailRegex.IsMatch(email);
         }
 
-        public bool IsEmailAvailable(string email)
+        public async Task<bool> IsEmailAvailableAsync(string email)
         {
-            return _userRepository.UserEmailNotExist(email);
+            return await _userRepository.UserEmailNotExistAsync(email);
         }
 
         public string SendVerifyCodeToEmail(string email)

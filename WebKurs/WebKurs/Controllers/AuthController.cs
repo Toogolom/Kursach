@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
+    using System.Threading.Tasks;
     using WebKurs.Models;
 
     public class AuthController : Controller
@@ -27,21 +28,21 @@
             return View(new UserModel());
         }
 
-        public IActionResult Entrance(UserModel model)
+        public async Task<IActionResult> Entrance(UserModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            if (!_authenticationService.Authenticate(model.Email, model.Password, model.Error))
+            if (! await _authenticationService.AuthenticateAsync(model.Email, model.Password, model.Error))
             {
-                return View("Index", model);
+                return View("AuthIndex", model);
             }
 
             _sessionService.Set("Email", model.Email);
 
-            var username = _userService.GetUsernameByEmail(model.Email);
+            var username = await _userService.GetUsernameByEmail(model.Email);
 
-            var user = _userService.GetUserByEmail(model.Email);
+            var user = await _userService.GetUserByEmail(model.Email);
 
             _sessionService.Set("Username", username);
             _sessionService.Set("IsLoggedIn", true);
@@ -58,16 +59,15 @@
             return View(new UserModel());
         }
 
-        public IActionResult Register(UserModel model)
+        public async Task<IActionResult> Register(UserModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var registrationResult = _authenticationService.Registration(model.Username, model.Password, model.Email, model.Error);
 
-            if (!registrationResult)
+            if (!await _authenticationService.RegistrationAsync(model.Username, model.Password, model.Email, model.Error))
             {
-                return View("Index", model);
+                return View("RegIndex", model);
             }
             _sessionService.Set("Email", model.Email);
             _sessionService.Set("Username", model.Username);

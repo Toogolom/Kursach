@@ -8,17 +8,17 @@
 
     public interface IAuthenticationService
     {
-        public bool Authenticate(string username, string password,Dictionary<string, string> error);
+        public Task<bool> AuthenticateAsync(string username, string password,Dictionary<string, string> error);
 
-        public bool Registration(string username, string password, string email, Dictionary<string, string> error);
+        public Task<bool> RegistrationAsync(string username, string password, string email, Dictionary<string, string> error);
 
-        public bool IsUsernameAvailable(string username);
+        public Task<bool> IsUsernameAvailableAsync(string username);
 
         public bool IsEmailCorrect(string email);
 
         public string SendVerifyCodeToEmail(string email);
 
-        public bool IsEmailAvailable(string email);
+        public Task<bool> IsEmailAvailableAsync(string email);
 
         public bool IsPasswordCorrect(string password);
 

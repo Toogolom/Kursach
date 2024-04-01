@@ -3,6 +3,7 @@
     using PIS.Interface;
     using PIS.Models;
     using System;
+    using System.Globalization;
     using WebKurs.Models;
 
     public class AdminService : IAdminService
@@ -27,24 +28,24 @@
             _authenticationService = authenticationService;
         }
 
-        public void DeleteUser(int userId)
+        public async Task DeleteUser(string userId)
         {
-            _userService.DeleteUser(userId);
+            await _userService.DeleteUser(userId);
         }
 
-        public void DeleteTour(int tourId)
+        public async Task DeleteTour(string tourId)
         {
-            _tourService.DeleteTour(tourId);
+            await _tourService.DeleteTour(tourId);
         }
 
-        public void DeleteCity(int cityId)
+        public async Task DeleteCity(string cityId)
         {
-            _cityService.DeleteCityById(cityId);
+           await _cityService.DeleteCityByIdAsync(cityId);
         }
 
-        public void DeleteAttraction(int attractionId)
+        public async Task DeleteAttractionAsync(string attractionId)
         {
-            _attractionService.DeleteAttrationById(attractionId);
+            await _attractionService.DeleteAttrationByIdAsync(attractionId);
         }
     }
 }

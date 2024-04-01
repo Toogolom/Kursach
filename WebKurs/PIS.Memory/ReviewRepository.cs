@@ -1,35 +1,41 @@
 ﻿namespace PIS.Memory
 {
-    using PIS;
-    using PIS.Interface;
-    using System;
+    using global::PIS.Interface;
+    using global::PIS.Models;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Driver;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    public class ReviewRepository : IReviewRepository
+    namespace PIS.Memory
     {
-        private readonly List<Review> reviews = new List<Review>
+        public class ReviewRepository : IReviewRepository
         {
-            new Review(1, "toog1", "Great experience!", 1),
-            new Review(2, "toog2", "Beautiful place to visit.", 2),
-            new Review(3, "toog3", "Amazing views!", 3),
-            new Review(4, "toog2", "Nice!", 1),
-            new Review(5, "toog1", "Good!", 2),
-        };
-        public List<Review> GetAllReview()
-        {
-            return reviews;
-        }
+            private readonly IMongoCollection<Review> _reviewCollection;
 
-        public void AddReview(Review review)
-        {
-           review.ReviewId = reviews.Count + 1;
-           reviews.Add(review);
-        }
+            public ReviewRepository(IOptions<MongoDbSettings> mongoDbSettings)
+            {
+                var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+                var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+                _reviewCollection = database.GetCollection<Review>("Reviews");
+            }
 
-        public List<Review> GetAllReviewsByUsername(string username)
-        {
-            return reviews.Where(review => review.Username.Equals(username))
-                .ToList();
+            public async Task<List<Review>> GetAllReview()
+            {
+                return await _reviewCollection.Find(_ => true).ToListAsync();
+            }
+
+            public async Task AddReview(Review review)
+            {
+                await _reviewCollection.InsertOneAsync(review);
+            }
+
+            public async Task<List<Review>> GetAllReviewsByUsername(string username)
+            {
+                return await _reviewCollection.Find(review => review.Username.Equals(username)).ToListAsync();
+            }
         }
     }
+
 }

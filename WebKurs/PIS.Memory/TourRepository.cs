@@ -1,62 +1,83 @@
 ﻿namespace PIS.Memory
 {
-    using PIS;
-    using PIS.Interface;
+    
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using global::PIS.Interface;
+    using global::PIS.Models;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Driver;
 
-    public class TourRepository: ITourRepository
-	{
-        private readonly List<Tour> tours = new List<Tour>
+    public class TourRepository : ITourRepository
+    {
+        private readonly IMongoCollection<Tour> _tourCollection;
+
+        public TourRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            new Tour(1, "Московский тур", "Описание тура 1", 100.0, DateTime.Now, DateTime.Now.AddDays(7), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(2) }, { 2, DateTime.Now.AddDays(4) } }),
-            new Tour(2, "Тур 2", "Описание тура 2", 150.0, DateTime.Now, DateTime.Now.AddDays(10), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(3) }, { 2, DateTime.Now.AddDays(6) } }),
-            new Tour(3, "Тур 3", "Описание тура 3", 200.0, DateTime.Now, DateTime.Now.AddDays(14), new Dictionary<int, DateTime> { { 1, DateTime.Now.AddDays(5) }, { 2, DateTime.Now.AddDays(8) } })
-        };
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _tourCollection = database.GetCollection<Tour>("Tours");
+        }
 
-        public void AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<int, DateTime> AttractionDate)
+        public async Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string, DateTime> AttractionDate)
         {
-            int id = tours.Count + 1;
-            Tour tour = new Tour(id, name, description, price, startDate, endDate, AttractionDate);
-            tours.Add(tour);
+            Tour tour = new Tour(name, description, price, startDate, endDate, AttractionDate);
+            await _tourCollection.InsertOneAsync(tour);
         }
 
-        public List<Tour> GetAllByNameTours(string s)
-		{
-            return tours.Where(tour => tour.TourName.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
-            .ToList();
-        }
-
-		public List<Tour> GetAllTours()
-		{
-			return tours;
-		}
-
-        public Dictionary<int, DateTime> GetAttractionDateByTourId(int id)
+        public async Task<List<Tour>> GetAllByNameTours(string s)
         {
-            Tour tour = tours.FirstOrDefault(t => t.TourId == id);
-            return tour?.AttractionDate ?? new Dictionary<int, DateTime>();
+            return await _tourCollection.Find(tour => tour.TourName.ToLower().Contains(s.ToLower()))
+                .ToListAsync();
         }
 
-		public List<int> GetAllAttractionByTourId(int id)
-		{
-            var tour = tours.FirstOrDefault(t => t.TourId == id);
-            return tour?.AttractionDate.Keys.ToList() ?? new List<int>();
+        public async Task<List<Tour>> GetAllTours()
+        {
+            return await _tourCollection.Find(tour => true).ToListAsync();
         }
 
-		public Tour GetTourById(int id)
-		{
-			return tours.FirstOrDefault(tour => tour.TourId == id);
-		}
+        public async Task<Dictionary<string, DateTime>> GetAttractionDateByTourId(string id)
+        {
+            var tour = await _tourCollection.Find(t => t.TourId == id).FirstOrDefaultAsync();
+            return tour?.AttractionDate ?? new Dictionary<string, DateTime>();
+        }
 
-		public List<Tour> GetAllToursByAllId(List<int> tourIdList)
-		{
+        public async Task<List<string>> GetAllAttractionByTourId(string id)
+        {
+            var tour = await _tourCollection.Find(t => t.TourId == id).FirstOrDefaultAsync();
+            return tour?.AttractionDate.Keys.ToList() ?? new List<string>();
+        }
 
+        public async Task<Tour> GetTourById(string id)
+        {
+            return await _tourCollection.Find(tour => tour.TourId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateTour(TourModel tour)
+        {
+            var filter = Builders<Tour>.Filter.Eq(t => t.TourId, tour.TourId);
+            var update = Builders<Tour>.Update
+                .Set(t => t.TourName, tour.TourName)
+                .Set(t => t.TourDescription, tour.TourDescription)
+                .Set(t => t.StartDate, tour.StartDate)
+                .Set(t => t.EndDate, tour.EndDate);
+
+            var updateResult = await _tourCollection.UpdateOneAsync(filter, update);
+
+            return updateResult.ModifiedCount > 0;
+        }
+
+        public async Task<List<Tour>> GetAllToursByAllId(List<string> tourIdList)
+        {
             List<Tour> tourList = new List<Tour>();
 
             if (tourIdList != null)
             {
-                foreach (int tourId in tourIdList)
+                foreach (var tourId in tourIdList)
                 {
-                    Tour tour = GetTourById(tourId);
+                    Tour tour = await GetTourById(tourId);
                     if (tour != null)
                     {
                         tourList.Add(tour);
@@ -67,9 +88,9 @@
             return tourList;
         }
 
-        public void DeleteTour(int tourId)
+        public async Task DeleteTour(string tourId)
         {
-            tours.RemoveAll(tour => tour.TourId ==  tourId);
+            await _tourCollection.DeleteOneAsync(tour => tour.TourId == tourId);
         }
     }
 }

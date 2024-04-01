@@ -2,7 +2,7 @@
 {
     public class UserModel
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public string Email { get; set; }
 
@@ -10,12 +10,6 @@
 
         public string Password { get; set; }
 
-        public Dictionary<string, string> Error { get; set; }
-
-        public UserModel() 
-        {
-            Error = new Dictionary<string, string>();
-        }
-
+        public Dictionary<string, string> Error { get; set; } = new Dictionary<string, string>();
     }
 }

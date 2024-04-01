@@ -3,6 +3,8 @@
     using PIS.Interface;
     using PIS.Models;
     using System;
+    using System.Threading.Tasks;
+
     public class AttractionService : IAttractionService
     {
         private readonly IAttractionRepository _attractionRepository;
@@ -12,52 +14,50 @@
             _attractionRepository = attractionRepository;
         }
 
-        public List<Attraction> GetAllAttraction()
+        public async Task<List<Attraction>> GetAllAttractionAsync()
         {
-            return _attractionRepository.GetAllAttractions();
+            return await _attractionRepository.GetAllAttractions();
         }
 
-        public List<Attraction> GetAllAttractionsByCityId(int cityId)
+        public async Task<List<Attraction>> GetAllAttractionsByCityIdAsync(string cityId)
         {
-            return _attractionRepository.GetAllAttractionsByCityId(cityId);
+            return await _attractionRepository.GetAllAttractionsByCityId(cityId);
         }
 
-        public List<Attraction> GetAllAtractionByPartName(string partName)
+        public async Task<List<Attraction>> GetAllAtractionByPartNameAsync(string partName)
         {
-            return _attractionRepository.GetAllAttractionsByName(partName);
+            return await _attractionRepository.GetAllAttractionsByName(partName);
         }
 
-        public bool AddAttraction(AttractionModel model)
-        {
-            _attractionRepository.AddAttraction(model.AttractionName, model.AttractionDescription, model.AttractionPhotoUrl, model.CityId);
-            return true;
-        }
-
-        public bool UpdateAttraction(AttractionModel model)
+        public async Task<bool> AddAttractionAsync(AttractionModel model)
         {
             if (model.AttractionPhotoUrl == null || model.AttractionDescription == null || model.AttractionName == null)
             {
                 return false;
             }
 
-            Attraction attraction = _attractionRepository.GetAttractionById(model.AttractionId);
-
-            attraction.AttractionName = model.AttractionName;
-            attraction.AttractionDescription = model.AttractionDescription;
-            attraction.AttractionPhotoUrl = model.AttractionPhotoUrl;
-            attraction.CityId = model.CityId;
-
+            await _attractionRepository.AddAttraction(model.AttractionName, model.AttractionDescription, model.AttractionPhotoUrl, model.CityId);
             return true;
         }
 
-        public Attraction GetAttractionById(int id)
+        public async Task<bool> UpdateAttractionAsync(AttractionModel model)
         {
-            return _attractionRepository.GetAttractionById(id);
+            if (model.AttractionPhotoUrl == null || model.AttractionDescription == null || model.AttractionName == null)
+            {
+                return false;
+            }
+
+            return await _attractionRepository.UpdateAttraction(model);
         }
 
-        public void DeleteAttrationById(int id)
+        public async Task<Attraction> GetAttractionByIdAsync(string id)
         {
-            _attractionRepository.DeleteAttractionById(id);
+            return await _attractionRepository.GetAttractionById(id);
+        }
+
+        public async Task DeleteAttrationByIdAsync(string id)
+        {
+            await _attractionRepository.DeleteAttractionById(id);
         }
     }
 }

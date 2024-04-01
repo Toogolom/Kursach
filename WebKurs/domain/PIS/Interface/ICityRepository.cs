@@ -1,15 +1,19 @@
-﻿namespace PIS.Interface
+﻿using PIS.Models;
+
+namespace PIS.Interface
 {
     public interface ICityRepository
     {
-        public List<City> GetAllCity();
+        public Task<List<City>> GetAllCity();
 
-        public City GetCityById(int id);
+        public Task<City> GetCityById(string id);
 
-        public void AddCity(string Url, string name, string descriprion);
+        public Task AddCity(string Url, string name, string descriprion);
 
-        public List<City> GetAllCityByName(string namePart);
+        public Task<bool> UpdateCity(CityModel model);
 
-        public void DeleteCityById(int id);
+        public Task<List<City>> GetAllCityByName(string namePart);
+
+        public Task DeleteCityById(string id);
     }
 }

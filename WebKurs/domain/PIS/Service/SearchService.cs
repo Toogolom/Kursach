@@ -1,6 +1,7 @@
 ﻿namespace PIS.Service
 {
     using PIS.Interface;
+    using System.Threading.Tasks;
     using WebKurs.Models;
 
     public class SearchService : ISearchService
@@ -18,22 +19,22 @@
             _cityRepository = cityRepository;
         }
 
-        public SearchViewModel SearchResult(string query)
+        public async Task<SearchViewModel> SearchResultAsync(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
                 return new SearchViewModel
                 {
-                    Tours = _tourRepository.GetAllTours(),
-                    Attractions = _attractionRepository.GetAllAttractions(),
-                    Cities = _cityRepository.GetAllCity(),
+                    Tours = await _tourRepository.GetAllTours(),
+                    Attractions =  await _attractionRepository.GetAllAttractions(),
+                    Cities = await _cityRepository.GetAllCity(),
                 };
             }
             return new SearchViewModel
             {
-                Tours = _tourRepository.GetAllByNameTours(query),
-                Attractions = _attractionRepository.GetAllAttractionsByName(query),
-                Cities = _cityRepository.GetAllCityByName(query),
+                Tours = await _tourRepository.GetAllByNameTours(query),
+                Attractions = await _attractionRepository.GetAllAttractionsByName(query),
+                Cities = await _cityRepository.GetAllCityByName(query),
             };
         }
     }

@@ -4,6 +4,7 @@
     using PIS.Models;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class TourService : ITourService
     {
@@ -17,42 +18,42 @@
             _attractionRepository = attractionRepository;
         }
 
-        public List<Tour> GetAllTours()
+        public async Task<List<Tour>> GetAllToursAsync()
         {
-            return _tourRepository.GetAllTours();
+            return await _tourRepository.GetAllTours();
         }
 
-        public Tour GetTourById (int id)
+        public async Task<Tour> GetTourByIdAsync (string id)
         {
-            return _tourRepository.GetTourById(id);
+            return await _tourRepository.GetTourById(id);
         }
 
-        public List<Tour> GetAllToursByAllId(List<int> tourIdList)
+        public async Task<List<Tour>> GetAllToursByAllIdAsync(List<string> tourIdList)
         {
-            return _tourRepository.GetAllToursByAllId(tourIdList);
+            return await _tourRepository.GetAllToursByAllId(tourIdList);
         }
 
-        public List<Attraction> GetAllAttractionForTour(int tourId)
+        public async Task<List<Attraction>> GetAllAttractionForTour(string tourId)
         {
-            var attractionIds = _tourRepository.GetAllAttractionByTourId(tourId);
+            var attractionIds = await _tourRepository.GetAllAttractionByTourId(tourId);
             var attractions = new List<Attraction>();
             foreach (var attractionId in attractionIds)
             {
-                var attraction = _attractionRepository.GetAttractionById(attractionId);
+                var attraction = await _attractionRepository.GetAttractionById(attractionId);
                 attractions.Add(attraction);
             }
             return attractions;
         }
 
-        public Dictionary<Attraction, DateTime> GetAttractionDateForTour(int id)
+        public async Task<Dictionary<Attraction, DateTime>> GetAttractionDateForTour(string id)
         {
             var AttractionDate = new Dictionary<Attraction, DateTime>();
 
-            var attractionDateById = _tourRepository.GetAttractionDateByTourId(id);
+            var attractionDateById = await _tourRepository.GetAttractionDateByTourId(id);
 
             foreach (var kvp in attractionDateById)
             {
-                var attraction = _attractionRepository.GetAttractionById(kvp.Key);
+                var attraction = await _attractionRepository.GetAttractionById(kvp.Key);
                 if (attraction != null)
                 {
                     AttractionDate.Add(attraction, kvp.Value);
@@ -63,50 +64,36 @@
 
         }
 
-        public bool AddTour (TourModel model)
+        public async Task<bool> AddTourAsync (TourModel model)
         {
             if (model.TourName == null || model.TourPrice == null || model.AttractionDate == null || model.EndDate == null || model.StartDate == null || model.AttractionDate.Count == 0)
             {
                 return false;
             }
 
-            if (model.StartDate > model.EndDate)
-            {
-                return false;
-            }
-
-            _tourRepository.AddTour(model.TourName, model.TourDescription, model.TourPrice, model.StartDate, model.EndDate, model.AttractionDate);
+            await _tourRepository.AddTour(model.TourName, model.TourDescription, model.TourPrice, model.StartDate, model.EndDate, model.AttractionDate);
 
             return true;
         }
 
-        public bool UpdateTour(TourModel model)
+        public async Task<bool> UpdateTourAsync(TourModel model)
         {
             if (model.TourId == null || model.TourName == null || model.TourPrice == null || model.AttractionDate == null || model.EndDate == null || model.StartDate == null)
             {
                 return false;
             }
 
-            var tour = _tourRepository.GetTourById(model.TourId);
-
-            tour.TourName = model.TourName;
-            tour.TourPrice = model.TourPrice;
-            tour.TourDescription = model.TourDescription;
-            tour.StartDate = model.StartDate;
-            tour.EndDate = model.EndDate;
-            tour.AttractionDate = model.AttractionDate;
-
-            return true;
+            return await _tourRepository.UpdateTour(model);
         }
 
-        public List<Tour> GetAllTourByPartName(string partName)
+        public async Task<List<Tour>> GetAllTourByPartNameAsync(string partName)
         {
-            return _tourRepository.GetAllByNameTours(partName);
+            return await _tourRepository.GetAllByNameTours(partName);
         }
 
-        public void DeleteTour(int tourId)
+        public async Task DeleteTour(string tourId)
         {
-            _tourRepository.DeleteTour(tourId);
+            await _tourRepository.DeleteTour(tourId);
         }
     }
 }

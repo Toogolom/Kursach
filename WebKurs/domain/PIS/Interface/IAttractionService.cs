@@ -4,17 +4,18 @@ namespace PIS.Interface
 {
     public interface IAttractionService
     {
-        public List<Attraction> GetAllAttraction();
-        public List<Attraction> GetAllAttractionsByCityId(int cityId);
+        public Task<List<Attraction>> GetAllAttractionAsync();
 
-        public List<Attraction> GetAllAtractionByPartName(string partName);
+        public Task<List<Attraction>> GetAllAttractionsByCityIdAsync(string cityId);
 
-        public bool AddAttraction(AttractionModel model);
+        public Task<List<Attraction>> GetAllAtractionByPartNameAsync(string partName);
 
-        public bool UpdateAttraction(AttractionModel model);
+        public Task<bool> AddAttractionAsync(AttractionModel model);
 
-        public Attraction GetAttractionById(int id);
+        public Task<bool> UpdateAttractionAsync(AttractionModel model);
 
-        public void DeleteAttrationById(int id);
+        public Task<Attraction> GetAttractionByIdAsync(string id);
+
+        public Task DeleteAttrationByIdAsync(string id);
     }
 }

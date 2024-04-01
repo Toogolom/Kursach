@@ -4,6 +4,8 @@ using WebKurs;
 using PIS.Service;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using PIS.Models;
+using PIS.Memory.PIS.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +29,9 @@ builder.Services.AddSingleton<IReviewService, ReviewService>();
 builder.Services.AddSingleton<IAdminService, AdminService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<SessionService>();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDbSettings)));
 
 
 builder.Services.AddSession(options =>

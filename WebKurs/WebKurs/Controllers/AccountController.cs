@@ -21,7 +21,7 @@ namespace WebKurs.Controllers
             _orderService = orderService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             _sessionService.Set("IsLoggedIn", true);
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
@@ -30,47 +30,38 @@ namespace WebKurs.Controllers
 
 
             string email = _sessionService.Get<String>("Email");
-            User user = _userService.GetUserByEmail(email);
+            User user = await _userService.GetUserByEmail(email);
 
-            _sessionService.Set("Username", user.UserName);
+            _sessionService.Set("Username", user.Username);
 
             return View(new UserModel
             {
                 Email = user.Email,
-                Username = user.UserName,
+                Username = user.Username,
             });
         }
 
-        public IActionResult Order()
+        public async Task<IActionResult> Order()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsLogPage"] = true;
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var model = _orderService.GetAllOrdersByUsername();
+            var model = await _orderService.GetAllOrdersByUsername();
 
             return View(model);
         }
 
         
-        public IActionResult UpdateProfile(UserModel model)
+        public async Task<IActionResult> UpdateProfile(UserModel model)
         {
-            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
-            ViewData["Username"] = _sessionService.Get<string>("Username");
-            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
-
-            if (model.Username != null && _userService.UpdateUser(model))
-            {
-                model = _userService.GetUserModel(model);
-                ViewBag.Message = "Данные пользователя обновлены";
-                return View(model);
-            }
-            model = _userService.GetUserModel(model);
-            return View(model);
+            var user = await _userService.GetUserByEmail(_sessionService.Get<string>("Email"));
+            model.UserId = user.UserId;
+            return RedirectToAction("UpdateUser", "User", model);
         }
 
-        public IActionResult UpdatePassword(string password, string newPassword) 
+        public async Task<IActionResult> UpdatePassword(string password, string newPassword) 
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -82,7 +73,7 @@ namespace WebKurs.Controllers
                 return View(Error);
             }
            
-            if (_userService.UpdatePassword(newPassword, password, Error))
+            if (await _userService.UpdatePassword(newPassword, password, Error))
             {
                 ViewBag.Message = "Пароль успешно обновлен";
             }

@@ -10,22 +10,22 @@
 
     public interface ITourService
     {
-        public bool AddTour(TourModel model);
+        public Task<bool> AddTourAsync(TourModel model);
 
-        public Tour GetTourById(int id);
+        public Task<Tour> GetTourByIdAsync(string id);
 
-        public List<Tour> GetAllToursByAllId(List<int>tourIdList);
+        public Task<List<Tour>> GetAllToursByAllIdAsync(List<string>tourIdList);
 
-        public List<Tour> GetAllTours();
+        public Task<List<Tour>> GetAllToursAsync();
 
-        public List<Attraction> GetAllAttractionForTour(int tourId);
+        public Task<List<Attraction>> GetAllAttractionForTour(string tourId);
 
-        public Dictionary<Attraction, DateTime> GetAttractionDateForTour(int id);
+        public Task<Dictionary<Attraction, DateTime>> GetAttractionDateForTour(string id);
 
-        public List<Tour> GetAllTourByPartName(string partName);
+        public Task<List<Tour>> GetAllTourByPartNameAsync(string partName);
 
-        public bool UpdateTour(TourModel model);
+        public Task<bool> UpdateTourAsync(TourModel model);
 
-        public void DeleteTour(int tourId);
+        public Task DeleteTour(string tourId);
     }
 }

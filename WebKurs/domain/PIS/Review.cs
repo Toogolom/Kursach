@@ -1,23 +1,26 @@
 ﻿namespace PIS
 {
+    using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson;
     using System;
 
     public class Review
     {
-        public int ReviewId { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ReviewId { get; set; }
 
         public string Username { get; set; }
 
         public string ReviewText { get; set; }
 
-        public int TourId { get; set; }
+        public string TourId { get; set; }
 
-        public Review (int reviewId, string username, string reviewText, int tourId)
+        public Review (string username, string reviewText, string tourId)
         {
-            ReviewId = reviewId;
             Username = username;
             ReviewText = reviewText;
-            TourId = tourId; ;
+            TourId = tourId;
         }
     }
 }

@@ -17,18 +17,18 @@ namespace WebKurs.Controllers
             _cityService = cityService;
             _sessionService = sessionService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var city = _cityService.GetAllCity();
+            var city = await _cityService.GetAllCity();
 
             return View(city);
         }
 
-        public IActionResult SearchCity(string query)
+        public async Task<IActionResult> SearchCity(string query)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -38,15 +38,15 @@ namespace WebKurs.Controllers
 
             if (query == null)
             {
-                cityList = _cityService.GetAllCity();
+                cityList = await _cityService.GetAllCity();
                 return View(cityList);
             }
 
-            cityList = _cityService.GetAllCityByPartName(query);
+            cityList = await _cityService.GetAllCityByPartName(query);
             return View(cityList);
         }
 
-        public IActionResult AddCity(CityModel model)
+        public async Task<IActionResult> AddCity(CityModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -57,7 +57,7 @@ namespace WebKurs.Controllers
                 return View();
             }
 
-            if (_cityService.AddCity(model))
+            if (await _cityService.AddCity(model))
             {
                 ViewBag.Message = "Город успешно добавлен";
                 return View();
@@ -68,18 +68,18 @@ namespace WebKurs.Controllers
 
         }
 
-        public IActionResult UpdateCity(CityModel model)
+        public async Task<IActionResult> UpdateCity(CityModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            if (_cityService.UpdateCity(model))
+            if (await _cityService.UpdateCityAsync(model))
             {
                 ViewBag.Message = "Данные обновлены";
                 return View(model);
             }
-            var city = _cityService.GetCityById(model.CityId);
+            var city = await _cityService.GetCityById(model.CityId);
 
             model.URL = city.PhotoUrl;
             model.CityName = city.CityName;

@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
+    using System.Threading.Tasks;
 
     public class SearchController : Controller
 	{
@@ -24,13 +25,13 @@
             return View();
 		}
 
-		public IActionResult Result(string query)
+		public async Task<IActionResult> ResultAsync(string query)
 		{
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var model = _searchService.SearchResult(query);
+            var model = await _searchService.SearchResultAsync(query);
             return View(model);
         }
 	}

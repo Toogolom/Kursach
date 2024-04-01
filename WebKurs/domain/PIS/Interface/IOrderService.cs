@@ -6,16 +6,16 @@
 
     public interface IOrderService
     { 
-        public void AddTourToOrder(int tourId);
+        public void AddTourToOrder(string tourId);
 
         public double CalculateTotalPrice(List<Tour> tours);
 
-        public OrderModel CreateOrder();
+        public Task<OrderModel> CreateOrder();
 
-        public void AddOrder(OrderModel model);
+        public Task AddOrderAsync(OrderModel model);
 
-        public List<OrderModel> GetAllOrdersByUsername();
+        public Task<List<OrderModel>> GetAllOrdersByUsername();
 
-        public void RemoveTourFromOrder(int tourId);
+        public void RemoveTourFromOrder(string tourId);
     }
 }

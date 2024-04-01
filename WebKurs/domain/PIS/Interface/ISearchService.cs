@@ -3,6 +3,6 @@
     using WebKurs.Models;
     public interface ISearchService
     {
-        public SearchViewModel SearchResult(string query);
+        public Task<SearchViewModel> SearchResultAsync(string query);
     }
 }

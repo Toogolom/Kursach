@@ -1,17 +1,21 @@
-﻿namespace PIS.Interface
+﻿using PIS.Models;
+
+namespace PIS.Interface
 {
     public interface IAttractionRepository
     {
-        public List<Attraction> GetAllAttractions();
+        public Task<List<Attraction>> GetAllAttractions();
 
-        public List<Attraction> GetAllAttractionsByName(string namePart);
+        public Task<List<Attraction>> GetAllAttractionsByName(string namePart);
 
-        public List<Attraction> GetAllAttractionsByCityId(int cityId);
+        public Task<bool> UpdateAttraction(AttractionModel model);
 
-        public Attraction GetAttractionById(int id);
+        public Task<List<Attraction>> GetAllAttractionsByCityId(string cityId);
 
-        public void AddAttraction(string name, string description, string URL, int cityId);
+        public Task<Attraction> GetAttractionById(string id);
 
-        public void DeleteAttractionById(int id);
+        public Task AddAttraction(string name, string description, string URL, string cityId);
+
+        public Task DeleteAttractionById(string id);
     }
 }

@@ -11,12 +11,12 @@ namespace PIS.Interface
 {
     public interface IAdminService
     {
-        public void DeleteUser(int userId);
+        public Task DeleteUser(string userId);
 
-        public void DeleteCity(int cityId);
+        public Task DeleteCity(string cityId);
 
-        public void DeleteAttraction(int  attractionId);
+        public Task DeleteAttractionAsync(string  attractionId);
 
-        public void DeleteTour(int tourId);
+        public Task DeleteTour(string tourId);
     }
 }

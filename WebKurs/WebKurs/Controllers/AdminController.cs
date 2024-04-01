@@ -5,6 +5,7 @@
     using PIS.Interface;
     using PIS.Models;
     using PIS.Service;
+    using System.Threading.Tasks;
     using WebKurs.Models;
 
     public class AdminController : Controller
@@ -33,9 +34,9 @@
             return RedirectToAction("UpdateUser", "User", model);
         }
 
-        public IActionResult DeleteUser(int userId)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            _adminService.DeleteUser(userId);
+            await _adminService.DeleteUser(userId);
             return RedirectToAction("SearchUser","User");
         }
 
@@ -54,9 +55,9 @@
             return RedirectToAction("UpdateCity", "City", model);
         }
 
-        public IActionResult DeleteCity(int cityId)
+        public async Task<IActionResult> DeleteCityAsync(string cityId)
         {
-            _adminService.DeleteCity(cityId);
+            await _adminService.DeleteCity(cityId);
             return RedirectToAction("SearchCity","City");
         }
 
@@ -75,9 +76,9 @@
             return RedirectToAction("UpdateAttraction", "Attraction", model);
         }
 
-        public IActionResult DeleteAttraction(int attractionId)
+        public async Task<IActionResult> DeleteAttraction(string attractionId)
         {
-            _adminService.DeleteAttraction(attractionId);
+            await _adminService.DeleteAttractionAsync(attractionId);
             return RedirectToAction("SearchAttraction","Attraction");
         }
 
@@ -96,9 +97,9 @@
             return RedirectToAction("UpdateTour", "Tour", model);
         }
 
-        public IActionResult DeleteTour(int tourId)
+        public async Task<IActionResult> DeleteTour(string tourId)
         {
-            _adminService.DeleteTour(tourId);
+            await _adminService.DeleteTour(tourId);
             return RedirectToAction("SearchTour", "Tour");
         }
     }

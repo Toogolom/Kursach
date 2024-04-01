@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Threading.Tasks;
     using WebKurs.Models;
     using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -25,13 +26,13 @@
             _sessionService = sessionService;
         }
 
-        public void AddTourToOrder(int tourId)
+        public void AddTourToOrder(string tourId)
         {
-            List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
+            List<string> tourIdList = _sessionService.Get<List<string>>("TourIdList");
 
             if (tourIdList == null)
             {
-                tourIdList = new List<int>();
+                tourIdList = new List<string>();
             }
 
             tourIdList.Add(tourId);
@@ -49,12 +50,12 @@
             return totalPrice;
         }
 
-        public OrderModel CreateOrder()
+        public async Task<OrderModel> CreateOrder()
         {
             var username = _sessionService.Get<string>("Username");
             var date = DateTime.Now;
-            var tourIdList = _sessionService.Get<List<int>>("TourIdList");
-            List<Tour> tourList = _tourRepository.GetAllToursByAllId(tourIdList);
+            var tourIdList = _sessionService.Get<List<string>>("TourIdList");
+            List<Tour> tourList = await _tourRepository.GetAllToursByAllId(tourIdList);
             var totalPrice = CalculateTotalPrice(tourList);
             return new OrderModel { 
                 Username = username,
@@ -63,17 +64,17 @@
                 Date = date };
         }
 
-        public void AddOrder(OrderModel model)
+        public async Task AddOrderAsync(OrderModel model)
         {
-            var user = _userRepository.GetUserByUsername(model.Username);
-            var tourIdList = _sessionService.Get<List<int>>("TourIdList");
-            _orderRepository.AddOrder(user.UserId, tourIdList, model.Date);
+            var user = await _userRepository.GetUserByUsernameAsync(model.Username);
+            var tourIdList = _sessionService.Get<List<string>>("TourIdList");
+            await _orderRepository.AddOrder(user.UserId, tourIdList, model.Date);
             _sessionService.Remove("TourIdList");
         }
 
-        public void RemoveTourFromOrder(int tourId)
+        public void RemoveTourFromOrder(string tourId)
         {
-            List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
+            List<string> tourIdList = _sessionService.Get<List<string>>("TourIdList");
 
             if (tourIdList != null)
             {
@@ -82,16 +83,16 @@
             }
         }
 
-        public List<OrderModel> GetAllOrdersByUsername()
+        public async Task<List<OrderModel>> GetAllOrdersByUsername()
         {
             var username = _sessionService.Get<string>("Username");
-            var user = _userRepository.GetUserByUsername(username);
+            var user = await _userRepository.GetUserByUsernameAsync(username);
             List<OrderModel> orderModelList = new List<OrderModel>();
-            var orders = _orderRepository.GetAllByUserId(user.UserId);
+            var orders = await _orderRepository.GetAllByUserId(user.UserId);
 
             foreach (var order in orders)
             {
-                List<Tour> tourList = _tourRepository.GetAllToursByAllId(order.TourId);
+                List<Tour> tourList = await _tourRepository.GetAllToursByAllId(order.TourId);
                 var totalPrice = CalculateTotalPrice(tourList);
                 OrderModel orderModel = new OrderModel
                 {

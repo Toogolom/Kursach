@@ -18,46 +18,40 @@
             _cityRepository = cityRepository;
         }
 
-        public List<City> GetAllCity()
+        public Task<List<City>> GetAllCity()
         {
             return _cityRepository.GetAllCity();
         }
 
-        public City GetCityById(int id)
+        public Task<City> GetCityById(string id)
         {
             return _cityRepository.GetCityById(id);
         }
 
-        public bool AddCity(CityModel model)
+        public async Task<bool> AddCity(CityModel model)
         {
-            _cityRepository.AddCity(model.URL,model.CityName,model.CityDescription);
+            await _cityRepository.AddCity(model.URL, model.CityName, model.CityDescription);
             return true;
         }
 
-        public List<City> GetAllCityByPartName(string partName)
+        public async Task<List<City>> GetAllCityByPartName(string partName)
         {
-            return _cityRepository.GetAllCityByName(partName);
+            return await _cityRepository.GetAllCityByName(partName);
         }
 
-        public void DeleteCityById(int id)
+        public async Task DeleteCityByIdAsync(string id)
         {
-            _cityRepository.DeleteCityById(id);
+            await _cityRepository.DeleteCityById(id);
         }
 
-        public bool UpdateCity(CityModel model)
+        public async Task<bool> UpdateCityAsync(CityModel model)
         {
             if (model.URL == null || model.CityName == null || model.CityDescription == null)
             {
                 return false;
             }
 
-            City city = _cityRepository.GetCityById(model.CityId);
-
-            city.PhotoUrl = model.URL;
-            city.CityName = model.CityName;
-            city.CityDescription = model.CityDescription;
-
-            return true;
+            return await _cityRepository.UpdateCity(model);
         }
     }
 }

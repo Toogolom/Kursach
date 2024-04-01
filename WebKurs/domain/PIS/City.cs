@@ -1,8 +1,13 @@
 ﻿namespace PIS
 {
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
+
     public class City
     {
-        public int CityId {  get; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string CityId { get; set; }
 
         public string CityName { get; set; }
 
@@ -10,9 +15,8 @@
 
         public string PhotoUrl { get; set; }
 
-        public City(int cityId, string cityName, string cityDescription, string photoUrl)
+        public City(string cityName, string cityDescription, string photoUrl)
         {
-            CityId = cityId;
             CityName = cityName;
             CityDescription = cityDescription;
             PhotoUrl = photoUrl;

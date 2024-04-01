@@ -22,54 +22,54 @@ namespace WebKurs.Controllers
             _tourService = tourService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            List<int> tourIdList = _sessionService.Get<List<int>>("TourIdList");
-            List<Tour> tours = _tourService.GetAllToursByAllId(tourIdList);
+            List<string> tourIdList = _sessionService.Get<List<string>>("TourIdList");
+            List<Tour> tours = await _tourService.GetAllToursByAllIdAsync(tourIdList);
             var totalPrice = _orderService.CalculateTotalPrice(tours);
 
             return View(Tuple.Create(tours, totalPrice));
         }
 
         [HttpPost]
-        public IActionResult AddToOrder(int tourId)
+        public IActionResult AddToOrder(string tourId)
         {
             _orderService.AddTourToOrder(tourId);
 
             return Json(new { success = true });
         }
 
-        public IActionResult AddOrder()
+        public async Task<IActionResult> AddOrder()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["IsOrderPage"] = true;
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var order = _orderService.CreateOrder();
+            var order = await _orderService.CreateOrder();
             return View(order);
         }
 
         [HttpPost]
-        public IActionResult AddOrderResult(OrderModel model)
+        public async Task<IActionResult> AddOrderResultAsync(OrderModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            _orderService.AddOrder(model);
+            await _orderService.AddOrderAsync(model);
 
             TempData["Order"] = "Заказ успешно добавлен";
 
             return RedirectToAction("SendEmailOrderDetail", "Email", model);
         }
 
-        public IActionResult RemoveItem(int tourId)
+        public IActionResult RemoveItem(string tourId)
         {
             _orderService.RemoveTourFromOrder(tourId);
             return RedirectToAction("Index");

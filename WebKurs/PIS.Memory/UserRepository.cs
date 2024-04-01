@@ -1,75 +1,95 @@
 ﻿namespace PIS.Memory
 {
-    using PIS;
-    using PIS.Interface;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using global::PIS.Interface;
+    using global::PIS.Models;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Driver;
 
     public class UserRepository : IUserRepository
     {
-        private List<User> users = new List<User>
+        private readonly IMongoCollection<User> _userCollection;
+
+        public UserRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            new User(1,"Toog1","toog1@gmail.com","toog1", false),
-            new User(2,"Toog2","toog2@gmail.com","toog2", true),
-            new User(3,"Toog3","toog3@gmail.com","toog3", false),
-        };
-        public void AddUser(string email, string  username, string password)
-        {
-            int userId = users.Count + 1 ;
-            User user = new User(userId, email, username, password, false);
-            users.Add(user);
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _userCollection = database.GetCollection<User>("Users");
         }
 
-        public User GetUserById(int id)
+        public async Task AddUserAsync(string email, string username, string password)
         {
-            return users.FirstOrDefault(user => user.UserId == id);
+            User user = new User(email, username, password, false);
+            await _userCollection.InsertOneAsync(user);
         }
 
-        public void DeleteUser(int id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
-            users.RemoveAll(user => user.UserId == id);
+            return await _userCollection.Find(user => user.UserId == id).FirstOrDefaultAsync();
         }
 
-        public User GetUserByUsername(string userName)
+        public async Task<bool> UpdateUser(string email, string username)
         {
-            return users.FirstOrDefault(user => user.UserName == userName);
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            var update = Builders<User>.Update
+                .Set(u => u.Username, username)
+                .Set(u => u.Email, email);
+
+            var updateResult = await _userCollection.UpdateOneAsync(filter, update);
+            return updateResult.ModifiedCount > 0;
         }
 
-        public bool UsernameNotExist(string userName)
+        public async Task<bool> UpdatePassword(string password, string email)
         {
-            var newUser = users.FirstOrDefault(user => user.UserName == userName);
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            var update = Builders<User>.Update
+                .Set(u => u.Password, password);
+
+            var updateResult = await _userCollection.UpdateOneAsync(filter, update);
+            return updateResult.ModifiedCount > 0;
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            await _userCollection.DeleteOneAsync(user => user.UserId == id);
+        }
+
+        public async Task<User> GetUserByUsernameAsync(string userName)
+        {
+            return await _userCollection.Find(user => user.Username == userName).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UsernameNotExistAsync(string userName)
+        {
+            var newUser = await _userCollection.Find(user => user.Username == userName).FirstOrDefaultAsync();
             return newUser == null;
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            return users.FirstOrDefault(user => user.Email == email);
+            return await _userCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
         }
 
-        public bool UserEmailNotExist(string email)
+        public async Task<bool> UserEmailNotExistAsync(string email)
         {
-            var newUser = users.FirstOrDefault(user => user.Email == email);
+            var newUser = await _userCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
             return newUser == null;
         }
 
-        public string GetUsernameByEmail(string email)
+        public async Task<string> GetUsernameByEmailAsync(string email)
         {
-            var user = users.FirstOrDefault(user => user.Email == email);
-            return user?.UserName;
+            var user = await _userCollection.Find(user => user.Email == email).FirstOrDefaultAsync();
+            return user?.Username;
         }
 
-        public List<User> GetAllUsers()
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return users;
+            return await _userCollection.Find(_ => true).ToListAsync();
         }
 
-        public List<User> GetUAllsersByPartUsername(string partName)
+        public async Task<List<User>> GetUsersByPartUsernameAsync(string partName)
         {
-            return users.Where(user => user.UserName.IndexOf(partName, StringComparison.OrdinalIgnoreCase) >= 0)
-                        .ToList();
+            return await _userCollection.Find(user => user.Username.ToLower().Contains(partName.ToLower())).ToListAsync();
+
         }
     }
 }

@@ -4,6 +4,7 @@
     using PIS.Interface;
     using PIS.Models;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class ReviewService : IReviewService
     {
@@ -23,17 +24,17 @@
             _tourRepository = tourRepository;
         }
 
-        public void AddReview(string text, int id)
+        public async Task AddReviewAsync(string text, string id)
         {
             string username = _sessionService.Get<string>("Username");
-            Review newReview = new Review(0, username, text, id);
-            _reviewRepository.AddReview(newReview);
+            Review newReview = new Review(username, text, id);
+            await _reviewRepository.AddReview(newReview);
         }
 
-        public List<ReviewModel> GetAllReviews()
+        public async Task<List<ReviewModel>> GetAllReviews()
         {
             List<ReviewModel> reviewModelList = new List<ReviewModel>();
-            var reviewList = _reviewRepository.GetAllReview();
+            var reviewList = await _reviewRepository.GetAllReview();
 
             foreach (var review in reviewList)
             {
@@ -43,28 +44,13 @@
                 {
                     Username = review.Username,
                     ReviewText = review.ReviewText,
-                    Tour = _tourRepository.GetTourById(review.TourId)
+                    Tour = await _tourRepository.GetTourById(review.TourId)
                 };
 
                 reviewModelList.Add(reviewModel);
             }
 
             return reviewModelList;
-        }
-
-        public List<ReviewModel> GetAllReviewsByAttrectionId(int attractionId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<ReviewModel> GetAllReviewsByTourId(int tourId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<ReviewModel> GetAllReviewsByUsername(string username)
-        {
-            throw new NotImplementedException();
         }
     }
 }

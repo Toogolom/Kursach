@@ -9,10 +9,10 @@
 
     public interface IOrderRepository
     {
-       public List<Order> GetAllByUserId(int id);
+       public Task<List<Order>> GetAllByUserId(string id);
        
-       public List<int> GetAllTourByUserId(int id);
+       public Task<List<string>> GetAllTourByUserId(string id);
 
-        public void AddOrder(int userId, List<int> tourId, DateTime data);
+        public Task AddOrder(string userId, List<string> tourId, DateTime data);
     }
 }

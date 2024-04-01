@@ -10,16 +10,16 @@
 
     public interface ICityService
     {
-        public List<City> GetAllCity();
+        public Task<List<City>> GetAllCity();
 
-        public bool AddCity(CityModel model);
+        public Task<bool> AddCity(CityModel model);
 
-        public bool UpdateCity(CityModel model);
+        public Task<bool> UpdateCityAsync(CityModel model);
 
-        public List<City> GetAllCityByPartName(string partName);
+        public Task<List<City>> GetAllCityByPartName(string partName);
 
-        public City GetCityById(int id);
+        public Task<City> GetCityById(string id);
 
-        public void DeleteCityById(int id);
+        public Task DeleteCityByIdAsync(string id);
     }
 }

@@ -9,22 +9,20 @@
 
     public interface IUserService
     {
-        public User GetUserByEmail(string email);
+        Task<List<User>> GetAllUsers();
 
-        public User GetUserById(int id);
+        Task<User> GetUserById(string id);
 
-        public List<User> GetAllUsersByUsername(string username);
+        Task<User> GetUserByEmail(string email);
 
-        public UserModel GetUserModel(UserModel model);
+        Task<List<User>> GetAllUsersByUsername(string username);
 
-        public bool UpdateUser(UserModel model);
+        Task<bool> UpdatePassword(string newPassword, string password, Dictionary<string, string> error);
 
-        public List<User> GetAllUsers();
+        Task<bool> UpdateUser(UserModel model);
 
-        public void DeleteUser(int id);
+        Task DeleteUser(string id);
 
-        public bool UpdatePassword(string newPassword, string password, Dictionary<string, string> Error);
-
-        public string GetUsernameByEmail(string email);
+        Task<string> GetUsernameByEmail(string email);
     }
 }

@@ -1,49 +1,68 @@
 ﻿namespace PIS.Memory
 {
-    using PIS.Interface;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using MongoDB.Driver;
+    using Microsoft.Extensions.Options;
+    using global::PIS.Models;
+    using global::PIS.Interface;
 
     public class AttractionRepository : IAttractionRepository
     {
-        private readonly List<Attraction> attractions = new List<Attraction>
-        {
-        new Attraction(1, "Красная площадь (Москва)", "Площадь", 1,"https://catherineasquithgallery.com/uploads/posts/2021-02/1612905349_204-p-krasnaya-ploshchad-fon-249.jpg"),
-        new Attraction(2, "Патрики", "Район для богатых", 1,"https://www.frommillion.ru/uploads/content/picture/6195d3c310971e13a85db090/EBXPWJYXYAEA_Ro.jpg_large.jpg"),
-        new Attraction(3, "Огарев Арена", "Спорткомплекс", 2,"https://sdelanounas.ru/i/y/m/l/f_YmlsZXRvbi5ydS91cGxvYWRzL2xhcmdlL2VlMDc0NTZmZTcxYjIxNWY2MjI2NzA5MGRhNjA2MTcyLmpwZz9fX2lkPTE0NTQ3Nw==.jpeg"),
-        new Attraction(4, "Жопа осла", "Серая", 3,"https://i.ytimg.com/vi/MFPzF9VII4E/maxresdefault.jpg")
-        };
+        private readonly IMongoCollection<Attraction> _attractionCollection;
 
-        public void AddAttraction(string name, string description, string URL, int cityId)
+        public AttractionRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            int attId = attractions.Count + 1;
-            Attraction attraction = new Attraction(attId, name, description, cityId, URL);
-            attractions.Add(attraction);
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _attractionCollection = database.GetCollection<Attraction>("Attractions");
         }
 
-        public List<Attraction> GetAllAttractions()
+        public async Task<List<Attraction>> GetAllAttractions()
         {
-            return attractions;
+            return await _attractionCollection.Find(attraction => true).ToListAsync();
         }
 
-        public List<Attraction> GetAllAttractionsByCityId(int cityId)
+        public async Task<bool> UpdateAttraction(AttractionModel model)
         {
-            return attractions.Where(attr => attr.CityId.Equals(cityId))
-                              .ToList();      
+            var filter = Builders<Attraction>.Filter.Eq(a => a.AttractionId, model.AttractionId);
+            var update = Builders<Attraction>.Update
+                .Set(a => a.AttractionName, model.AttractionName)
+                .Set(a => a.AttractionDescription, model.AttractionDescription)
+                .Set(a => a.AttractionPhotoUrl, model.AttractionPhotoUrl)
+                .Set(a => a.CityId, model.CityId);
+
+            var updateResult = await _attractionCollection.UpdateOneAsync(filter, update);
+
+            return updateResult.ModifiedCount > 0;
         }
 
-        public List<Attraction> GetAllAttractionsByName(string namePart)
+        public async Task<List<Attraction>> GetAllAttractionsByCityId(string cityId)
         {
-            return attractions.Where(attr => attr.AttractionName.IndexOf(namePart, StringComparison.OrdinalIgnoreCase) >= 0)
-            .ToList();
+            return await _attractionCollection.Find(attraction => attraction.CityId == cityId).ToListAsync();
         }
 
-        public Attraction GetAttractionById(int id)
+        public async Task<List<Attraction>> GetAllAttractionsByName(string namePart)
         {
-            return attractions.FirstOrDefault(attr => attr.AttractionId == id);
+            return await _attractionCollection.Find(attraction => attraction.AttractionName.ToLower().Contains(namePart.ToLower())).ToListAsync();
         }
 
-        public void DeleteAttractionById(int id)
+        public async Task AddAttraction(string name, string description, string URL, string cityId)
         {
-            attractions.RemoveAll(att => att.AttractionId.Equals(id));
+            var attraction = new Attraction(name, description, cityId, URL);
+            await _attractionCollection.InsertOneAsync(attraction);
+        }
+
+        public async Task<Attraction> GetAttractionById(string id)
+        {
+            return await _attractionCollection.Find(attraction => attraction.AttractionId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteAttractionById(string id)
+        {
+            await _attractionCollection.DeleteOneAsync(attraction => attraction.AttractionId == id);
         }
     }
 }

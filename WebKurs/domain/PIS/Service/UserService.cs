@@ -3,6 +3,7 @@
     using PIS.Interface;
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
     using WebKurs.Models;
 
     public class UserService : IUserService
@@ -21,90 +22,73 @@
             _authenticationService = authenticationService;
         }
 
-        public List<User> GetAllUsers() 
+        public async Task<List<User>> GetAllUsers()
         {
-            return _userRepository.GetAllUsers();
+            return await _userRepository.GetAllUsersAsync();
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserById(string id)
         {
-            return _userRepository.GetUserByEmail(email);
+            return await _userRepository.GetUserByIdAsync(id);
         }
 
-        public List<User> GetAllUsersByUsername(string username)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _userRepository.GetUAllsersByPartUsername(username);
+            return await _userRepository.GetUserByEmailAsync(email);
         }
 
-        public UserModel GetUserModel(UserModel model)
+        public async Task<List<User>> GetAllUsersByUsername(string username)
         {
-            string username = _sessionService.Get<string>("Username");
-            var user = _userRepository.GetUserByUsername(username);
-            model.Username = username;
-            model.Email = user.Email;
-
-            return model;
+            return await _userRepository.GetUsersByPartUsernameAsync(username);
         }
 
-        public bool UpdatePassword(string newPassword, string password, Dictionary<string, string> Error)
+        public async Task<bool> UpdatePassword(string newPassword, string password, Dictionary<string, string> error)
         {
-            string usermame = _sessionService.Get<string>("Username");
-            var user = _userRepository.GetUserByUsername(usermame);
+            string email = _sessionService.Get<string>("Email");
+            var user = await _userRepository.GetUserByEmailAsync(email);
 
             if (password == null || !_authenticationService.IsPasswordCorrect(newPassword))
             {
-                Error["UnCorrectPassword"] = "Пароль должен содержать как минимум одну заглавную латинскую букву, цифру и спец.знак";
+                error["UnCorrectPassword"] = "Пароль должен содержать как минимум одну заглавную латинскую букву, цифру и спец.знак";
                 return false;
             }
 
             if (newPassword == user.Password)
             {
-                Error["PasswordEqual"] = "Пароли не должны совпадать";
+                error["PasswordEqual"] = "Пароли не должны совпадать";
                 return false;
             }
 
             if (password != user.Password)
             {
-                Error["InvalidPassword"] = "Неправильный пароль";
+                error["InvalidPassword"] = "Неправильный пароль";
                 return false;
             }
 
-            if (newPassword != null)
-            {
-                user.Password = newPassword;
-            }
-            return true;
-
+            return await _userRepository.UpdatePassword(newPassword,email);
         }
 
-        public User GetUserById(int id)
+        public async Task<bool> UpdateUser(UserModel model)
         {
-            return _userRepository.GetUserById(id);
-        }
+            var user = await _userRepository.GetUserByIdAsync(model.UserId);
 
-        public bool UpdateUser(UserModel model)
-        {
-            string username = _sessionService.Get<string>("Username");
-            string email = _sessionService.Get<string>("Email");
-            var user = _userRepository.GetUserByUsername(username);
-
-            if (username == null || model.Email == null)
+            if (model.Username == null || model.Email == null)
             {
-                    model.Error["Empty"] = "Поля не должны быть пустыми";
-                    return false;
+                model.Error["Empty"] = "Поля не должны быть пустыми";
+                return false;
             }
 
-            if (username != model.Username)
+            if (user.Username != model.Username)
             {
 
-                if (!_authenticationService.IsUsernameAvailable(model.Username))
+                if (!await _authenticationService.IsUsernameAvailableAsync(model.Username))
                 {
                     model.Error["UsernameTaken"] = "Данное имя пользователя уже занято";
                     return false;
                 }
             }
 
-            if (email != model.Email)
+            if (user.Email != model.Email)
             {
                 if (!_authenticationService.IsEmailCorrect(model.Email))
                 {
@@ -112,30 +96,24 @@
                     return false;
                 }
 
-                if (!_authenticationService.IsEmailAvailable(model.Email))
+                if (!await _authenticationService.IsEmailAvailableAsync(model.Email))
                 {
-                    model.Error["EmailTaken"] = "Уже существует аккунт с такой почтой";
+                    model.Error["EmailTaken"] = "Уже существует аккаунт с такой почтой";
                     return false;
                 }
             }
-                
-            
 
-           user.UserName = model.Username;
-           user.Email = model.Email;
-
-            _sessionService.Set("Username", model.Username);
-            return true;
+            return await _userRepository.UpdateUser(model.Email, model.Username);
         }
 
-        public void DeleteUser(int id)
+        public async Task DeleteUser(string id)
         {
-            _userRepository.DeleteUser(id);
+            await _userRepository.DeleteUserAsync(id);
         }
 
-        public string GetUsernameByEmail(string email)
+        public async Task<string> GetUsernameByEmail(string email)
         {
-            return _userRepository.GetUsernameByEmail(email);
+            return await _userRepository.GetUsernameByEmailAsync(email);
         }
     }
 }

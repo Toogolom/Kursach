@@ -1,7 +1,9 @@
 ﻿namespace PIS.Memory
 {
-    using PIS;
-    using PIS.Interface;
+    using global::PIS.Interface;
+    using global::PIS.Models;
+    using Microsoft.Extensions.Options;
+    using MongoDB.Driver;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,31 +12,31 @@
 
     public class OrderRepository : IOrderRepository
     {
-        private List<Order> orders = new List<Order>
+        private readonly IMongoCollection<Order> _orderCollection;
+
+        public OrderRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            new Order(1,1,new List<int> {1,2},DateTime.Now),
-            new Order(2,3,new List<int> {1,3},DateTime.Now),
-            new Order(3,2,new List<int> {3,2},DateTime.Now),
-            new Order(4,3,new List<int> {3,1,2},DateTime.Now),
-        };
-        public List<Order> GetAllByUserId(int id)
-        {
-            return orders.Where(order => order.UserId == id)
-                         .ToList();
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _orderCollection = database.GetCollection<Order>("Orders");
         }
 
-        public List<int> GetAllTourByUserId(int id)
+        public async Task<List<Order>> GetAllByUserId(string id)
         {
-            return orders.Where(order => order.UserId == id)
-                         .SelectMany(order => order.TourId)
-                         .ToList();
+            return await _orderCollection.Find(order => order.UserId == id).ToListAsync();
         }
 
-        public void AddOrder(int userId, List<int> tourId, DateTime data)
+        public async Task<List<string>> GetAllTourByUserId(string id)
         {
-            int orderId = orders.Count + 1;
-            Order order = new Order(orderId,userId,tourId,data);
-            orders.Add(order);
+            var orders = await _orderCollection.Find(order => order.UserId == id).ToListAsync();
+            return orders.SelectMany(order => order.TourId).ToList();
+        }
+
+        public async Task AddOrder(string userId, List<string> tourId, DateTime date)
+        {
+            var order = new Order(userId, tourId, date);
+            await _orderCollection.InsertOneAsync(order);
         }
     }
+
 }

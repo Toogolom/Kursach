@@ -1,31 +1,26 @@
 ﻿namespace PIS
 {
-	using System;
-	using System.Collections.Generic;
-
-	public class Order
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
+    using System;
+    using System.Collections.Generic;
+    public class Order
 	{
-		public int OrderId { get; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string OrderId { get; set; }
 
-		public int UserId { get; set; }
+		public string UserId { get; set; }
 
-		public List<int> TourId { get; set; }
+		public List<string> TourId { get; set; }
 
 		public DateTime DateOrder { get; set; }
 
-		public Order (int userId, List<int> tourId, DateTime dateOrder)
+		public Order (string userId, List<string> tourId, DateTime dateOrder)
 		{
 			UserId = userId;
 			TourId = tourId;
 			DateOrder = dateOrder;
 		}
-
-        public Order(int orderId, int userId, List<int> tourId, DateTime dateOrder)
-        {
-			OrderId = orderId;
-            UserId = userId;
-            TourId = tourId;
-            DateOrder = dateOrder;
-        }
     }
 }

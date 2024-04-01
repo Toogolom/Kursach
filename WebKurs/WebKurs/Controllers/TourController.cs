@@ -21,29 +21,29 @@ namespace WebKurs.Controllers
             _attractionService = attractionService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var tour = _tourService.GetAllTours();
+            var tour = await _tourService.GetAllToursAsync();
 
             return View(tour);
         }
 
-        public IActionResult DetailsTour(int tourId)
+        public async Task<IActionResult> DetailsTour(string tourId)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var attractions = _tourService.GetAttractionDateForTour(tourId);
+            var attractions = await _tourService.GetAttractionDateForTour(tourId);
 
             return View(attractions);
         }
 
-        public IActionResult SearchTour(string query)
+        public async Task<IActionResult> SearchTour(string query)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -53,25 +53,25 @@ namespace WebKurs.Controllers
 
             if (query == null)
             {
-                tourList = _tourService.GetAllTours();
+                tourList = await _tourService.GetAllToursAsync();
                 return View(tourList);
             }
 
-            tourList = _tourService.GetAllTourByPartName(query);
+            tourList = await _tourService.GetAllTourByPartNameAsync(query);
             return View(tourList);
 
         }
 
-        public IActionResult UpdateTour(TourModel model)
+        public async Task<IActionResult> UpdateTour(TourModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var tour = _tourService.GetTourById(model.TourId);
-            model.Attractions = _attractionService.GetAllAttraction();
+            var tour = await _tourService.GetTourByIdAsync(model.TourId);
+            model.Attractions = await _attractionService.GetAllAttractionAsync();
 
-            if (_tourService.UpdateTour(model))
+            if (await _tourService.UpdateTourAsync(model))
             {
                 ViewBag.Message = "Тур успешно обновлен";
                 return View(model);
@@ -88,7 +88,7 @@ namespace WebKurs.Controllers
             return View(model);
         }
 
-        public IActionResult AddTour(TourModel model)
+        public async Task<IActionResult> AddTour(TourModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -96,12 +96,12 @@ namespace WebKurs.Controllers
 
 
 
-            if (_tourService.AddTour(model))
+            if (await _tourService.AddTourAsync(model))
             {
                 ViewBag.Message = "Тур успешно добавлен";
             }
 
-            var attList = _attractionService.GetAllAttraction();
+            var attList = await _attractionService.GetAllAttractionAsync();
 
             return View(attList);
         }

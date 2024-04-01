@@ -1,8 +1,12 @@
 ﻿namespace PIS
 {
+	using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson;
 	public class Tour
 	{
-		public int TourId { get; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string TourId { get; set; }
 
 		public string TourName { get; set; }
 
@@ -14,11 +18,10 @@
 
 		public DateTime EndDate { get; set; }
 
-		public Dictionary<int, DateTime> AttractionDate { get; set; }
+		public Dictionary<string, DateTime> AttractionDate { get; set; }
 
-		public Tour(int id, string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<int, DateTime> attractionDate)
+		public Tour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string, DateTime> attractionDate)
 		{
-			TourId = id;
 			TourName = name;
 			TourDescription = description;
 			TourPrice = price;

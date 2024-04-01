@@ -1,44 +1,59 @@
 ﻿namespace PIS.Memory
 {
-    using PIS;
-    using PIS.Interface;
-    using System.Collections.Generic;
+    using MongoDB.Driver;
+    using Microsoft.Extensions.Options;
+    using global::PIS.Interface;
+    using global::PIS.Models;
 
     public class CityRepository : ICityRepository
     {
-        private readonly List<City> cities = new List<City>
-        {
-            new City(1, "Москва", "Столица России","https://sportishka.com/uploads/posts/2022-04/1650613027_1-sportishka-com-p-sovremennaya-moskva-krasivo-foto-1.jpg"),
-            new City(2, "Саранск", "Столица Мордовии","https://24warez.ru/uploads/posts/2022-12/1671961550_02.jpg"),
-            new City(3, "Санкт-Петербург", "Столица соли","https://travel-guide.su/wp-content/uploads/12-1-scaled.jpg")
-        };
+        private readonly IMongoCollection<City> _cityCollection;
 
-        public List<City> GetAllCity()
+        public CityRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            return cities;
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _cityCollection = database.GetCollection<City>("Cities");
         }
 
-        public List<City> GetAllCityByName(string namePart)
+        public async Task<List<City>> GetAllCity()
         {
-            return cities.Where(city => city.CityName.IndexOf(namePart, StringComparison.OrdinalIgnoreCase) >= 0)
-            .ToList();
+            return await _cityCollection.Find(city => true).ToListAsync();
         }
 
-        public void AddCity(string Url, string name, string descriprion)
+        public async Task<List<City>> GetAllCityByName(string namePart)
         {
-            int id = cities.Count + 1;
-            City city = new City(id, name, descriprion, Url);
-            cities.Add(city);
+            return await _cityCollection.Find(city => city.CityName.ToLower().Contains(namePart.ToLower())).ToListAsync();
         }
 
-        public City GetCityById(int id)
+        public async Task AddCity(string Url, string name, string descriprion)
         {
-            return cities.FirstOrDefault(city => city.CityId == id);
+            var city = new City(name, descriprion, Url);
+
+            await _cityCollection.InsertOneAsync(city);
         }
 
-        public void DeleteCityById(int id)
+        public async Task<bool> UpdateCity (CityModel model)
         {
-            cities.RemoveAll(city => city.CityId == id);
+            var filter = Builders<City>.Filter.Eq(c => c.CityId, model.CityId);
+            var update = Builders<City>.Update
+                .Set(c => c.CityName, model.CityName)
+                .Set(c => c.CityDescription, model.CityDescription)
+                .Set(c => c.PhotoUrl, model.URL);
+
+            var updateResult = await _cityCollection.UpdateOneAsync(filter, update);
+
+            return updateResult.ModifiedCount > 0;
+        }
+
+        public async Task<City> GetCityById(string id)
+        {
+            return await _cityCollection.Find(city => city.CityId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteCityById(string id)
+        {
+            await _cityCollection.DeleteOneAsync(city => city.CityId == id);
         }
     }
 }

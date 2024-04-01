@@ -21,33 +21,33 @@ namespace WebKurs.Controllers
             _cityService = cityService;
         }
 
-        public IActionResult Index(int cityId)
+        public async Task<IActionResult> Index(string cityId)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var attraction = _attractionService.GetAllAttractionsByCityId(cityId);
+            var attraction = await _attractionService.GetAllAttractionsByCityIdAsync(cityId);
 
             return View(attraction);
         }
 
-        public IActionResult AddAttraction(AttractionModel model)
+        public async Task<IActionResult> AddAttraction(AttractionModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            if (_attractionService.AddAttraction(model))
+            if (await _attractionService.AddAttractionAsync(model))
             {
                 ViewBag.Message = "Достопримечательность успешно добавлена";
             }
 
-            var cityList = _cityService.GetAllCity();
+            var cityList = await _cityService.GetAllCity();
             return View(cityList);
         }
 
-        public IActionResult SearchAttraction(string query)
+        public async Task<IActionResult> SearchAttraction(string query)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
@@ -57,28 +57,28 @@ namespace WebKurs.Controllers
 
             if (query == null)
             {
-                attractionList = _attractionService.GetAllAttraction();
+                attractionList = await _attractionService.GetAllAttractionAsync();
                 return View(attractionList);
             }
 
-            attractionList = _attractionService.GetAllAtractionByPartName(query);
+            attractionList = await _attractionService.GetAllAtractionByPartNameAsync(query);
             return View(attractionList);
         }
 
-        public IActionResult UpdateAttraction(AttractionModel model)
+        public async Task<IActionResult> UpdateAttraction(AttractionModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
-            model.Cities = _cityService.GetAllCity();
+            model.Cities = await _cityService.GetAllCity();
 
-            if (_attractionService.UpdateAttraction(model))
+            if (await _attractionService.UpdateAttractionAsync(model))
             {
                 ViewBag.Message = "Данные успешно обновлены";
                 return View(model);
             }
 
-            Attraction attraction = _attractionService.GetAttractionById(model.AttractionId);
+            Attraction attraction = await _attractionService.GetAttractionByIdAsync(model.AttractionId);
 
             model.AttractionName = attraction.AttractionName;
             model.AttractionDescription = attraction.AttractionDescription;

@@ -1,21 +1,25 @@
-﻿namespace PIS.Interface
+﻿using PIS.Models;
+
+namespace PIS.Interface
 {
     public interface ITourRepository
     {
-        public void AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<int,DateTime> AttractionDate);
+        public Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string,DateTime> AttractionDate);
 
-        public List<Tour> GetAllTours();
+        public Task<List<Tour>> GetAllTours();
 
-        public List<Tour> GetAllByNameTours(string namePart);
+        public Task<List<Tour>> GetAllByNameTours(string namePart);
 
-        public Tour GetTourById(int id);
+        public Task<Tour> GetTourById(string id);
 
-        public Dictionary<int, DateTime> GetAttractionDateByTourId(int id);
+        public Task<bool> UpdateTour(TourModel tour);
 
-        public List<int> GetAllAttractionByTourId(int tourId);
+        public Task<Dictionary<string, DateTime>> GetAttractionDateByTourId(string id);
 
-        public List<Tour> GetAllToursByAllId(List<int> tourIdList);
+        public Task<List<string>> GetAllAttractionByTourId(string tourId);
 
-        public void DeleteTour(int id);
+        public Task<List<Tour>> GetAllToursByAllId(List<string> tourIdList);
+
+        public Task DeleteTour(string id);
     }
 }

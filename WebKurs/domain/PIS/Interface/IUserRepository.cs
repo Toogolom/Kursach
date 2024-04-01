@@ -2,24 +2,28 @@
 {
     public interface IUserRepository
     {
-        public User GetUserById(int id);
+        public Task<User> GetUserByIdAsync(string id);
 
-        public void AddUser(string email, string username,string password);
+        public Task AddUserAsync(string email, string username, string password);
 
-        public User GetUserByUsername(string userName);
+        public Task<User> GetUserByUsernameAsync(string userName);
 
-        public List<User> GetUAllsersByPartUsername(string partName);
+        public Task<List<User>> GetUsersByPartUsernameAsync(string partName);
 
-        public bool UserEmailNotExist(string email);
+        public Task<bool> UserEmailNotExistAsync(string email);
 
-        public User GetUserByEmail(string email);
+        public Task<bool> UpdatePassword(string password, string email);
 
-        public List<User> GetAllUsers();
+        public Task<User> GetUserByEmailAsync(string email);
 
-        public void DeleteUser(int id);
+        public Task<bool> UpdateUser(string email, string username);
 
-        public string GetUsernameByEmail(string email);
+        public Task<List<User>> GetAllUsersAsync();
 
-        public bool UsernameNotExist(string userName);
+        public Task DeleteUserAsync(string id);
+
+        public Task<string> GetUsernameByEmailAsync(string email);
+
+        public Task<bool> UsernameNotExistAsync(string userName);
     }
 }

@@ -12,15 +12,18 @@
 
 		public string UserId { get; set; }
 
+		public double TotalPrice { get; set; }
+
 		public List<string> TourId { get; set; }
 
 		public DateTime DateOrder { get; set; }
 
-		public Order (string userId, List<string> tourId, DateTime dateOrder)
+		public Order (string userId, List<string> tourId, DateTime dateOrder, double totalPrice)
 		{
 			UserId = userId;
 			TourId = tourId;
 			DateOrder = dateOrder;
+			TotalPrice = totalPrice;
 		}
     }
 }

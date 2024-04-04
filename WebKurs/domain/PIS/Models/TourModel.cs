@@ -8,6 +8,8 @@
 
         public string TourDescription { get; set; }
 
+        public string URL { get; set; }
+
         public double TourPrice { get; set; }
 
         public DateTime StartDate { get; set; }

@@ -5,55 +5,45 @@
     bool isLogPage = ViewData["IsLogPage"] != null ? (bool)ViewData["IsLogPage"] : false;
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Цена</th>
-            <th>Продолжительность</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (isOrderPage)
+@if (!isLogPage && !isOrderPage)
+{
+    <div class="card-container d-flex flex-wrap">
+        @foreach (var tour in Model)
         {
-            @foreach (var tourGroup in Model.GroupBy(t => t.TourId))
-            {
-                <tr>
-                    <td>@tourGroup.First().TourName</td>
-                    <td>@tourGroup.First().TourDescription</td>
-                    <td>@tourGroup.First().TourPrice</td>
-                    <td>@tourGroup.First().StartDate.ToString("dd.MM.yyyy") - @tourGroup.First().EndDate.ToString("dd.MM.yyyy")</td>
-                    <td>@tourGroup.Count()</td>
-                    <td> <a class="btn btn-danger" asp-area="" asp-controller="Order" asp-action="RemoveItem" asp-route-tourId="@tourGroup.Key">Удалить</a> </td>
-                </tr>
-            }
-        }
-        else if (!isLogPage)
-        {
-            @foreach (var tour in Model)
-            {
-                <tr>
-                    <td>@tour.TourName</td>
-                    <td>@tour.TourDescription</td>
-                    <td>@tour.TourPrice</td>
-                    <td>@tour.StartDate.ToString("dd.MM.yyyy") - @tour.EndDate.ToString("dd.MM.yyyy")</td>
-                    <td> <a class="btn btn-success" asp-area="" asp-controller="Tour" asp-action="DetailsTour" asp-route-tourId="@tour.TourId">Подробнее</a> </td>
+            <div class="card" style="width: 18rem; margin-right: 20px; margin-bottom: 20px;">
+                <img src="@tour.URL" class="card-img-top" style="object-fit: cover; height: 200px;" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@tour.TourName</h5>
+                    <p class="card-text">@tour.TourDescription</p>
+                    <p class="card-text">Цена: @tour.TourPrice Руб</p>
+                    <p class="card-text">Дата: @tour.StartDate.ToString("dd.MM.yyyy") - @tour.EndDate.ToString("dd.MM.yyyy")</p>
+                    <a href="@Url.Action("DetailsTour", "Tour", new { area = "", tourId = tour.TourId })" class="btn btn-success">Подробнее</a>
                     @if (isLoggedIn)
                     {
-                        <td> <button type="button" class="btn btn-success buy-btn" data-tour-id="@tour.TourId">Купить</button> </td>
+                        <button type="button" class="btn btn-success buy-btn" data-tour-id="@tour.TourId">Купить</button>
                     }
-                    else
-                    {
-                        <td></td>
-                    }
-                </tr>
-            }
+                </div>
+            </div>
         }
-        else
-        {
+       
+
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Продолжительность</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
             @foreach (var tourGroup in Model.GroupBy(t => t.TourId))
             {
                 <tr>
@@ -62,11 +52,16 @@
                     <td>@tourGroup.First().TourPrice</td>
                     <td>@tourGroup.First().StartDate.ToString("dd.MM.yyyy") - @tourGroup.First().EndDate.ToString("dd.MM.yyyy")</td>
                     <td>@tourGroup.Count()</td>
+                    @if (isOrderPage)
+                    {
+                        <td> <a class="btn btn-danger" asp-area="" asp-controller="Order" asp-action="RemoveItem" asp-route-tourId="@tourGroup.Key">Удалить</a> </td>
+                    }
                 </tr>
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

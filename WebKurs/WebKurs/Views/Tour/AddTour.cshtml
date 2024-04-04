@@ -27,6 +27,10 @@
                 <textarea class="form-control" id="tourDescription" name="tourDescription" rows="3" required></textarea>
             </div>
             <div class="form-group">
+                <label for="tourName">Адрес фото URL:</label>
+                <input type="text" class="form-control" id="URL" name="URL" required>
+            </div>
+            <div class="form-group">
                 <label for="tourPrice">Цена тура:</label>
                 <input type="number" class="form-control" id="tourPrice" name="tourPrice" step="0.01" required>
             </div>
@@ -59,7 +63,7 @@
 
             <div class="btn-group" role="group" aria-label="Basic outlined example">
                 <button type="button" class="btn btn-outline-secondary" onclick="addAttractionDate()">Добавить достопримечательность</button>
-                <button type="button" class="btn btn-outline-success">Добавить тур</button>
+                <button type="submit" class="btn btn-outline-success">Добавить тур</button>
             </div>
            
         </form>

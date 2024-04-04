@@ -71,7 +71,7 @@
                 return false;
             }
 
-            await _tourRepository.AddTour(model.TourName, model.TourDescription, model.TourPrice, model.StartDate, model.EndDate, model.AttractionDate);
+            await _tourRepository.AddTour(model.TourName, model.TourDescription, model.TourPrice, model.StartDate, model.EndDate, model.AttractionDate, model.URL);
 
             return true;
         }

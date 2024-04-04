@@ -68,7 +68,7 @@
         {
             var user = await _userRepository.GetUserByUsernameAsync(model.Username);
             var tourIdList = _sessionService.Get<List<string>>("TourIdList");
-            await _orderRepository.AddOrder(user.UserId, tourIdList, model.Date);
+            await _orderRepository.AddOrder(user.UserId, tourIdList, model.Date,model.TotalPrice);
             _sessionService.Remove("TourIdList");
         }
 
@@ -83,9 +83,8 @@
             }
         }
 
-        public async Task<List<OrderModel>> GetAllOrdersByUsername()
+        public async Task<List<OrderModel>> GetAllOrdersByUsername(string username)
         {
-            var username = _sessionService.Get<string>("Username");
             var user = await _userRepository.GetUserByUsernameAsync(username);
             List<OrderModel> orderModelList = new List<OrderModel>();
             var orders = await _orderRepository.GetAllByUserId(user.UserId);
@@ -105,6 +104,11 @@
             }
 
             return orderModelList;
+        }
+
+        public Task DeleteOrder(string id)
+        {
+            return _orderRepository.DeleteOrder(id);
         }
     }
 }

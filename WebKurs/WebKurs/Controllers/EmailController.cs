@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using PIS.Interface;
     using System.Text;
+    using System.Threading.Tasks;
     using WebKurs.Models;
 
     public class EmailController : Controller
@@ -26,13 +27,16 @@
             return View();
         }
 
-        public IActionResult SendEmail(string subject, string body)
+        public async Task<IActionResult> SendEmailAsync(string subject, string body)
         {
             var email = "romaminorov@gmail.com";
 
             if (_emailService.SendEmail(email, subject, body))
             {
-                TempData["Message"] = "Сообщение успешно доставлено";
+                if (await _emailService.SaveEmail(email,body,DateTime.Now))
+                {
+                    TempData["Message"] = "Сообщение успешно доставлено";
+                }
             }
 
             return RedirectToAction("Index");

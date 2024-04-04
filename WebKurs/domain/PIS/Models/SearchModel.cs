@@ -1,9 +1,11 @@
-﻿using PIS;
-
-namespace WebKurs.Models
+﻿namespace WebKurs.Models
 {
-    public class SearchViewModel
+    using PIS;
+
+    public class SearchModel
     {
+        public string Query {  get; set; }
+
         public List<City> Cities { get; set; }
 
         public List<Attraction> Attractions { get; set; }
@@ -12,8 +14,8 @@ namespace WebKurs.Models
 
         public bool ShowTours { get; set; }
 
-        public bool ShowAttraction { get; set; }
+        public bool ShowAttractions { get; set; }
 
-        public bool ShowCity { get; set; }
+        public bool ShowCities { get; set; }
     }
 }

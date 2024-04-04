@@ -18,14 +18,17 @@
 
         private readonly IUserService _userService;
 
+        private readonly IOrderService _orderService;
 
-        public AdminService(ITourService tourService, ICityService cityService, IAttractionService attractionService, IUserService userService, IAuthenticationService authenticationService)
+
+        public AdminService(ITourService tourService, ICityService cityService, IAttractionService attractionService, IUserService userService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _tourService = tourService;
             _cityService = cityService;
             _attractionService = attractionService;
             _userService = userService;
             _authenticationService = authenticationService;
+            _orderService = orderService;
         }
 
         public async Task DeleteUser(string userId)
@@ -41,6 +44,11 @@
         public async Task DeleteCity(string cityId)
         {
            await _cityService.DeleteCityByIdAsync(cityId);
+           var attList = await _attractionService.GetAllAttractionsByCityIdAsync(cityId);
+           foreach (var att in attList)
+           {
+              await _attractionService.DeleteAttrationByIdAsync(att.AttractionId);
+           }
         }
 
         public async Task DeleteAttractionAsync(string attractionId)

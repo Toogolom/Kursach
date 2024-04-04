@@ -9,16 +9,25 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebKurs.styles.css" asp-append-version="true" />
     <style>
-        .footer {
-            position: fixed;
-            bottom: 0;
+        #background-carousel {
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: #f8f9fa;
-            padding: 10px 0;
+            height: 100%;
+            z-index: -1;
+        }
+
+        header{
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+            margin-bottom: 300px;
+            top: 0;
         }
 
         .content {
-            margin-bottom: 80px;
+            margin-top: 60px;
+            z-index: -1;
         }
     </style>
 </head>
@@ -54,7 +63,37 @@
                         <div class="input-group">
                             <input class="form-control" type="search" placeholder="Поиск" aria-label="Search" name="query">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-success" type="submit">Найти</button>
+                                <div class="btn-group">
+									<button class="btn btn-outline-success" type="submit">Найти</button>
+                                    <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="ShowTours" name="ShowTours" value="true" checked>
+                                            <label class="form-check-label" for="ShowTours">
+                                                Туры
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="ShowCities" name="ShowCities" value="true" checked>
+                                            <label class="form-check-label" for="ShowCities">
+                                                Города
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="ShowAttractions" name="ShowAttractions" value="true" checked>
+                                            <label class="form-check-label" for="ShowAttractions">
+                                                Достопримечательности
+                                            </label>
+                                        </div>
+                                    </ul>
+
+                                </div>  
                             </div>
                         </div>
                     </form>
@@ -94,6 +133,13 @@
                                             </svg>
                                             Смена пароля
                                         </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Email" asp-action="Index">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                            </svg>
+                                            Поддержка
+                                        </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item btn btn-danger" asp-area="" asp-controller="Account" asp-action="Exit">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -112,12 +158,6 @@
                                         @ViewData["Username"]
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <span class="dropdown-item-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                                            </svg>
-                                        </span>
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Личный кабинет</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="SearchUser">Редактирование пользователей</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="AddTour">Добавить тур</a>
@@ -149,22 +189,43 @@
     </header>
     <div class="container">
         <div class="content">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+            @RenderBody()
         </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - WebKTour - Moiseew Artem
-
-            <a asp-area="" asp-controller="Email" asp-action="Index">Email</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        const showToursCheckbox = document.getElementById('ShowTours');
+        const showCitiesCheckbox = document.getElementById('ShowCities');
+        const showAttractionsCheckbox = document.getElementById('ShowAttractions');
+
+        const showToursState = localStorage.getItem('showToursState');
+        const showCitiesState = localStorage.getItem('showCitiesState');
+        const showAttractionsState = localStorage.getItem('showAttractionsState');
+
+        if (showToursState) {
+            showToursCheckbox.checked = showToursState === 'true';
+        }
+        if (showCitiesState) {
+            showCitiesCheckbox.checked = showCitiesState === 'true';
+        }
+        if (showAttractionsState) {
+            showAttractionsCheckbox.checked = showAttractionsState === 'true';
+        }
+
+        showToursCheckbox.addEventListener('change', () => {
+            localStorage.setItem('showToursState', showToursCheckbox.checked);
+        });
+        showCitiesCheckbox.addEventListener('change', () => {
+            localStorage.setItem('showCitiesState', showCitiesCheckbox.checked);
+        });
+        showAttractionsCheckbox.addEventListener('change', () => {
+            localStorage.setItem('showAttractionsState', showAttractionsCheckbox.checked);
+        });
+    </script>
 </body>
 </html>

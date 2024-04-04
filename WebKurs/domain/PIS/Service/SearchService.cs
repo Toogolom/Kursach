@@ -19,23 +19,20 @@
             _cityRepository = cityRepository;
         }
 
-        public async Task<SearchViewModel> SearchResultAsync(string query, string searchType)
+        public async Task<SearchModel> SearchResultAsync(SearchModel model)
         {
-            if (string.IsNullOrEmpty(query))
+            if (string.IsNullOrEmpty(model.Query))
             {
-                return new SearchViewModel
-                {
-                    Tours = await _tourRepository.GetAllTours(),
-                    Attractions =  await _attractionRepository.GetAllAttractions(),
-                    Cities = await _cityRepository.GetAllCity(),
-                };
+                model.Tours = await _tourRepository.GetAllTours();
+                model.Attractions = await _attractionRepository.GetAllAttractions();
+                model.Cities = await _cityRepository.GetAllCity();
+                return model;
             }
-            return new SearchViewModel
-            {
-                Tours = await _tourRepository.GetAllByNameTours(query),
-                Attractions = await _attractionRepository.GetAllAttractionsByName(query),
-                Cities = await _cityRepository.GetAllCityByName(query),
-            };
+            model.Tours = await _tourRepository.GetAllByNameTours(model.Query);
+            model.Attractions = await _attractionRepository.GetAllAttractionsByName(model.Query);
+            model.Cities = await _cityRepository.GetAllCityByName(model.Query);
+
+            return model;
         }
     }
 }

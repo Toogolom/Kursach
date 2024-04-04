@@ -1,6 +1,5 @@
 ﻿namespace PIS.Memory
 {
-    
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -21,9 +20,9 @@
             _tourCollection = database.GetCollection<Tour>("Tours");
         }
 
-        public async Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string, DateTime> AttractionDate)
+        public async Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string, DateTime> AttractionDate, string URL)
         {
-            Tour tour = new Tour(name, description, price, startDate, endDate, AttractionDate);
+            Tour tour = new Tour(name, description, price, startDate, endDate, AttractionDate,URL);
             await _tourCollection.InsertOneAsync(tour);
         }
 

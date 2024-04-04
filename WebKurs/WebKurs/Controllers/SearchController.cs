@@ -26,24 +26,15 @@
             return View();
 		}
 
-		public async Task<IActionResult> ResultAsync(string query, string searchType)
+		public async Task<IActionResult> Result(SearchModel model)
 		{
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var model = await _searchService.SearchResultAsync(query, searchType);
+            model = await _searchService.SearchResultAsync(model);
+
             return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Filter(bool showTours, bool showAttractions, bool showCities, SearchViewModel model)
-        {
-            model.ShowAttraction = showAttractions;
-            model.ShowTours = showTours;
-            model.ShowCity = showCities;
-
-            return RedirectToAction("Result");
         }
     }
 }

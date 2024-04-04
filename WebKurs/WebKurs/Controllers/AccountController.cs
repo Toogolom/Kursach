@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PIS;
-using PIS.Interface;
-using WebKurs.Models;
-
-namespace WebKurs.Controllers
+﻿namespace WebKurs.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using PIS;
+    using PIS.Interface;
+    using WebKurs.Models;
+
     public class AccountController : Controller
     {
         private readonly ISessionService _sessionService;
@@ -48,7 +48,7 @@ namespace WebKurs.Controllers
             ViewData["Username"] = _sessionService.Get<string>("Username");
             ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
 
-            var model = await _orderService.GetAllOrdersByUsername();
+            var model = await _orderService.GetAllOrdersByUsername(_sessionService.Get<string>("Username"));
 
             return View(model);
         }

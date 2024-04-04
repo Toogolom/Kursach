@@ -14,7 +14,9 @@
 
         public Task AddOrderAsync(OrderModel model);
 
-        public Task<List<OrderModel>> GetAllOrdersByUsername();
+        public Task DeleteOrder(string id);
+
+        public Task<List<OrderModel>> GetAllOrdersByUsername(string username);
 
         public void RemoveTourFromOrder(string tourId);
     }

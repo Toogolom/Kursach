@@ -32,10 +32,15 @@
             return orders.SelectMany(order => order.TourId).ToList();
         }
 
-        public async Task AddOrder(string userId, List<string> tourId, DateTime date)
+        public async Task AddOrder(string userId, List<string> tourId, DateTime date, double totalPrice)
         {
-            var order = new Order(userId, tourId, date);
+            var order = new Order(userId, tourId, date, totalPrice);
             await _orderCollection.InsertOneAsync(order);
+        }
+
+        public async Task DeleteOrder(string id)
+        {
+            await _orderCollection.DeleteOneAsync(order => order.OrderId == id);
         }
     }
 

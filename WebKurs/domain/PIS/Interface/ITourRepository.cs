@@ -4,7 +4,7 @@ namespace PIS.Interface
 {
     public interface ITourRepository
     {
-        public Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string,DateTime> AttractionDate);
+        public Task AddTour(string name, string description, double price, DateTime startDate, DateTime endDate, Dictionary<string,DateTime> AttractionDate, string URL);
 
         public Task<List<Tour>> GetAllTours();
 

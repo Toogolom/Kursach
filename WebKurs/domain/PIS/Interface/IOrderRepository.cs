@@ -13,6 +13,8 @@
        
        public Task<List<string>> GetAllTourByUserId(string id);
 
-        public Task AddOrder(string userId, List<string> tourId, DateTime data);
+        public Task AddOrder(string userId, List<string> tourId, DateTime data, double totalPrice);
+
+        public Task DeleteOrder(string userId);
     }
 }

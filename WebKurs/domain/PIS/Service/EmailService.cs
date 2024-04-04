@@ -11,7 +11,12 @@
         private readonly int _smtpPort = 587;
         private readonly string _senderEmail = "toogolom@gmail.com";
         private readonly string _senderPassword = "gljk jzqs rmwq gizt";
+        private readonly IEmailRepository _emailRepository;
 
+        public EmailService (IEmailRepository emailRepository)
+        {
+            _emailRepository = emailRepository;
+        }
 
         public bool SendEmail(string recipientEmail, string subject, string body)
         {
@@ -33,6 +38,21 @@
                 return true;
             }
             catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> SaveEmail(string recipientEmail, string body, DateTime date)
+        {
+            try
+            {
+                Email email = new Email(recipientEmail, body, date);
+                await _emailRepository.SaveEmail(email);
+
+                return true;
+            }
+            catch(Exception)
             {
                 return false;
             }

@@ -28,6 +28,7 @@ builder.Services.AddSingleton<IReviewRepository, ReviewRepository>();
 builder.Services.AddSingleton<IReviewService, ReviewService>();
 builder.Services.AddSingleton<IAdminService, AdminService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddSingleton<IEmailRepository, EmailRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<SessionService>();
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);

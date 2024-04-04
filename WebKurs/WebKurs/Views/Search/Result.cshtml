@@ -1,4 +1,4 @@
-﻿@model SearchViewModel
+﻿@model SearchModel
 
 @{
     ViewData["Title"] = "Результаты поиска";
@@ -19,13 +19,13 @@
         <p>Ничего не найдено.</p>
     }
 
-    @if (Model.Tours != null && Model.Tours.Any())
+    @if (Model.Tours != null && Model.Tours.Any() && Model.ShowTours)
     {
         <h2>Туры</h2>
         @Html.Partial("TourPartial",Model.Tours)
     }
 
-    @if (Model.Attractions != null && Model.Attractions.Any())
+    @if (Model.Attractions != null && Model.Attractions.Any() && Model.ShowAttractions)
     {
         <h2>Достопримечательности</h2>
         @foreach (var item in Model.Attractions)
@@ -34,7 +34,7 @@
         }
     }
 
-    @if (Model.Cities != null && Model.Cities.Any())
+    @if (Model.Cities != null && Model.Cities.Any() && Model.ShowCities)
     {
         <h2>Города</h2>
         @Html.Partial("CityPartial", Model.Cities)

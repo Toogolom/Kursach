@@ -1,0 +1,47 @@
+﻿@model List<PIS.Mailing>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список рассылок</title>
+</head>
+<body>
+    <h1>Список рассылок</h1>
+    @if(@TempData["Success"]!= null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    
+    <a class="btn btn-outline-warning" asp-area="" asp-controller="Mailing" asp-action="AddMailing">Добавить рассылку</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Загаловок</th>
+                <th>Текст</th>
+                <th>Подписок</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var mailing in Model)
+            {
+                <tr>
+                    <td>@mailing.Subject</td>
+                    <td>@mailing.Body</td>
+                    <td>@mailing.EmailList.Count()</td>
+                    <td>
+                        <a class="btn btn-outline-success" asp-area="" asp-controller="Mailing" asp-action="SendMailing" asp-route-id="@mailing.MailingId">Разослать</a>
+                        <a class="btn btn-outline-danger" asp-area="" asp-controller="Mailing" asp-action="DeleteMailing" asp-route-id="@mailing.MailingId">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+

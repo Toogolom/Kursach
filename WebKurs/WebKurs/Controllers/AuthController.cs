@@ -88,12 +88,17 @@
         }
 
 
-        public IActionResult SendCodeToEmail(string email)
+        public async Task<IActionResult> SendCodeToEmailAsync(string email)
         {
-            string code = _authenticationService.SendVerifyCodeToEmail(email);
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
+            string code = await _authenticationService.SendVerifyCodeToEmailAsync(email);
+            
+
             _sessionService.Set("Code", code);
 
-            return Json(new { success = code != null, email = email });
+            return Json(new { success = code != null, email });
         }
     }
 }

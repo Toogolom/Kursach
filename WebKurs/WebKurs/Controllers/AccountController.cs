@@ -3,6 +3,8 @@
     using Microsoft.AspNetCore.Mvc;
     using PIS;
     using PIS.Interface;
+    using PIS.Models;
+    using System.Collections.Generic;
     using WebKurs.Models;
 
     public class AccountController : Controller
@@ -13,12 +15,15 @@
 
         private readonly IOrderService _orderService;
 
+        private readonly IMailingService _mailingService;
 
-        public AccountController(SessionService sessionService, IUserService userService, IOrderService orderService)
+
+        public AccountController(SessionService sessionService, IUserService userService, IOrderService orderService, IMailingService mailingService)
         {
             _sessionService = sessionService;
             _userService = userService;
             _orderService = orderService;
+            _mailingService = mailingService;
         }
 
         public async Task<IActionResult> Index()
@@ -34,11 +39,17 @@
 
             _sessionService.Set("Username", user.Username);
 
-            return View(new UserModel
+            UserModel userModel = new UserModel
             {
                 Email = user.Email,
                 Username = user.Username,
-            });
+            };
+
+            var mailing = await _mailingService.GetAllMailing();
+
+            var viewModel = new { UserModel = userModel, Mailing = mailing  };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Order()

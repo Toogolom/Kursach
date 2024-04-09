@@ -111,16 +111,15 @@
             return await _userRepository.UserEmailNotExistAsync(email);
         }
 
-        public string SendVerifyCodeToEmail(string email)
+        public async Task<string> SendVerifyCodeToEmailAsync(string email)
         {
             string code = Guid.NewGuid().ToString();
 
-            if (_emailService.SendEmail(email,"Подтверждение почты",code))
+            if (IsEmailCorrect(email) && await IsEmailAvailableAsync(email) &&  _emailService.SendEmail(email,"Подтверждение почты",code))
             {
                 return code;
             }
             return null;
-           
         }
 
         public bool IsPasswordCorrect(string password)

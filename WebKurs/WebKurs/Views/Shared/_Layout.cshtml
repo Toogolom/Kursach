@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebKurs.styles.css" asp-append-version="true" />
     <style>
+
         #background-carousel {
             top: 0;
             left: 0;
@@ -33,7 +34,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" style="background-image: linear-gradient(to right, #388E3C, #bfe9ff);">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
@@ -57,6 +58,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Review" asp-action="Index">Отзывы</a>
+                        </li
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">Чат</a>
                         </li>
                     </ul>
                     <form class="form-inline" asp-controller="Search" asp-action="Result" method="get">
@@ -64,7 +68,11 @@
                             <input class="form-control" type="search" placeholder="Поиск" aria-label="Search" name="query">
                             <div class="input-group-append">
                                 <div class="btn-group">
-									<button class="btn btn-outline-success" type="submit">Найти</button>
+									<button class="btn btn-outline-success" type="submit">Найти 
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </button>
                                     <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
@@ -160,12 +168,17 @@
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Личный кабинет</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="SearchUser">Редактирование пользователей</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="AddTour">Добавить тур</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="SearchTour">Редактирование туров</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="AddCity">Добавить город</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="SearchCity">Редактирование городов</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="AddAttraction">Добавить достопримечательность</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="SearchAttraction">Редактирование достопримечательностей</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Mailing" asp-action="Index">Рассылка</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item btn btn-danger" asp-area="" asp-controller="Account" asp-action="Exit">Выход</a>
                                     </div>

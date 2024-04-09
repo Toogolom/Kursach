@@ -16,7 +16,7 @@
 
         public bool IsEmailCorrect(string email);
 
-        public string SendVerifyCodeToEmail(string email);
+        public Task<string> SendVerifyCodeToEmailAsync(string email);
 
         public Task<bool> IsEmailAvailableAsync(string email);
 

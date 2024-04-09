@@ -27,7 +27,7 @@
             return View();
         }
 
-        public async Task<IActionResult> SendEmailAsync(string subject, string body)
+        public async Task<IActionResult> SendEmail(string subject, string body)
         {
             var email = "romaminorov@gmail.com";
 

@@ -16,7 +16,8 @@
                     <h5 class="card-title">@tour.TourName</h5>
                     <p class="card-text">@tour.TourDescription</p>
                     <p class="card-text">Цена: @tour.TourPrice Руб</p>
-                    <p class="card-text">Дата: @tour.StartDate.ToString("dd.MM.yyyy") - @tour.EndDate.ToString("dd.MM.yyyy")</p>
+                    <p class="card-text">С: @tour.StartDate.ToString("d MMMM yyyy г.", new System.Globalization.CultureInfo("ru-RU"))</p>
+                    <p class="card-text">До: @tour.EndDate.ToString("d MMMM yyyy г.", new System.Globalization.CultureInfo("ru-RU"))</p>
                     <a href="@Url.Action("DetailsTour", "Tour", new { area = "", tourId = tour.TourId })" class="btn btn-success">Подробнее</a>
                     @if (isLoggedIn)
                     {

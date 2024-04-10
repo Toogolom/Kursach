@@ -105,5 +105,14 @@ namespace WebKurs.Controllers
 
             return View(attList);
         }
+
+        public async Task<IActionResult> CreateTour(TourModel model)
+        {
+            ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
+            ViewData["Username"] = _sessionService.Get<string>("Username");
+            ViewData["IsAdmin"] = _sessionService.Get<bool>("IsAdmin");
+
+            return View(model);
+        }
     }
 }

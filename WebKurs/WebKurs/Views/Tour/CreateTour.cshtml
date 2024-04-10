@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="tourPrice">Цена тура:</label>
-                <input type="number" class="form-control" id="tourPrice" name="tourPrice" value="@Model.TourPrice" step="0.01" required>
+                <input type="hidden" class="form-control" id="tourPrice" name="tourPrice" value="@Model.TourPrice" step="0.01" required>
             </div>
             <div class="form-group">
                 <label for="startDate">Дата начала тура:</label>
@@ -59,10 +59,8 @@
                 </div>
             }
 
-            <div class="btn-group" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-outline-secondary" onclick="addAttractionDate()">Добавить достопримечательность</button>
-                <button type="submit" class="btn btn-outline-success">Изменить тур</button>
-            </div>
+            <button type="button" class="btn btn-secondary mb-3" onclick="addAttractionDate()">Добавить достопримечательность</button>
+            <button type="submit" class="btn btn-success">Изменить тур</button>
         </form>
     </div>
 
@@ -79,13 +77,10 @@
                 return;
             }
 
-
             if (!isDateInRange(attractionDate, startDate, endDate)) {
                 alert("Дата посещения должна быть в промежутке между датами начала и окончания тура.");
                 return;
             }
-
-
 
             var div = document.createElement("div");
             div.classList.add("form-group");

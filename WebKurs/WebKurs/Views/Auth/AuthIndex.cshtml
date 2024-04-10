@@ -23,16 +23,21 @@
                                 {
                                     <div class="text-danger">@Model.Error["Empty"]</div>
                                 }
-                                <label for="email">Адрес эл. почты:</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Введите адрес эл. почты" value="@Model.Email">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Введите адрес эл.почты">
+                                    <label for="floatingInput">Адрес электронной почты</label>
+                                </div>
                                 @if (Model.Error.ContainsKey("InvalidEmail"))
                                 {
                                     <div class="text-danger">@Model.Error["InvalidEmail"]</div>
                                 }
                             </div>
                             <div class="form-group">
-                                <label for="password">Пароль:</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                                    <label for="floatingInput">Пароль</label>
+                                </div>
+                               
                                 @if (Model.Error.ContainsKey("InvalidPassword"))
                                 {
                                     <div class="text-danger">@Model.Error["InvalidPassword"]</div>

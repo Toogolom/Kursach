@@ -56,7 +56,7 @@ namespace WebKurs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrderResultAsync(OrderModel model)
+        public async Task<IActionResult> AddOrderResult(OrderModel model)
         {
             ViewData["IsLoggedIn"] = _sessionService.Get<bool>("IsLoggedIn");
             ViewData["Username"] = _sessionService.Get<string>("Username");
